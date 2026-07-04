@@ -61,6 +61,7 @@ export function Hero() {
         className="absolute inset-0 h-full min-h-0"
       />
       <ForestBackdrop />
+      <div className="pointer-events-none absolute inset-x-0 top-0 z-[3] h-32 bg-gradient-to-b from-[var(--bg)] via-[var(--bg)]/60 to-transparent" />
       <div className="pointer-events-none absolute inset-0 dot-grid opacity-40" />
       <div className="pointer-events-none absolute inset-0 glow-mesh" />
 
@@ -75,7 +76,7 @@ export function Hero() {
       </div>
 
       <div className="relative z-10 mx-auto flex min-h-svh max-w-6xl flex-col justify-center px-5 pt-14">
-        <div className="glass-deep max-w-3xl rounded-3xl border border-[var(--line)] p-7 sm:p-10">
+        <div className="glass-deep mx-auto w-full rounded-3xl border border-[var(--line)] p-7 sm:p-12">
         <ShimmerText
           text="M.Sc. Computer Science · AI — Universität Freiburg"
           className="font-mono text-[0.7rem] uppercase tracking-[0.24em]"
@@ -86,14 +87,14 @@ export function Hero() {
           aria-label="Karan Anchan"
           className="mt-3 font-black uppercase leading-[0.86] tracking-tighter"
         >
-          <span className="block text-[clamp(3rem,10vw,8rem)] text-[var(--fg)]">
+          <span className="block text-[clamp(3.5rem,11vw,9.5rem)] text-[var(--fg)]">
             {"KARAN".split("").map((ch, i) => (
               <span key={i} data-letter className="inline-block will-change-transform">
                 {ch}
               </span>
             ))}
           </span>
-          <span className="text-outline block text-[clamp(3rem,10vw,8rem)]">
+          <span className="text-outline block text-[clamp(3.5rem,11vw,9.5rem)]">
             {"ANCHAN".split("").map((ch, i) => (
               <span key={i} data-letter className="inline-block will-change-transform">
                 {ch}
