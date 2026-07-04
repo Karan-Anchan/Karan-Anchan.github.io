@@ -324,3 +324,39 @@ html.theme-anim, html.theme-anim * {
 ::view-transition-old(root), ::view-transition-new(root) {
   animation-duration: 0.55s;
 }
+
+/* ── multicolor pass: no dominant accent ────────────────────── */
+:root {
+  --accent-5: #be185d;
+}
+.dark {
+  --accent-5: #f9a8d4;
+}
+
+/* mesh glow replaces the single lime wash */
+.glow-mesh {
+  background:
+    radial-gradient(ellipse 50% 40% at 82% 12%, color-mix(in srgb, var(--accent-2) 14%, transparent), transparent 70%),
+    radial-gradient(ellipse 45% 40% at 12% 30%, color-mix(in srgb, var(--accent-4) 12%, transparent), transparent 70%),
+    radial-gradient(ellipse 60% 45% at 50% 95%, color-mix(in srgb, var(--lime) 10%, transparent), transparent 70%);
+}
+
+/* slow rainbow drift for the cursor */
+@keyframes hue-drift { to { filter: hue-rotate(360deg); } }
+.hue-drift { animation: hue-drift 9s linear infinite; }
+@media (prefers-reduced-motion: reduce) { .hue-drift { animation: none; } }
+
+::selection { background: var(--accent-2); color: var(--bg); }
+
+/* gradient CTA — all accents, no favorite */
+.btn-spectrum {
+  background: linear-gradient(100deg, var(--lime), var(--accent-4) 35%, var(--accent-2) 70%, var(--accent-5));
+  color: var(--on-accent);
+}
+
+.text-spectrum {
+  background: linear-gradient(100deg, var(--lime), var(--accent-4) 35%, var(--accent-2) 70%, var(--accent-5));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}

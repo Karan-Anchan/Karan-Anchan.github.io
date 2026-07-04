@@ -19,7 +19,7 @@ export function SiteNav() {
           href="#top"
           className="font-serif-accent text-lg italic tracking-tight"
         >
-          K<span className="text-[var(--lime)]">·</span>A
+          K<span className="text-[var(--accent-5)]">·</span>A
         </a>
         <div className="hidden items-center gap-7 sm:flex">
           {links.map((l) => (
@@ -37,7 +37,7 @@ export function SiteNav() {
         <ThemeToggle />
         <a
           href="mailto:kar.anchan02@gmail.com"
-          className="rounded-full border border-[var(--lime)]/40 px-4 py-1.5 font-mono text-[0.68rem] uppercase tracking-[0.14em] text-[var(--lime)] transition-colors hover:bg-[var(--lime)] hover:text-[var(--on-accent)]"
+          className="rounded-full border border-[var(--accent-2)]/40 px-4 py-1.5 font-mono text-[0.68rem] uppercase tracking-[0.14em] text-[var(--accent-2)] transition-colors hover:bg-[var(--accent-2)] hover:text-[var(--on-accent)]"
         >
           Say hello
         </a>

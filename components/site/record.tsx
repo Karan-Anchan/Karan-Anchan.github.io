@@ -51,7 +51,7 @@ export function Record() {
                   {x.points.map((p) => (
                     <li
                       key={p}
-                      className="pl-5 text-sm font-light text-[var(--dim)] before:mr-2 before:-ml-5 before:text-[var(--lime)] before:content-['→']"
+                      className="pl-5 text-sm font-light text-[var(--dim)] before:mr-2 before:-ml-5 before:text-[var(--accent-4)] before:content-['→']"
                     >
                       {p}
                     </li>
@@ -69,7 +69,7 @@ export function Record() {
       <div className="mt-10 grid gap-px overflow-hidden rounded-2xl border border-[var(--line)] bg-[var(--card)] sm:grid-cols-2">
         {edu.map((e) => (
           <Reveal key={e.title} className="bg-[var(--bg)] p-7">
-            <div className="font-mono text-[0.6rem] uppercase tracking-[0.16em] text-[var(--lime)]">
+            <div className="font-mono text-[0.6rem] uppercase tracking-[0.16em] text-[var(--accent-3)]">
               {e.when}
             </div>
             <h3 className="mt-2 text-lg font-light text-[var(--fg)]">{e.title}</h3>
@@ -94,7 +94,7 @@ export function Record() {
             href={c.href}
             target="_blank"
             rel="noopener"
-            className="rounded-full border border-[var(--line)] px-4 py-2 font-mono text-[0.62rem] tracking-[0.08em] text-[var(--dim)] transition-colors before:mr-2 before:text-[var(--lime)] before:content-['✓'] hover:border-[var(--lime)]/50 hover:text-[var(--lime)]"
+            className="rounded-full border border-[var(--line)] px-4 py-2 font-mono text-[0.62rem] tracking-[0.08em] text-[var(--dim)] transition-colors before:mr-2 before:text-[var(--accent-2)] before:content-['✓'] hover:border-[var(--accent-2)]/50 hover:text-[var(--accent-2)]"
           >
             {c.label}
           </a>

@@ -58,12 +58,12 @@ export function Hero() {
         className="absolute inset-0 h-full min-h-0"
       />
       <div className="pointer-events-none absolute inset-0 dot-grid opacity-40" />
-      <div className="pointer-events-none absolute inset-0 glow-lime" />
+      <div className="pointer-events-none absolute inset-0 glow-mesh" />
 
       {/* corner meta — awwwards furniture */}
       <div className="absolute inset-x-0 top-16 z-10 mx-auto flex max-w-6xl justify-between px-5 font-mono text-[0.58rem] uppercase tracking-[0.2em] text-[var(--faint)]">
         <span>
-          <span className="mr-2 inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-[var(--lime)]" />
+          <span className="mr-2 inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-[var(--accent-3)]" />
           open to collaborations
         </span>
         <span className="hidden sm:block">freiburg · de — {time} cet</span>
@@ -94,7 +94,7 @@ export function Hero() {
                 {ch}
               </span>
             ))}
-            <span data-letter className="inline-block text-[var(--lime)]" style={{ WebkitTextStroke: "0px" }}>
+            <span data-letter className="text-spectrum inline-block" style={{ WebkitTextStroke: "0px" }}>
               .
             </span>
           </span>
@@ -124,7 +124,7 @@ export function Hero() {
         <div className="mt-9 flex flex-wrap gap-3">
           <a
             href="#work"
-            className="rounded-full bg-[var(--lime)] px-6 py-3 font-mono text-[0.72rem] uppercase tracking-[0.16em] text-[var(--on-accent)] transition-transform hover:scale-[1.03] active:scale-95"
+            className="btn-spectrum rounded-full px-6 py-3 font-mono text-[0.72rem] uppercase tracking-[0.16em] transition-transform hover:scale-[1.03] active:scale-95"
           >
             Start the run ↓
           </a>
@@ -132,7 +132,7 @@ export function Hero() {
             href="/CVKaranAnchan.pdf"
             target="_blank"
             rel="noopener"
-            className="rounded-full border border-[var(--line)] px-6 py-3 font-mono text-[0.72rem] uppercase tracking-[0.16em] text-[var(--fg2)] transition-colors hover:border-[var(--lime)]/60 hover:text-[var(--lime)]"
+            className="rounded-full border border-[var(--line)] px-6 py-3 font-mono text-[0.72rem] uppercase tracking-[0.16em] text-[var(--fg2)] transition-colors hover:border-[var(--accent-4)]/60 hover:text-[var(--accent-4)]"
           >
             CV · PDF
           </a>
@@ -140,7 +140,7 @@ export function Hero() {
             href="https://github.com/Karan-Anchan"
             target="_blank"
             rel="noopener"
-            className="rounded-full border border-[var(--line)] px-6 py-3 font-mono text-[0.72rem] uppercase tracking-[0.16em] text-[var(--fg2)] transition-colors hover:border-[var(--lime)]/60 hover:text-[var(--lime)]"
+            className="rounded-full border border-[var(--line)] px-6 py-3 font-mono text-[0.72rem] uppercase tracking-[0.16em] text-[var(--fg2)] transition-colors hover:border-[var(--accent-2)]/60 hover:text-[var(--accent-2)]"
           >
             GitHub
           </a>

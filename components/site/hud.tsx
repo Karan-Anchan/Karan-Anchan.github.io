@@ -31,18 +31,18 @@ export function TrainingHud() {
       className="fixed bottom-4 left-4 z-[100] hidden select-none rounded-lg border border-[var(--line)] glass px-3.5 py-2.5 font-mono text-[0.6rem] leading-relaxed tracking-[0.08em] text-[var(--dim)] backdrop-blur-md lg:block"
     >
       <div className="mb-1 flex items-center gap-2 text-[0.55rem] uppercase tracking-[0.18em] text-[var(--faint)]">
-        <span className="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-[var(--lime)]" />
+        <span className="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-[var(--accent-5)]" />
         run: karan-v3 · live
       </div>
       <div>
         ckpt <span className="text-[var(--accent-2)]">{String(ckpt).padStart(2, "0")}/06</span>
         {"  ·  "}loss{" "}
-        <span className="text-[var(--lime)]">{loss.toFixed(3)}</span> ↓
+        <span className="text-[var(--accent-3)]">{loss.toFixed(3)}</span> ↓
         {"  ·  "}lr <span className="text-[var(--accent-4)]">{lr}</span>
       </div>
       <div className="mt-1.5 h-0.5 w-full overflow-hidden rounded bg-[var(--card)]">
         <div
-          className="h-full bg-[var(--lime)] transition-[width] duration-150"
+          className="btn-spectrum h-full transition-[width] duration-150"
           style={{ width: `${p * 100}%` }}
         />
       </div>

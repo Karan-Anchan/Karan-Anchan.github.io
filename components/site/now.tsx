@@ -22,7 +22,7 @@ export function NowTicker() {
   return (
     <div className="border-b border-[var(--line)] bg-[var(--bg)]">
       <div className="mx-auto flex max-w-6xl items-baseline gap-3 overflow-hidden px-5 py-3">
-        <span className="shrink-0 font-mono text-[0.6rem] uppercase tracking-[0.22em] text-[var(--accent-2)]">
+        <span className="shrink-0 font-mono text-[0.6rem] uppercase tracking-[0.22em]" style={{ color: ["var(--lime)","var(--accent-4)","var(--accent-2)","var(--accent-3)","var(--accent-5)"][i % 5] }}>
           now ⟶
         </span>
         <div className="relative h-[1.4em] flex-1 overflow-hidden">

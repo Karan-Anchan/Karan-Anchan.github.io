@@ -25,10 +25,12 @@ const yoloLatency = [
 ];
 
 const lime = "var(--lime)";
+const amber = "var(--accent-3)";
 const dim = "var(--faint)";
 
 type Entry = {
   no: string;
+  hue: string;
   tags: { label: string; hot?: boolean }[];
   title: string;
   href: string;
@@ -55,7 +57,7 @@ function MambaFig() {
             >
               <span
                 className={`font-mono text-[0.55rem] uppercase tracking-wider ${
-                  b === "attn" ? "text-[var(--lime)]" : "text-[var(--faint)]"
+                  b === "attn" ? "text-[var(--accent-2)]" : "text-[var(--faint)]"
                 }`}
               >
                 {b}
@@ -63,7 +65,7 @@ function MambaFig() {
               <div
                 className={`h-14 w-8 rounded-sm border sm:w-10 ${
                   b === "attn"
-                    ? "border-[var(--lime)] bg-[var(--lime)]/80"
+                    ? "border-[var(--accent-2)] bg-[var(--accent-2)]/80"
                     : "border-[var(--faint)] bg-[var(--card)]"
                 }`}
               />
@@ -103,7 +105,7 @@ function SaeFig() {
         <motion.path
           d="M52 41 C 66 36, 74 28, 84 25"
           fill="none"
-          stroke={lime}
+          stroke={amber}
           strokeWidth="0.9"
           initial={{ pathLength: 0 }}
           whileInView={{ pathLength: 1 }}
@@ -122,7 +124,7 @@ function SaeFig() {
               cx={n.x}
               cy={n.y}
               r={n.dim ? 2.4 : 3.2}
-              fill={n.dim ? "var(--faint)" : lime}
+              fill={n.dim ? "var(--faint)" : amber}
             />
             <text
               x={n.x}
@@ -146,6 +148,7 @@ function SaeFig() {
 const entries: Entry[] = [
   {
     no: "01",
+    hue: "var(--lime)",
     tags: [
       { label: "Active · 2026", hot: true },
       { label: "Reinforcement Learning" },
@@ -185,6 +188,7 @@ const entries: Entry[] = [
   },
   {
     no: "02",
+    hue: "var(--accent-4)",
     tags: [
       { label: "Active · 2026", hot: true },
       { label: "Computer Vision" },
@@ -215,7 +219,7 @@ const entries: Entry[] = [
     fig: (
       <div className="p-5">
         <BarChart data={yoloLatency} xDataKey="name" aspectRatio="16 / 9">
-          <Bar dataKey="ms" fill={lime} />
+          <Bar dataKey="ms" fill="var(--accent-4)" />
         </BarChart>
       </div>
     ),
@@ -223,6 +227,7 @@ const entries: Entry[] = [
   },
   {
     no: "03",
+    hue: "var(--accent-2)",
     tags: [
       { label: "In progress" },
       { label: "Hybrid architectures" },
@@ -252,6 +257,7 @@ const entries: Entry[] = [
   },
   {
     no: "04",
+    hue: "var(--accent-3)",
     tags: [
       { label: "In progress" },
       { label: "Interpretability" },
@@ -295,6 +301,7 @@ export function Work() {
         {entries.map((e, i) => (
           <Reveal key={e.no}>
             <article
+              style={{ ["--e" as string]: e.hue }}
               className={`grid items-center gap-10 lg:grid-cols-2 ${
                 i % 2 ? "lg:[&>*:first-child]:order-2" : ""
               }`}
@@ -306,7 +313,7 @@ export function Work() {
                       key={t.label}
                       className={`rounded-full border px-3 py-1 font-mono text-[0.58rem] uppercase tracking-[0.14em] ${
                         t.hot
-                          ? "border-[var(--lime)]/50 text-[var(--lime)]"
+                          ? "border-[var(--e)]/50 text-[var(--e)]"
                           : "border-[var(--line)] text-[var(--dim)]"
                       }`}
                     >
@@ -319,7 +326,7 @@ export function Work() {
                     href={e.href}
                     target="_blank"
                     rel="noopener"
-                    className="transition-colors hover:text-[var(--lime)]"
+                    className="transition-colors hover:text-[var(--e)]"
                   >
                     {e.title}
                   </a>
@@ -330,7 +337,7 @@ export function Work() {
                 <div className="mt-6 flex flex-wrap gap-8">
                   {e.metrics.map((m) => (
                     <div key={m.l}>
-                      <div className="text-xl font-light text-[var(--lime)]">
+                      <div className="text-xl font-light text-[var(--e)]">
                         {m.v}
                       </div>
                       <div className="font-mono text-[0.55rem] uppercase tracking-[0.14em] text-[var(--faint)]">
@@ -346,7 +353,7 @@ export function Work() {
                       href={l.href}
                       target="_blank"
                       rel="noopener"
-                      className="border-b border-[var(--line)] pb-0.5 font-mono text-[0.62rem] uppercase tracking-[0.16em] text-[var(--fg2)] transition-colors hover:border-[var(--lime)] hover:text-[var(--lime)]"
+                      className="border-b border-[var(--line)] pb-0.5 font-mono text-[0.62rem] uppercase tracking-[0.16em] text-[var(--fg2)] transition-colors hover:border-[var(--e)] hover:text-[var(--e)]"
                     >
                       {l.label} ↗
                     </a>

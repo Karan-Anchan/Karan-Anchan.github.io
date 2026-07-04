@@ -47,7 +47,7 @@ export function Cursor() {
     <>
       <motion.div
         aria-hidden
-        className="pointer-events-none fixed left-0 top-0 z-[200] h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[var(--lime)]"
+        className="hue-drift pointer-events-none fixed left-0 top-0 z-[200] h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[var(--lime)]"
         style={{ x: mx, y: my }}
       />
       <motion.div
@@ -58,7 +58,7 @@ export function Cursor() {
           backgroundColor: hot ? "rgba(199,242,132,0.08)" : "rgba(199,242,132,0)",
         }}
         transition={{ duration: 0.25 }}
-        className="pointer-events-none fixed left-0 top-0 z-[199] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[var(--lime)]/50"
+        className="hue-drift pointer-events-none fixed left-0 top-0 z-[199] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[var(--lime)]/50"
         style={{ x: rx, y: ry }}
       />
     </>

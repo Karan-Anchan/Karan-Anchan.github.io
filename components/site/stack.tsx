@@ -52,7 +52,7 @@ export function Stack() {
       <div className="grid gap-px overflow-hidden rounded-2xl border border-[var(--line)] bg-[var(--card)] sm:grid-cols-2 lg:grid-cols-4">
         {cols.map((c, i) => (
           <Reveal key={c.head} delay={i * 0.06} className="bg-[var(--bg)] p-6">
-            <h4 className="mb-4 font-mono text-[0.62rem] uppercase tracking-[0.2em] text-[var(--lime)]">
+            <h4 className="mb-4 font-mono text-[0.62rem] uppercase tracking-[0.2em]" style={{ color: ["var(--lime)","var(--accent-4)","var(--accent-2)","var(--accent-5)"][i] }}>
               {c.head}
             </h4>
             <ul className="space-y-2">

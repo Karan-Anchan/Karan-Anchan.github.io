@@ -9,10 +9,12 @@ function StatOnView({
   value,
   suffix,
   label,
+  hue = "var(--lime)",
 }: {
   value: number;
   suffix?: string;
   label: string;
+  hue?: string;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const [shown, setShown] = useState(0);
@@ -38,7 +40,7 @@ function StatOnView({
       <div className="flex items-baseline text-3xl font-light text-[var(--fg)] sm:text-4xl">
         <AnimatedNumber value={shown} />
         {suffix ? (
-          <span className="ml-1 font-serif-accent text-xl italic text-[var(--lime)]">
+          <span className="ml-1 font-serif-accent text-xl italic" style={{ color: hue }}>
             {suffix}
           </span>
         ) : null}
@@ -54,7 +56,7 @@ export function About() {
   return (
     <section id="about" className="mx-auto max-w-6xl px-5 py-24">
       <GiantTitle word="AUTHOR" className="-mt-10 mb-2 opacity-70" />
-      <SectionHead index="§01" title="About the" accent="author" side="ckpt 01 — bio loaded" />
+      <SectionHead hue="var(--accent-5)" index="§01" title="About the" accent="author" side="ckpt 01 — bio loaded" />
       <div className="max-w-3xl space-y-6 text-xl font-light leading-relaxed text-[var(--dim)] sm:text-2xl">
         <Reveal>
           <p>
@@ -67,7 +69,7 @@ export function About() {
               University of Freiburg
             </strong>{" "}
             — after a B.E. in Computer Science finished at{" "}
-            <em className="font-serif-accent italic text-[var(--lime)]">
+            <em className="font-serif-accent italic text-[var(--accent-3)]">
               GPA 9.33/10
             </em>
             .
@@ -97,9 +99,9 @@ export function About() {
 
       <Reveal delay={0.2} className="mt-12">
         <div className="grid grid-cols-1 rounded-2xl border border-[var(--line)] bg-[var(--card)] sm:grid-cols-3">
-          <StatOnView value={9} suffix=".33 / 10" label="B.E. GPA · German 1,3" />
-          <StatOnView value={20} suffix=" projects" label="2026 roadmap scope" />
-          <StatOnView value={5} suffix="+ yrs" label="Python & PyTorch" />
+          <StatOnView value={9} suffix=".33 / 10" label="B.E. GPA · German 1,3" hue="var(--accent-3)" />
+          <StatOnView value={20} suffix=" projects" label="2026 roadmap scope" hue="var(--accent-4)" />
+          <StatOnView value={5} suffix="+ yrs" label="Python & PyTorch" hue="var(--accent-2)" />
         </div>
       </Reveal>
     </section>

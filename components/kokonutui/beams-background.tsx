@@ -35,8 +35,9 @@ interface Beam {
 
 function createBeam(width: number, height: number, isDarkMode: boolean): Beam {
   const angle = -35 + Math.random() * 10;
-  const hueBase = isDarkMode ? 78 : 90;
-  const hueRange = isDarkMode ? 36 : 30;
+  const BEAM_HUES = [95, 185, 265, 35, 330];
+  const hueBase = BEAM_HUES[Math.floor(Math.random() * BEAM_HUES.length)];
+  const hueRange = 16;
 
   return {
     x: Math.random() * width * 1.5 - width * 0.25,
@@ -112,8 +113,9 @@ export default function BeamsBackground({
       const column = index % 3;
       const spacing = canvas.width / 3;
 
-      const hueBase = isDarkModeRef.current ? 78 : 90;
-      const hueRange = isDarkModeRef.current ? 36 : 30;
+      const BEAM_HUES = [95, 185, 265, 35, 330];
+      const hueBase = BEAM_HUES[Math.floor(Math.random() * BEAM_HUES.length)];
+      const hueRange = 16;
 
       beam.y = canvas.height + 100;
       beam.x =

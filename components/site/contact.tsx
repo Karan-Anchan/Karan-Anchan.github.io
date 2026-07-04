@@ -10,7 +10,7 @@ export function Contact() {
       id="contact"
       className="relative overflow-hidden border-t border-[var(--line)]"
     >
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-2/3 bg-[radial-gradient(ellipse_at_50%_100%,rgba(199,242,132,0.12),transparent_65%)]" />
+      <div className="glow-mesh pointer-events-none absolute inset-x-0 bottom-0 h-2/3" />
 
       {/* giant marquee CTA — the whole strip is a mailto */}
       <a
@@ -24,10 +24,10 @@ export function Contact() {
               key={i}
               className="flex items-center gap-8 whitespace-nowrap text-[10vw] font-black uppercase leading-none tracking-tighter"
             >
-              <span className="text-outline transition-colors duration-300 group-hover:text-[var(--lime)]">
+              <span className="text-outline transition-colors duration-300 group-hover:text-[var(--accent-2)]">
                 let&apos;s talk
               </span>
-              <span className="text-[0.35em] text-[var(--lime)]">✳</span>
+              <span className={`text-[0.35em] ${["text-[var(--lime)]","text-[var(--accent-4)]","text-[var(--accent-2)]","text-[var(--accent-3)]","text-[var(--accent-5)]"][i % 5]}`}>✳</span>
             </span>
           ))}
         </div>
@@ -36,14 +36,14 @@ export function Contact() {
       <div className="relative mx-auto flex min-h-[52svh] max-w-6xl flex-col justify-between px-5 pb-8 pt-16">
         <div>
           <Reveal>
-            <div className="mb-4 font-mono text-[0.68rem] uppercase tracking-[0.24em] text-[var(--lime)]">
+            <div className="mb-4 font-mono text-[0.68rem] uppercase tracking-[0.24em] text-[var(--accent-4)]">
               ckpt 06/06 · training complete — deploy me somewhere interesting
             </div>
           </Reveal>
           <Reveal delay={0.05}>
             <a
               href="mailto:kar.anchan02@gmail.com"
-              className="font-serif-accent break-all text-3xl italic tracking-tight text-[var(--fg)] transition-colors hover:text-[var(--lime)] sm:text-5xl"
+              className="font-serif-accent break-all text-3xl italic tracking-tight text-[var(--fg)] transition-colors hover:text-[var(--accent-5)] sm:text-5xl"
             >
               kar.anchan02@gmail.com
             </a>
@@ -58,7 +58,7 @@ export function Contact() {
           <Reveal delay={0.15}>
             <div className="mt-8 flex flex-wrap items-center gap-6">
               <ParticleButton
-                className="rounded-full bg-[var(--lime)] px-6 py-2.5 font-mono text-[0.7rem] uppercase tracking-[0.14em] text-[var(--on-accent)] hover:bg-[var(--lime)]/90"
+                className="btn-spectrum rounded-full px-6 py-2.5 font-mono text-[0.7rem] uppercase tracking-[0.14em] hover:opacity-90"
                 onClick={() => {
                   window.location.href = "mailto:kar.anchan02@gmail.com";
                 }}
@@ -90,7 +90,7 @@ export function Contact() {
         <footer className="mt-16 flex flex-wrap items-center justify-between gap-3 border-t border-[var(--line)] pt-6 font-mono text-[0.58rem] lowercase tracking-[0.16em] text-[var(--faint)]">
           <span>© 2026 karan anchan</span>
           <span>handcrafted at 2am between training runs — no template, some libraries</span>
-          <a href="#top" className="transition-colors hover:text-[var(--lime)]">
+          <a href="#top" className="transition-colors hover:text-[var(--accent-4)]">
             back to epoch 0 ↑
           </a>
         </footer>
