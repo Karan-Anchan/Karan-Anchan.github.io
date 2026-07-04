@@ -1,0 +1,18 @@
+import BentoGrid from "@/components/kokonutui/bento-grid";
+import { SectionHead } from "@/components/site/reveal";
+
+export function Roadmap() {
+  return (
+    <section id="roadmap" className="border-y border-white/5 bg-zinc-900/20 py-24">
+      <div className="mx-auto max-w-6xl px-5">
+        <SectionHead
+          index="§03"
+          title="2026 research"
+          accent="roadmap"
+          side="a menu, not a mandate"
+        />
+      </div>
+      <BentoGrid />
+    </section>
+  );
+}
