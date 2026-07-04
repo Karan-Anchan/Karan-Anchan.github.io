@@ -1,15 +1,17 @@
 import BentoGrid from "@/components/kokonutui/bento-grid";
 import { SectionHead } from "@/components/site/reveal";
+import { GiantTitle } from "@/components/site/giant-title";
 
 export function Roadmap() {
   return (
     <section id="roadmap" className="border-y border-white/5 bg-zinc-900/20 py-24">
       <div className="mx-auto max-w-6xl px-5">
-        <SectionHead
+        <GiantTitle word="ROADMAP" className="-mt-10 mb-2 opacity-70" />
+      <SectionHead
           index="§03"
           title="2026 research"
           accent="roadmap"
-          side="a menu, not a mandate"
+          side="ckpt 03 — a menu, not a mandate"
         />
       </div>
       <BentoGrid />

@@ -5,6 +5,7 @@ import { BarChart } from "@/components/charts/bar-chart";
 import { Bar } from "@/components/charts/bar";
 import GlowBorderCard from "@/components/ui/glow-border-card";
 import { Reveal, SectionHead } from "@/components/site/reveal";
+import { GiantTitle } from "@/components/site/giant-title";
 import { motion } from "motion/react";
 
 /* synthetic figure data — see README: illustrative until real results land */
@@ -283,11 +284,12 @@ const entries: Entry[] = [
 export function Work() {
   return (
     <section id="work" className="mx-auto max-w-6xl px-5 py-24">
+      <GiantTitle word="WORK" className="-mt-10 mb-2 opacity-70" />
       <SectionHead
         index="§02"
         title="Selected"
         accent="work"
-        side="reproduce → ablate → ship"
+        side="ckpt 02 — two shipping, two brewing"
       />
       <div className="space-y-20">
         {entries.map((e, i) => (

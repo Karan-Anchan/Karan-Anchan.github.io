@@ -31,8 +31,8 @@ The following is **plausible fake data** used to make the site complete:
 | Work entry 01 — *RLPD* metrics + chart | Project is real ([repo](https://github.com/Karan-Anchan/rlpd-offline-to-online-rl)) but the 3×3 seeds / UTD 20 / ensemble 10 numbers and the learning-curve data are the plan, not results. |
 | Work entry 02 — *YOLO26* latency chart | Real project ([repo](https://github.com/Karan-Anchan/edge-yolo26-deployment)); the ms numbers are illustrative until benchmarks run. |
 | Roadmap bento metrics | Efficient-inference percentages are targets, not measurements. |
-| Experience — *Research Assistant (HiWi), ML Lab Freiburg* | Invented filler entry. |
 | About — "5+ yrs Python & PyTorch" counter | Approximate. |
+| "Now" ticker + personal microcopy (chai vs coffee, seed 2, 2am) | Personal flavor written for tone — edit to taste. |
 | `public/CVKaranAnchan.pdf` | Old CV — still lists the old GitHub account. Regenerate from the `.tex`. |
 
 Everything else (bio, education, WiZdom Ed internship, certifications, contact) is real.

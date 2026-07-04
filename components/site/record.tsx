@@ -1,16 +1,7 @@
 import { Reveal, SectionHead } from "@/components/site/reveal";
+import { GiantTitle } from "@/components/site/giant-title";
 
 const xp = [
-  {
-    when: "2026 — present",
-    role: "Research Assistant (HiWi)",
-    org: "Machine Learning Lab · University of Freiburg",
-    where: "Freiburg, DE",
-    points: [
-      "Supporting experiments on sample-efficient RL; maintaining the group's training & evaluation harness.",
-      "Running reproducibility sweeps (3+ seeds, frozen configs) with W&B reporting.",
-    ],
-  },
   {
     when: "Oct 2023 — Oct 2024",
     role: "Machine Learning Intern",
@@ -39,7 +30,8 @@ const edu = [
 export function Record() {
   return (
     <section id="record" className="mx-auto max-w-6xl px-5 py-24">
-      <SectionHead index="§04" title="The" accent="record" side="experience · education" />
+      <GiantTitle word="RECORD" className="-mt-10 mb-2 opacity-70" />
+      <SectionHead index="§04" title="The" accent="record" side="ckpt 04 — the receipts" />
 
       <div className="divide-y divide-white/5 border-y border-white/5">
         {xp.map((x) => (

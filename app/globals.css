@@ -220,3 +220,47 @@
 @media (prefers-reduced-motion: reduce) {
   .brand-marquee-track { animation: none; }
 }
+
+/* ── awwwards layer ─────────────────────────────────────────── */
+.grain::before {
+  content: "";
+  position: fixed;
+  inset: -50%;
+  width: 200%;
+  height: 200%;
+  pointer-events: none;
+  z-index: 90;
+  opacity: 0.045;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
+  animation: grain-shift 9s steps(8) infinite;
+}
+@keyframes grain-shift {
+  0%, 100% { transform: translate(0, 0); }
+  25% { transform: translate(-3%, 2%); }
+  50% { transform: translate(2%, -3%); }
+  75% { transform: translate(-1%, -1%); }
+}
+
+.text-outline {
+  -webkit-text-stroke: 1.5px rgba(238, 241, 232, 0.85);
+  color: transparent;
+}
+.text-outline-faint {
+  -webkit-text-stroke: 1px rgba(238, 241, 232, 0.14);
+  color: transparent;
+}
+.text-outline-lime {
+  -webkit-text-stroke: 1.5px var(--lime);
+  color: transparent;
+}
+
+::selection { background: var(--lime); color: #09090b; }
+
+@media (hover: hover) and (pointer: fine) {
+  .custom-cursor-on, .custom-cursor-on a, .custom-cursor-on button {
+    cursor: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .grain::before { animation: none; }
+}

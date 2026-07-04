@@ -2,6 +2,7 @@
 
 import { AnimatedNumber } from "@/components/ui/animated-number";
 import { Reveal, SectionHead } from "@/components/site/reveal";
+import { GiantTitle } from "@/components/site/giant-title";
 import { useEffect, useRef, useState } from "react";
 
 function StatOnView({
@@ -52,7 +53,8 @@ function StatOnView({
 export function About() {
   return (
     <section id="about" className="mx-auto max-w-6xl px-5 py-24">
-      <SectionHead index="§01" title="About the" accent="author" side="Freiburg im Breisgau · DE" />
+      <GiantTitle word="AUTHOR" className="-mt-10 mb-2 opacity-70" />
+      <SectionHead index="§01" title="About the" accent="author" side="ckpt 01 — bio loaded" />
       <div className="max-w-3xl space-y-6 text-xl font-light leading-relaxed text-zinc-400 sm:text-2xl">
         <Reveal>
           <p>
@@ -86,7 +88,9 @@ export function About() {
             Previously: ML intern building production RAG systems at WiZdom Ed.
             Currently: coursework in deep learning, PGMs and robot mechanics,
             plus the 2026 research roadmap below. English C2 · Hindi native ·
-            German A2→B1.
+            German A2→B1. Off the clock: over-engineering n8n automations for
+            my own life and defending masala chai against German filter coffee
+            — a study with n=1 and strong priors.
           </p>
         </Reveal>
       </div>

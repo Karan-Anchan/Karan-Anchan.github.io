@@ -1,4 +1,5 @@
 import { Reveal, SectionHead } from "@/components/site/reveal";
+import { GiantTitle } from "@/components/site/giant-title";
 
 const cols: { head: string; items: [string, string][] }[] = [
   {
@@ -46,7 +47,8 @@ const cols: { head: string; items: [string, string][] }[] = [
 export function Stack() {
   return (
     <section id="stack" className="mx-auto max-w-6xl px-5 py-24">
-      <SectionHead index="§05" title="Working" accent="stack" side="daily drivers first" />
+      <GiantTitle word="STACK" className="-mt-10 mb-2 opacity-70" />
+      <SectionHead index="§05" title="Working" accent="stack" side="ckpt 05 — daily drivers first" />
       <div className="grid gap-px overflow-hidden rounded-2xl border border-white/5 bg-white/5 sm:grid-cols-2 lg:grid-cols-4">
         {cols.map((c, i) => (
           <Reveal key={c.head} delay={i * 0.06} className="bg-zinc-950 p-6">
