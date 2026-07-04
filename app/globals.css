@@ -381,3 +381,9 @@ html.theme-anim, html.theme-anim * {
 /* terminal cursor blink for the wordmark */
 @keyframes blink { 0%, 46% { opacity: 1; } 50%, 100% { opacity: 0; } }
 .blink { animation: blink 1.25s steps(1) infinite; }
+
+/* hero text card sitting over the forest */
+.glass-deep {
+  background: color-mix(in srgb, var(--bg) 64%, transparent);
+  backdrop-filter: blur(14px);
+}

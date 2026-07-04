@@ -75,6 +75,7 @@ export function Hero() {
       </div>
 
       <div className="relative z-10 mx-auto flex min-h-svh max-w-6xl flex-col justify-center px-5 pt-14">
+        <div className="glass-deep max-w-3xl rounded-3xl border border-[var(--line)] p-7 sm:p-10">
         <ShimmerText
           text="M.Sc. Computer Science · AI — Universität Freiburg"
           className="font-mono text-[0.7rem] uppercase tracking-[0.24em]"
@@ -85,14 +86,14 @@ export function Hero() {
           aria-label="Karan Anchan"
           className="mt-3 font-black uppercase leading-[0.86] tracking-tighter"
         >
-          <span className="block text-[clamp(3.5rem,13vw,10.5rem)] text-[var(--fg)]">
+          <span className="block text-[clamp(3rem,10vw,8rem)] text-[var(--fg)]">
             {"KARAN".split("").map((ch, i) => (
               <span key={i} data-letter className="inline-block will-change-transform">
                 {ch}
               </span>
             ))}
           </span>
-          <span className="text-outline block text-[clamp(3.5rem,13vw,10.5rem)]">
+          <span className="text-outline block text-[clamp(3rem,10vw,8rem)]">
             {"ANCHAN".split("").map((ch, i) => (
               <span key={i} data-letter className="inline-block will-change-transform">
                 {ch}
@@ -151,8 +152,9 @@ export function Hero() {
           </a></Magnetic>
         </div>
 
-        <div className="mt-14 font-mono text-[0.6rem] lowercase tracking-[0.2em] text-[var(--faint)]">
+        <div className="mt-12 font-mono text-[0.6rem] lowercase tracking-[0.2em] text-[var(--faint)]">
           scroll — the good stuff converges below ↓
+        </div>
         </div>
       </div>
     </section>
