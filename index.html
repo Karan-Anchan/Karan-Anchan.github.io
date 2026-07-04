@@ -90,7 +90,7 @@
       <aside class="hero-panel rv" aria-label="Index">
         <h4><span>Index</span><span>vol. 2026</span></h4>
         <a class="ix-row" href="#about"><span class="n">§01</span><span class="t">About the author</span><span class="p">bio</span></a>
-        <a class="ix-row" href="#work"><span class="n">§02</span><span class="t">Selected work</span><span class="p">6 entries</span></a>
+        <a class="ix-row" href="#work"><span class="n">§02</span><span class="t">Selected work</span><span class="p">4 entries</span></a>
         <a class="ix-row" href="#roadmap"><span class="n">§03</span><span class="t">2026 research roadmap</span><span class="p">6 tracks</span></a>
         <a class="ix-row" href="#experience"><span class="n">§04</span><span class="t">Record</span><span class="p">xp · edu</span></a>
         <a class="ix-row" href="#contact"><span class="n">§05</span><span class="t">Correspondence</span><span class="p">open</span></a>
@@ -113,7 +113,7 @@
     <div class="sec-head rv">
       <span class="sec-no">§01</span>
       <h2 class="sec-title">About the <em>author</em></h2>
-      <span class="sec-side">fig. 0 — portrait</span>
+      <span class="sec-side">freiburg im breisgau · de</span>
     </div>
     <div class="about-grid">
       <div class="about-copy">
@@ -132,10 +132,7 @@
           <div class="fact"><b data-count="5"><span class="cnt">0</span><span class="unit">+&nbsp;yrs</span></b><small>Python &amp; PyTorch</small></div>
         </div>
       </div>
-      <figure class="portrait-frame rv">
-        <img src="assets/portrait.png" alt="Portrait of Karan Anchan" loading="lazy" decoding="async" />
-        <figcaption><span>Fig. 0 — the author</span><span>Freiburg, 2026</span></figcaption>
-      </figure>
+      
     </div>
   </section>
 
@@ -151,7 +148,7 @@
 
       <!-- 01 RLPD -->
       <article class="entry rv">
-        <span class="entry-no">entry 01 / 06</span>
+        <span class="entry-no">entry 01 / 04</span>
         <div class="entry-body">
           <div class="entry-tags">
             <span class="tag hot">Active · 2026</span><span class="tag">Reinforcement Learning</span><span class="tag">Lab project · team of 3</span>
@@ -196,7 +193,7 @@
 
       <!-- 02 YOLO26 -->
       <article class="entry rv">
-        <span class="entry-no">entry 02 / 06</span>
+        <span class="entry-no">entry 02 / 04</span>
         <div class="entry-body">
           <div class="entry-tags">
             <span class="tag hot">Active · 2026</span><span class="tag">Computer Vision</span><span class="tag">Edge deployment</span>
@@ -244,7 +241,7 @@
 
       <!-- 03 Mamba hybrid (roadmap filler) -->
       <article class="entry rv">
-        <span class="entry-no">entry 03 / 06</span>
+        <span class="entry-no">entry 03 / 04</span>
         <div class="entry-body">
           <div class="entry-tags">
             <span class="tag warm">In progress</span><span class="tag">Hybrid architectures</span><span class="tag">Language modelling</span>
@@ -294,101 +291,9 @@
         </figure>
       </article>
 
-      <!-- 04 UNETR -->
+      <!-- 04 SAE interp (roadmap filler) -->
       <article class="entry rv">
-        <span class="entry-no">entry 04 / 06</span>
-        <div class="entry-body">
-          <div class="entry-tags">
-            <span class="tag">Medical imaging</span><span class="tag">Vision Transformers</span>
-          </div>
-          <h3 class="entry-title"><a href="https://github.com/Karan-Anchan" target="_blank" rel="noopener">UNETR — 3D abdominal segmentation</a></h3>
-          <p class="entry-desc">Volumetric segmentation of <strong>13 abdominal organs</strong> on the BTCV dataset with a
-            UNETR (transformer-encoder U-Net). DICOM/NIfTI preprocessing with Hounsfield-unit windowing;
-            class imbalance handled with Dice-Cross-Entropy loss to a mean <strong>Dice of 0.82</strong>.</p>
-          <div class="entry-metrics">
-            <div class="metric"><b>0.82</b><small>mean dice</small></div>
-            <div class="metric"><b>13</b><small>organ classes</small></div>
-            <div class="metric"><b>3D</b><small>volumetric ViT</small></div>
-          </div>
-          <div class="entry-links">
-            <a class="tlink" href="https://github.com/Karan-Anchan" target="_blank" rel="noopener">Repo — migrating <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
-          </div>
-        </div>
-        <figure class="entry-fig">
-          <div class="fig-canvas">
-            <svg viewBox="0 0 400 230" role="img" aria-label="Stylised axial CT slice with segmented organ contours">
-              <ellipse class="draw fig-stroke" cx="200" cy="118" rx="150" ry="92"/>
-              <path class="draw fig-stroke lime" d="M136 92 C120 108 122 138 142 150 C166 164 196 152 198 128 C200 106 178 88 158 88 C150 88 142 88 136 92 Z"/>
-              <path class="draw fig-stroke" d="M236 86 C222 96 220 120 232 132 C248 148 282 144 290 124 C298 104 282 84 260 82 C252 82 244 82 236 86 Z" stroke-dasharray="3 3"/>
-              <ellipse class="draw fig-stroke faint" cx="200" cy="166" rx="26" ry="14"/>
-              <ellipse class="fig-fill-dim" cx="160" cy="120" rx="34" ry="30"/>
-              <line class="fig-stroke faint" x1="160" y1="120" x2="86" y2="52"/>
-              <text class="fig-label lime" x="30" y="44">liver · dice .89</text>
-              <line class="fig-stroke faint" x1="262" y1="110" x2="330" y2="48"/>
-              <text class="fig-label" x="300" y="40">stomach · .81</text>
-              <line class="fig-stroke faint" x1="200" y1="170" x2="266" y2="206"/>
-              <text class="fig-label" x="270" y="212">aorta · .90</text>
-              <text class="fig-label" x="30" y="212">btcv · axial slice 74/148</text>
-            </svg>
-          </div>
-          <figcaption><span>Fig. 4 — organ contours, btcv</span><span class="fig-tag">PyTorch · MONAI</span></figcaption>
-        </figure>
-      </article>
-
-      <!-- 05 NMT -->
-      <article class="entry rv">
-        <span class="entry-no">entry 05 / 06</span>
-        <div class="entry-body">
-          <div class="entry-tags">
-            <span class="tag">NLP</span><span class="tag">From scratch — no nn.Transformer</span>
-          </div>
-          <h3 class="entry-title"><a href="https://github.com/Karan-Anchan" target="_blank" rel="noopener">En→Hi translation — a 43M-param Transformer, by hand</a></h3>
-          <p class="entry-desc">Encoder-decoder Transformer written <strong>from scratch in PyTorch</strong> and trained on
-            500k AI4Bharat Samanantar pairs: byte-level BPE, Noam schedule with label smoothing, length-normalised
-            GNMT beam search. <strong>16.93 BLEU / 41.58 chrF++</strong> on a frozen 5k test set, shipped with a
-            Gradio demo streaming live cross-attention heatmaps.</p>
-          <div class="entry-metrics">
-            <div class="metric"><b>16.93</b><small>bleu</small></div>
-            <div class="metric"><b>41.58</b><small>chrf++</small></div>
-            <div class="metric"><b>43M</b><small>parameters</small></div>
-          </div>
-          <div class="entry-links">
-            <a class="tlink" href="https://github.com/Karan-Anchan" target="_blank" rel="noopener">Repo — migrating <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
-          </div>
-        </div>
-        <figure class="entry-fig">
-          <div class="fig-canvas">
-            <svg viewBox="0 0 400 230" role="img" aria-label="Stylised cross-attention alignment matrix between English and Hindi tokens">
-              <g class="fig-stroke faint"><rect x="90" y="34" width="240" height="160"/></g>
-              <g>
-                <rect class="fig-fill-lime" x="90"  y="34"  width="30" height="20" opacity="0.9"/>
-                <rect class="fig-fill-lime" x="120" y="54"  width="30" height="20" opacity="0.55"/>
-                <rect class="fig-fill-lime" x="150" y="54"  width="30" height="20" opacity="0.8"/>
-                <rect class="fig-fill-lime" x="180" y="94"  width="30" height="20" opacity="0.9"/>
-                <rect class="fig-fill-lime" x="150" y="114" width="30" height="20" opacity="0.4"/>
-                <rect class="fig-fill-lime" x="210" y="74"  width="30" height="20" opacity="0.5"/>
-                <rect class="fig-fill-lime" x="240" y="134" width="30" height="20" opacity="0.85"/>
-                <rect class="fig-fill-lime" x="270" y="154" width="30" height="20" opacity="0.65"/>
-                <rect class="fig-fill-lime" x="300" y="174" width="30" height="20" opacity="0.9"/>
-                <rect class="fig-fill-dim" x="210" y="114" width="30" height="20"/>
-                <rect class="fig-fill-dim" x="120" y="94" width="30" height="20"/>
-              </g>
-              <g class="fig-stroke faint">
-                <line x1="120" y1="34" x2="120" y2="194"/><line x1="150" y1="34" x2="150" y2="194"/><line x1="180" y1="34" x2="180" y2="194"/><line x1="210" y1="34" x2="210" y2="194"/><line x1="240" y1="34" x2="240" y2="194"/><line x1="270" y1="34" x2="270" y2="194"/><line x1="300" y1="34" x2="300" y2="194"/>
-                <line x1="90" y1="54" x2="330" y2="54"/><line x1="90" y1="74" x2="330" y2="74"/><line x1="90" y1="94" x2="330" y2="94"/><line x1="90" y1="114" x2="330" y2="114"/><line x1="90" y1="134" x2="330" y2="134"/><line x1="90" y1="154" x2="330" y2="154"/><line x1="90" y1="174" x2="330" y2="174"/>
-              </g>
-              <text class="fig-label" x="90" y="24">en tokens →</text>
-              <text class="fig-label" x="30" y="40" transform="rotate(-90 38 118)" style="transform-origin:38px 118px">hi tokens →</text>
-              <text class="fig-label lime" x="90" y="216">layer 5 · head 3 · cross-attention</text>
-            </svg>
-          </div>
-          <figcaption><span>Fig. 5 — alignment heatmap</span><span class="fig-tag">PyTorch · BPE · beam search</span></figcaption>
-        </figure>
-      </article>
-
-      <!-- 06 SAE interp (roadmap filler) -->
-      <article class="entry rv">
-        <span class="entry-no">entry 06 / 06</span>
+        <span class="entry-no">entry 04 / 04</span>
         <div class="entry-body">
           <div class="entry-tags">
             <span class="tag warm">In progress</span><span class="tag">Interpretability</span><span class="tag">Safety</span>
@@ -435,7 +340,7 @@
               <text class="fig-label" x="84" y="104">token-id</text>
             </svg>
           </div>
-          <figcaption><span>Fig. 6 — feature circuit, induction</span><span class="fig-tag">SAEs · TransformerLens</span></figcaption>
+          <figcaption><span>Fig. 4 — feature circuit, induction</span><span class="fig-tag">SAEs · TransformerLens</span></figcaption>
         </figure>
       </article>
 

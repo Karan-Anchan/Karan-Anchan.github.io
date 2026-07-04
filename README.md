@@ -25,7 +25,9 @@ The following was filled with **plausible fake data** to make the site complete
 | Work entry 01 — *RLPD* metrics | Project is real ([repo](https://github.com/Karan-Anchan/rlpd-offline-to-online-rl)) but 3×3 seeds / UTD 20 / ensemble 10 reflect the plan, not finished results. |
 | Experience — *Research Assistant (HiWi), ML Lab Freiburg* | Invented filler entry. |
 | About — "5+ yrs Python & PyTorch" counter | Approximate. |
-| Entries 04 (UNETR) & 05 (NMT) repo links | Real past projects, but repos still live on the old (compromised) account — links point at the new profile until migrated. |
 | `CVKaranAnchan.pdf` | Old CV — still lists the old GitHub account. Regenerate from the `.tex`. |
+
+Removed 2026-07-04: UNETR & NMT project entries and the profile photo — the old
+account (and those repos) is unrecoverable, so they're off the site until rebuilt.
 
 Everything else (bio, education, WiZdom Ed internship, certifications, contact) is real.
