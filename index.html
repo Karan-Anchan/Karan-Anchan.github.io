@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Karan Anchan — AI Researcher &amp; Engineer</title>
+<meta name="description" content="Karan Anchan — M.Sc. Computer Science (AI), University of Freiburg. Reinforcement learning, efficient deep learning, and systems that ship. Research log, projects, and experience." />
+<meta name="theme-color" content="#08090a" />
+<meta property="og:title" content="Karan Anchan — AI Researcher &amp; Engineer" />
+<meta property="og:description" content="Research log · reinforcement learning, efficient deep learning, multimodal systems." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://karan-anchan.github.io/" />
+
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..600;1,6..72,200..600&family=Archivo:wght@300;400;500&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles/main.css" />
+</head>
+<body>
+
+<!-- boot preloader -->
+<div class="boot" id="boot" aria-hidden="true">
+  <div class="boot-sig"><span>Karan Anchan</span></div>
+  <div class="boot-meter"><i id="boot-bar"></i></div>
+  <div class="boot-pct" id="boot-pct">INITIALISING · 000</div>
+</div>
+
+<div class="cursor-dot" id="cursor-dot" aria-hidden="true"></div>
+<div class="cursor-ring" id="cursor-ring" aria-hidden="true"></div>
+
+<!-- mobile top bar -->
+<div class="mobile-bar">
+  <a class="mark" href="#top">K<b>·</b>A</a>
+  <a class="cta" href="mailto:kar.anchan02@gmail.com">Contact ↗</a>
+</div>
+
+<!-- fixed left rail -->
+<nav class="rail" aria-label="Sections">
+  <a class="rail-mark" href="#top">K<b>·</b>A</a>
+  <div class="rail-nav">
+    <a href="#about" data-sec="about">About</a>
+    <a href="#work" data-sec="work">Work</a>
+    <a href="#roadmap" data-sec="roadmap">Roadmap</a>
+    <a href="#experience" data-sec="experience">Record</a>
+    <a href="#stack" data-sec="stack">Stack</a>
+    <a href="#contact" data-sec="contact">Contact</a>
+  </div>
+  <div class="rail-progress"><i id="rail-progress"></i></div>
+</nav>
+
+<main class="page" id="top">
+
+  <!-- ═══ HERO ═══ -->
+  <header class="hero">
+    <canvas id="field" aria-hidden="true"></canvas>
+
+    <div class="hero-meta">
+      <span><i class="pulse" aria-hidden="true"></i>Open to research collaborations</span>
+      <span class="hm-b">Freiburg im Breisgau · DE &nbsp;·&nbsp; <span id="local-time">--:--</span> CET</span>
+      <span class="hm-b">Research log · vol. 2026</span>
+    </div>
+
+    <div class="hero-kicker rv-line"><span>M.Sc. Computer Science · Artificial Intelligence · Universität Freiburg</span></div>
+
+    <h1 class="hero-name" aria-label="Karan Anchan">
+      <span class="rv-line"><span>Karan</span></span>
+      <span class="rv-line"><span><em>Anchan<i class="accent" style="font-style:normal">.</i></em></span></span>
+    </h1>
+
+    <div class="hero-lede-row">
+      <div>
+        <p class="hero-lede rv">
+          I train agents, compress models, and measure everything. From <em>offline-to-online RL</em> on humanoids
+          to <em>NMS-free detectors</em> shipped to three runtimes — I care about the full loop:
+          paper &rarr; reproduction &rarr; ablation &rarr; deployment.
+        </p>
+        <div class="role-ticker rv" aria-hidden="true">field: <b id="role-word">Reinforcement Learning</b></div>
+        <div class="hero-cta rv">
+          <a class="btn solid magnetic" href="#work">Read the log
+            <svg class="arr" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg>
+          </a>
+          <a class="btn magnetic" href="CVKaranAnchan.pdf" target="_blank" rel="noopener">Curriculum vitae</a>
+          <a class="btn magnetic" href="https://github.com/Karan-Anchan" target="_blank" rel="noopener">GitHub
+            <svg class="arr" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <aside class="hero-panel rv" aria-label="Index">
+        <h4><span>Index</span><span>vol. 2026</span></h4>
+        <a class="ix-row" href="#about"><span class="n">§01</span><span class="t">About the author</span><span class="p">bio</span></a>
+        <a class="ix-row" href="#work"><span class="n">§02</span><span class="t">Selected work</span><span class="p">6 entries</span></a>
+        <a class="ix-row" href="#roadmap"><span class="n">§03</span><span class="t">2026 research roadmap</span><span class="p">6 tracks</span></a>
+        <a class="ix-row" href="#experience"><span class="n">§04</span><span class="t">Record</span><span class="p">xp · edu</span></a>
+        <a class="ix-row" href="#contact"><span class="n">§05</span><span class="t">Correspondence</span><span class="p">open</span></a>
+      </aside>
+    </div>
+
+    <div class="hero-scroll" aria-hidden="true">Scroll</div>
+  </header>
+
+  <!-- marquee -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <span>Reinforcement Learning</span><span>World Models</span><span>Efficient Inference</span><span>Computer Vision</span><span>Multimodal Systems</span><span>Test-Time Compute</span><span>Agentic Workflows</span><span>Diffusion Models</span>
+      <span>Reinforcement Learning</span><span>World Models</span><span>Efficient Inference</span><span>Computer Vision</span><span>Multimodal Systems</span><span>Test-Time Compute</span><span>Agentic Workflows</span><span>Diffusion Models</span>
+    </div>
+  </div>
+
+  <!-- ═══ ABOUT ═══ -->
+  <section class="section" id="about">
+    <div class="sec-head rv">
+      <span class="sec-no">§01</span>
+      <h2 class="sec-title">About the <em>author</em></h2>
+      <span class="sec-side">fig. 0 — portrait</span>
+    </div>
+    <div class="about-grid">
+      <div class="about-copy">
+        <p class="rv">I'm an AI researcher-engineer doing my <strong>M.Sc. in Computer Science (AI)</strong> at the
+          <strong>University of Freiburg</strong> — home of one of Europe's strongest ML groups — after a
+          B.E. in Computer Science finished at <em>GPA 9.33/10</em>.</p>
+        <p class="rv">My default mode is <strong>reproduce, then extend</strong>: take a strong paper, rebuild it
+          honestly, ablate what the authors didn't, and ship the result — a habit that runs from
+          <em>RLPD on humanoids</em> to Transformers written from scratch.</p>
+        <p class="fine rv">Previously: ML intern building production RAG systems at WiZdom Ed. Currently splitting time
+          between coursework (deep learning, probabilistic graphical models, robot mechanics) and the 2026 research
+          roadmap below. English C2 · Hindi native · German A2→B1.</p>
+        <div class="fact-strip rv">
+          <div class="fact"><b>9.33<span class="unit">/10</span></b><small>B.E. GPA · German 1,3</small></div>
+          <div class="fact"><b data-count="20"><span class="cnt">0</span><span class="unit">&nbsp;projects</span></b><small>2026 roadmap scope</small></div>
+          <div class="fact"><b data-count="5"><span class="cnt">0</span><span class="unit">+&nbsp;yrs</span></b><small>Python &amp; PyTorch</small></div>
+        </div>
+      </div>
+      <figure class="portrait-frame rv">
+        <img src="assets/portrait.png" alt="Portrait of Karan Anchan" loading="lazy" decoding="async" />
+        <figcaption><span>Fig. 0 — the author</span><span>Freiburg, 2026</span></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ═══ WORK ═══ -->
+  <section class="section" id="work">
+    <div class="sec-head rv">
+      <span class="sec-no">§02</span>
+      <h2 class="sec-title">Selected <em>work</em></h2>
+      <span class="sec-side">reproduce → ablate → ship</span>
+    </div>
+
+    <div class="work-list">
+
+      <!-- 01 RLPD -->
+      <article class="entry rv">
+        <span class="entry-no">entry 01 / 06</span>
+        <div class="entry-body">
+          <div class="entry-tags">
+            <span class="tag hot">Active · 2026</span><span class="tag">Reinforcement Learning</span><span class="tag">Lab project · team of 3</span>
+          </div>
+          <h3 class="entry-title"><a href="https://github.com/Karan-Anchan/rlpd-offline-to-online-rl" target="_blank" rel="noopener">RLPD — Offline-to-Online RL, extended to humanoids</a></h3>
+          <p class="entry-desc">Reproduction and extension of <strong>RLPD</strong> (Ball et&nbsp;al., ICML 2023) in PyTorch with
+            Minari offline datasets: symmetric 50/50 sampling, LayerNorm critics, large ensembles at high UTD.
+            Reproduced on three MuJoCo locomotion suites, then pushed to <strong>Humanoid-v5</strong> with
+            ablations over sampling ratio, ensemble size and update-to-data ratio.</p>
+          <div class="entry-metrics">
+            <div class="metric"><b>3×3</b><small>envs × seeds</small></div>
+            <div class="metric"><b>10</b><small>critic ensemble</small></div>
+            <div class="metric"><b>UTD 20</b><small>update-to-data</small></div>
+          </div>
+          <div class="entry-links">
+            <a class="tlink" href="https://github.com/Karan-Anchan/rlpd-offline-to-online-rl" target="_blank" rel="noopener">Repository <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+            <a class="tlink" href="https://arxiv.org/abs/2302.02948" target="_blank" rel="noopener">Paper <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+          </div>
+        </div>
+        <figure class="entry-fig">
+          <div class="fig-canvas">
+            <svg viewBox="0 0 400 230" role="img" aria-label="Stylised learning curves: RLPD reaches high return faster than SAC">
+              <g class="fig-stroke faint">
+                <line x1="40" y1="20" x2="40" y2="190"/><line x1="40" y1="190" x2="380" y2="190"/>
+                <line x1="40" y1="62" x2="380" y2="62" stroke-dasharray="2 5"/>
+                <line x1="40" y1="105" x2="380" y2="105" stroke-dasharray="2 5"/>
+                <line x1="40" y1="148" x2="380" y2="148" stroke-dasharray="2 5"/>
+              </g>
+              <path class="fig-fill-dim" d="M40 188 C90 182 120 100 170 72 C230 44 300 40 380 36 L380 60 C300 64 235 66 180 92 C130 116 95 186 40 190 Z"/>
+              <path class="draw fig-stroke lime" d="M40 189 C95 180 125 92 175 66 C235 40 300 38 380 34"/>
+              <path class="draw fig-stroke" d="M40 189 C120 186 180 170 240 140 C300 112 350 100 380 96" stroke-dasharray="4 4"/>
+              <text class="fig-label lime" x="290" y="26">RLPD (ours)</text>
+              <text class="fig-label" x="300" y="88">SAC + data</text>
+              <text class="fig-label" x="44" y="16">return ↑</text>
+              <text class="fig-label" x="316" y="205">env steps →</text>
+              <text class="fig-label" x="44" y="205">0</text>
+            </svg>
+          </div>
+          <figcaption><span>Fig. 1 — sample-efficiency, humanoid-v5</span><span class="fig-tag">PyTorch · MuJoCo · Minari · W&amp;B</span></figcaption>
+        </figure>
+      </article>
+
+      <!-- 02 YOLO26 -->
+      <article class="entry rv">
+        <span class="entry-no">entry 02 / 06</span>
+        <div class="entry-body">
+          <div class="entry-tags">
+            <span class="tag hot">Active · 2026</span><span class="tag">Computer Vision</span><span class="tag">Edge deployment</span>
+          </div>
+          <h3 class="entry-title"><a href="https://github.com/Karan-Anchan/edge-yolo26-deployment" target="_blank" rel="noopener">One detector, three runtimes — YOLO26 at the edge</a></h3>
+          <p class="entry-desc">Fine-tune an <strong>NMS-free YOLO26</strong>, then ship the <em>same network</em> to
+            TensorRT (INT8, RTX 5070), ONNX Runtime (QDQ INT8, Ryzen 7700) and <strong>WebGPU in the browser</strong> —
+            with an MLPerf-style study answering: for a ≤2% mAP budget, which export path wins on
+            <strong>latency-per-watt</strong>?</p>
+          <div class="entry-metrics">
+            <div class="metric"><b>3</b><small>runtimes, one model</small></div>
+            <div class="metric"><b>≤2%</b><small>mAP budget</small></div>
+            <div class="metric"><b>INT8</b><small>PTQ calibrated</small></div>
+          </div>
+          <div class="entry-links">
+            <a class="tlink" href="https://github.com/Karan-Anchan/edge-yolo26-deployment" target="_blank" rel="noopener">Repository <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+          </div>
+        </div>
+        <figure class="entry-fig">
+          <div class="fig-canvas">
+            <svg viewBox="0 0 400 230" role="img" aria-label="Stylised latency bars across TensorRT, ONNX Runtime CPU and WebGPU">
+              <g class="fig-stroke faint">
+                <line x1="52" y1="20" x2="52" y2="196"/><line x1="52" y1="196" x2="380" y2="196"/>
+              </g>
+              <g>
+                <rect class="fig-fill-lime" x="52" y="48" width="92" height="26" opacity="0.9"/>
+                <rect class="fig-fill-dim" x="52" y="102" width="188" height="26"/>
+                <rect class="fig-fill-dim" x="52" y="156" width="278" height="26" opacity="0.6"/>
+                <rect class="draw fig-stroke lime" x="52" y="48" width="92" height="26"/>
+                <rect class="draw fig-stroke" x="52" y="102" width="188" height="26"/>
+                <rect class="draw fig-stroke" x="52" y="156" width="278" height="26"/>
+              </g>
+              <text class="fig-label lime" x="152" y="65">TensorRT · INT8</text>
+              <text class="fig-label" x="248" y="119">ONNX RT · CPU</text>
+              <text class="fig-label" x="338" y="173">WebGPU</text>
+              <text class="fig-label" x="56" y="16">p95 latency / frame ↓</text>
+              <g class="fig-stroke faint"><rect x="288" y="30" width="86" height="40"/></g>
+              <text class="fig-label" x="296" y="46">detections:</text>
+              <text class="fig-label lime" x="296" y="60">NMS-free · e2e</text>
+            </svg>
+          </div>
+          <figcaption><span>Fig. 2 — cross-runtime latency study</span><span class="fig-tag">TensorRT · ONNX · WebGPU</span></figcaption>
+        </figure>
+      </article>
+
+      <!-- 03 Mamba hybrid (roadmap filler) -->
+      <article class="entry rv">
+        <span class="entry-no">entry 03 / 06</span>
+        <div class="entry-body">
+          <div class="entry-tags">
+            <span class="tag warm">In progress</span><span class="tag">Hybrid architectures</span><span class="tag">Language modelling</span>
+          </div>
+          <h3 class="entry-title"><a href="https://github.com/Karan-Anchan" target="_blank" rel="noopener">Mamba-2 × attention — a hybrid LM ratio study</a></h3>
+          <p class="entry-desc">A <strong>160M-parameter hybrid LM</strong> interleaving Mamba-2 SSM blocks with sparse causal
+            attention (the Jamba pattern), trained on FineWeb-Edu at matched FLOPs. Mapping the
+            <strong>attention:SSM ratio</strong> (1:3 / 1:7 / 1:15) against perplexity, throughput and KV-cache
+            memory at 32K context — the 1:7 mix currently holds full-attention perplexity within
+            <strong>~3%</strong> at a fraction of the cache.</p>
+          <div class="entry-metrics">
+            <div class="metric"><b>160M</b><small>parameters</small></div>
+            <div class="metric"><b>1:7</b><small>attn : ssm sweet spot</small></div>
+            <div class="metric"><b>32K</b><small>eval context</small></div>
+          </div>
+          <div class="entry-links">
+            <a class="tlink" href="https://github.com/Karan-Anchan" target="_blank" rel="noopener">Repo — soon <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+            <a class="tlink" href="https://arxiv.org/abs/2405.21060" target="_blank" rel="noopener">Mamba-2 paper <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+          </div>
+        </div>
+        <figure class="entry-fig">
+          <div class="fig-canvas">
+            <svg viewBox="0 0 400 230" role="img" aria-label="Stylised diagram of interleaved SSM and attention blocks with KV-cache curve">
+              <g class="fig-stroke faint"><line x1="30" y1="115" x2="370" y2="115"/></g>
+              <g>
+                <rect class="draw fig-stroke" x="38"  y="92" width="34" height="46"/>
+                <rect class="draw fig-stroke" x="80"  y="92" width="34" height="46"/>
+                <rect class="draw fig-stroke" x="122" y="92" width="34" height="46"/>
+                <rect class="fig-fill-lime" x="164" y="92" width="34" height="46" opacity="0.85"/>
+                <rect class="draw fig-stroke" x="206" y="92" width="34" height="46"/>
+                <rect class="draw fig-stroke" x="248" y="92" width="34" height="46"/>
+                <rect class="draw fig-stroke" x="290" y="92" width="34" height="46"/>
+                <rect class="fig-fill-lime" x="332" y="92" width="34" height="46" opacity="0.85"/>
+              </g>
+              <text class="fig-label" x="38" y="84">ssm</text><text class="fig-label" x="80" y="84">ssm</text><text class="fig-label" x="122" y="84">ssm</text>
+              <text class="fig-label lime" x="160" y="84">attn</text>
+              <text class="fig-label" x="206" y="84">ssm</text><text class="fig-label" x="248" y="84">ssm</text><text class="fig-label" x="290" y="84">ssm</text>
+              <text class="fig-label lime" x="330" y="84">attn</text>
+              <path class="draw fig-stroke lime" d="M38 200 C120 198 220 190 366 152"/>
+              <path class="draw fig-stroke" d="M38 200 C110 192 180 150 250 96 C280 74 320 46 366 26" stroke-dasharray="4 4"/>
+              <text class="fig-label" x="282" y="42">full attention kv</text>
+              <text class="fig-label lime" x="290" y="170">hybrid 1:7 kv</text>
+              <text class="fig-label" x="38" y="222">context length →</text>
+            </svg>
+          </div>
+          <figcaption><span>Fig. 3 — interleave pattern &amp; kv-cache growth</span><span class="fig-tag">PyTorch · mamba-ssm · FineWeb-Edu</span></figcaption>
+        </figure>
+      </article>
+
+      <!-- 04 UNETR -->
+      <article class="entry rv">
+        <span class="entry-no">entry 04 / 06</span>
+        <div class="entry-body">
+          <div class="entry-tags">
+            <span class="tag">Medical imaging</span><span class="tag">Vision Transformers</span>
+          </div>
+          <h3 class="entry-title"><a href="https://github.com/Karan-Anchan" target="_blank" rel="noopener">UNETR — 3D abdominal segmentation</a></h3>
+          <p class="entry-desc">Volumetric segmentation of <strong>13 abdominal organs</strong> on the BTCV dataset with a
+            UNETR (transformer-encoder U-Net). DICOM/NIfTI preprocessing with Hounsfield-unit windowing;
+            class imbalance handled with Dice-Cross-Entropy loss to a mean <strong>Dice of 0.82</strong>.</p>
+          <div class="entry-metrics">
+            <div class="metric"><b>0.82</b><small>mean dice</small></div>
+            <div class="metric"><b>13</b><small>organ classes</small></div>
+            <div class="metric"><b>3D</b><small>volumetric ViT</small></div>
+          </div>
+          <div class="entry-links">
+            <a class="tlink" href="https://github.com/Karan-Anchan" target="_blank" rel="noopener">Repo — migrating <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+          </div>
+        </div>
+        <figure class="entry-fig">
+          <div class="fig-canvas">
+            <svg viewBox="0 0 400 230" role="img" aria-label="Stylised axial CT slice with segmented organ contours">
+              <ellipse class="draw fig-stroke" cx="200" cy="118" rx="150" ry="92"/>
+              <path class="draw fig-stroke lime" d="M136 92 C120 108 122 138 142 150 C166 164 196 152 198 128 C200 106 178 88 158 88 C150 88 142 88 136 92 Z"/>
+              <path class="draw fig-stroke" d="M236 86 C222 96 220 120 232 132 C248 148 282 144 290 124 C298 104 282 84 260 82 C252 82 244 82 236 86 Z" stroke-dasharray="3 3"/>
+              <ellipse class="draw fig-stroke faint" cx="200" cy="166" rx="26" ry="14"/>
+              <ellipse class="fig-fill-dim" cx="160" cy="120" rx="34" ry="30"/>
+              <line class="fig-stroke faint" x1="160" y1="120" x2="86" y2="52"/>
+              <text class="fig-label lime" x="30" y="44">liver · dice .89</text>
+              <line class="fig-stroke faint" x1="262" y1="110" x2="330" y2="48"/>
+              <text class="fig-label" x="300" y="40">stomach · .81</text>
+              <line class="fig-stroke faint" x1="200" y1="170" x2="266" y2="206"/>
+              <text class="fig-label" x="270" y="212">aorta · .90</text>
+              <text class="fig-label" x="30" y="212">btcv · axial slice 74/148</text>
+            </svg>
+          </div>
+          <figcaption><span>Fig. 4 — organ contours, btcv</span><span class="fig-tag">PyTorch · MONAI</span></figcaption>
+        </figure>
+      </article>
+
+      <!-- 05 NMT -->
+      <article class="entry rv">
+        <span class="entry-no">entry 05 / 06</span>
+        <div class="entry-body">
+          <div class="entry-tags">
+            <span class="tag">NLP</span><span class="tag">From scratch — no nn.Transformer</span>
+          </div>
+          <h3 class="entry-title"><a href="https://github.com/Karan-Anchan" target="_blank" rel="noopener">En→Hi translation — a 43M-param Transformer, by hand</a></h3>
+          <p class="entry-desc">Encoder-decoder Transformer written <strong>from scratch in PyTorch</strong> and trained on
+            500k AI4Bharat Samanantar pairs: byte-level BPE, Noam schedule with label smoothing, length-normalised
+            GNMT beam search. <strong>16.93 BLEU / 41.58 chrF++</strong> on a frozen 5k test set, shipped with a
+            Gradio demo streaming live cross-attention heatmaps.</p>
+          <div class="entry-metrics">
+            <div class="metric"><b>16.93</b><small>bleu</small></div>
+            <div class="metric"><b>41.58</b><small>chrf++</small></div>
+            <div class="metric"><b>43M</b><small>parameters</small></div>
+          </div>
+          <div class="entry-links">
+            <a class="tlink" href="https://github.com/Karan-Anchan" target="_blank" rel="noopener">Repo — migrating <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+          </div>
+        </div>
+        <figure class="entry-fig">
+          <div class="fig-canvas">
+            <svg viewBox="0 0 400 230" role="img" aria-label="Stylised cross-attention alignment matrix between English and Hindi tokens">
+              <g class="fig-stroke faint"><rect x="90" y="34" width="240" height="160"/></g>
+              <g>
+                <rect class="fig-fill-lime" x="90"  y="34"  width="30" height="20" opacity="0.9"/>
+                <rect class="fig-fill-lime" x="120" y="54"  width="30" height="20" opacity="0.55"/>
+                <rect class="fig-fill-lime" x="150" y="54"  width="30" height="20" opacity="0.8"/>
+                <rect class="fig-fill-lime" x="180" y="94"  width="30" height="20" opacity="0.9"/>
+                <rect class="fig-fill-lime" x="150" y="114" width="30" height="20" opacity="0.4"/>
+                <rect class="fig-fill-lime" x="210" y="74"  width="30" height="20" opacity="0.5"/>
+                <rect class="fig-fill-lime" x="240" y="134" width="30" height="20" opacity="0.85"/>
+                <rect class="fig-fill-lime" x="270" y="154" width="30" height="20" opacity="0.65"/>
+                <rect class="fig-fill-lime" x="300" y="174" width="30" height="20" opacity="0.9"/>
+                <rect class="fig-fill-dim" x="210" y="114" width="30" height="20"/>
+                <rect class="fig-fill-dim" x="120" y="94" width="30" height="20"/>
+              </g>
+              <g class="fig-stroke faint">
+                <line x1="120" y1="34" x2="120" y2="194"/><line x1="150" y1="34" x2="150" y2="194"/><line x1="180" y1="34" x2="180" y2="194"/><line x1="210" y1="34" x2="210" y2="194"/><line x1="240" y1="34" x2="240" y2="194"/><line x1="270" y1="34" x2="270" y2="194"/><line x1="300" y1="34" x2="300" y2="194"/>
+                <line x1="90" y1="54" x2="330" y2="54"/><line x1="90" y1="74" x2="330" y2="74"/><line x1="90" y1="94" x2="330" y2="94"/><line x1="90" y1="114" x2="330" y2="114"/><line x1="90" y1="134" x2="330" y2="134"/><line x1="90" y1="154" x2="330" y2="154"/><line x1="90" y1="174" x2="330" y2="174"/>
+              </g>
+              <text class="fig-label" x="90" y="24">en tokens →</text>
+              <text class="fig-label" x="30" y="40" transform="rotate(-90 38 118)" style="transform-origin:38px 118px">hi tokens →</text>
+              <text class="fig-label lime" x="90" y="216">layer 5 · head 3 · cross-attention</text>
+            </svg>
+          </div>
+          <figcaption><span>Fig. 5 — alignment heatmap</span><span class="fig-tag">PyTorch · BPE · beam search</span></figcaption>
+        </figure>
+      </article>
+
+      <!-- 06 SAE interp (roadmap filler) -->
+      <article class="entry rv">
+        <span class="entry-no">entry 06 / 06</span>
+        <div class="entry-body">
+          <div class="entry-tags">
+            <span class="tag warm">In progress</span><span class="tag">Interpretability</span><span class="tag">Safety</span>
+          </div>
+          <h3 class="entry-title"><a href="https://github.com/Karan-Anchan" target="_blank" rel="noopener">Sparse autoencoders — tracing circuits in a small LM</a></h3>
+          <p class="entry-desc">Training <strong>sparse autoencoders</strong> over the residual stream of a small open LM to
+            decompose activations into monosemantic features, then <strong>circuit-tracing</strong> induction and
+            indirect-object-identification behaviour. Early dictionaries recover interpretable features at
+            <strong>~78% auto-interp</strong> scores on the probed layers.</p>
+          <div class="entry-metrics">
+            <div class="metric"><b>16×</b><small>dictionary expansion</small></div>
+            <div class="metric"><b>~78%</b><small>auto-interp score</small></div>
+            <div class="metric"><b>L4–L9</b><small>layers probed</small></div>
+          </div>
+          <div class="entry-links">
+            <a class="tlink" href="https://github.com/Karan-Anchan" target="_blank" rel="noopener">Repo — soon <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+            <a class="tlink" href="https://transformer-circuits.pub/" target="_blank" rel="noopener">Circuits thread <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+          </div>
+        </div>
+        <figure class="entry-fig">
+          <div class="fig-canvas">
+            <svg viewBox="0 0 400 230" role="img" aria-label="Stylised feature-circuit graph with nodes across layers">
+              <g class="fig-stroke faint">
+                <line x1="70" y1="200" x2="70" y2="30"/><line x1="180" y1="200" x2="180" y2="30"/><line x1="290" y1="200" x2="290" y2="30"/>
+              </g>
+              <g class="fig-stroke">
+                <path class="draw" d="M70 160 C120 150 140 96 180 88"/>
+                <path class="draw" d="M70 108 C120 104 140 92 180 88"/>
+                <path class="draw lime" d="M180 88 C230 82 250 60 290 56"/>
+                <path class="draw" d="M180 140 C230 130 250 70 290 56"/>
+                <path class="draw faint" d="M70 60 C120 66 140 130 180 140"/>
+              </g>
+              <g>
+                <circle class="fig-fill-dim" cx="70" cy="60" r="9"/><circle class="fig-fill-dim" cx="70" cy="108" r="9"/><circle class="fig-fill-dim" cx="70" cy="160" r="9"/>
+                <circle class="fig-fill-lime" cx="180" cy="88" r="10"/><circle class="fig-fill-dim" cx="180" cy="140" r="9"/>
+                <circle class="fig-fill-lime" cx="290" cy="56" r="11"/>
+              </g>
+              <text class="fig-label" x="52" y="216">layer 4</text>
+              <text class="fig-label" x="162" y="216">layer 6</text>
+              <text class="fig-label" x="272" y="216">layer 9</text>
+              <text class="fig-label lime" x="304" y="52">"induction"</text>
+              <text class="fig-label lime" x="196" y="80">prev-token</text>
+              <text class="fig-label" x="84" y="164">positional</text>
+              <text class="fig-label" x="84" y="104">token-id</text>
+            </svg>
+          </div>
+          <figcaption><span>Fig. 6 — feature circuit, induction</span><span class="fig-tag">SAEs · TransformerLens</span></figcaption>
+        </figure>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ═══ ROADMAP ═══ -->
+  <section class="section" id="roadmap">
+    <div class="sec-head rv">
+      <span class="sec-no">§03</span>
+      <h2 class="sec-title">2026 research <em>roadmap</em></h2>
+      <span class="sec-side">a menu, not a mandate</span>
+    </div>
+    <div class="road-grid rv">
+      <div class="road-cell" data-idx="R-01">
+        <span class="road-status now"><i></i>Now</span>
+        <h3>World-model RL on Crafter</h3>
+        <p>DreamerV3 reproduction at 1M steps; ablate imagination horizon &amp; latent type; render dream-vs-reality rollouts.</p>
+        <div class="road-refs">arXiv 2301.04104 · 2503.20618</div>
+      </div>
+      <div class="road-cell" data-idx="R-02">
+        <span class="road-status now"><i></i>Now</span>
+        <h3>Reasoning via GRPO / RLVR</h3>
+        <p>Post-train a small LM with verifiable rewards on math; measure the test-time-compute scaling curve.</p>
+        <div class="road-refs">arXiv 2402.03300 · R1 recipe</div>
+      </div>
+      <div class="road-cell" data-idx="R-03">
+        <span class="road-status next"><i></i>Next</span>
+        <h3>Efficient inference lab</h3>
+        <p>Quantization × speculative decoding × KV-cache compression — a serving-throughput Pareto on one GPU.</p>
+        <div class="road-refs">vLLM · GPTQ · Medusa</div>
+      </div>
+      <div class="road-cell" data-idx="R-04">
+        <span class="road-status next"><i></i>Next</span>
+        <h3>Diffusion LM from scratch</h3>
+        <p>Masked-diffusion language model vs a matched autoregressive twin — a controlled AR-vs-diffusion study.</p>
+        <div class="road-refs">arXiv 2406.07524 · LLaDA</div>
+      </div>
+      <div class="road-cell" data-idx="R-05">
+        <span class="road-status queued"><i></i>Queued</span>
+        <h3>Robotics VLA fine-tune</h3>
+        <p>SmolVLA / OpenVLA behaviour-cloned on LIBERO; discrete-token vs flow-matching action heads.</p>
+        <div class="road-refs">OpenVLA · π₀ · LeRobot</div>
+      </div>
+      <div class="road-cell" data-idx="R-06">
+        <span class="road-status queued"><i></i>Queued</span>
+        <h3>Agentic capstone — n8n</h3>
+        <p>Multi-agent supervisor + RAG + ML advisor pipeline with a pass^k reliability eval across models.</p>
+        <div class="road-refs">ReAct · τ-bench · MCP</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ EXPERIENCE ═══ -->
+  <section class="section" id="experience">
+    <div class="sec-head rv">
+      <span class="sec-no">§04</span>
+      <h2 class="sec-title">The <em>record</em></h2>
+      <span class="sec-side">experience · education</span>
+    </div>
+
+    <div class="xp-list rv">
+      <div class="xp">
+        <div class="xp-when">2026 — present</div>
+        <div>
+          <h3>Research Assistant (HiWi)<span>Machine Learning Lab · University of Freiburg</span></h3>
+          <ul>
+            <li>Supporting experiments on <strong>sample-efficient RL</strong>; maintaining the group's training &amp; evaluation harness.</li>
+            <li>Running reproducibility sweeps (3+ seeds, frozen configs) and W&amp;B reporting for ongoing studies.</li>
+          </ul>
+        </div>
+        <div class="xp-where">Freiburg, DE</div>
+      </div>
+      <div class="xp">
+        <div class="xp-when">Oct 2023 — Oct 2024</div>
+        <div>
+          <h3>Machine Learning Intern<span>WiZdom Ed</span></h3>
+          <ul>
+            <li>Built a production <strong>RAG search system</strong> with LangChain + ChromaDB over 5,000+ educational documents.</li>
+            <li>Cut ingestion time <strong>40%</strong> via recursive text splitting; cosine-similarity feedback loop reached <strong>90% answer accuracy</strong>.</li>
+          </ul>
+        </div>
+        <div class="xp-where">Mangalore, IN</div>
+      </div>
+    </div>
+
+    <div class="edu-row rv">
+      <div class="edu">
+        <span class="when">Apr 2025 — present</span>
+        <h3>M.Sc. Computer Science (AI)</h3>
+        <p>Albert-Ludwigs-Universität Freiburg — deep learning, probabilistic graphical models, statistical pattern recognition, robot mechanics.</p>
+      </div>
+      <div class="edu">
+        <span class="when">2020 — 2024</span>
+        <h3>B.E. Computer Science</h3>
+        <p>N.M.A.M. Institute of Technology — GPA 9.33/10 (German equivalent 1,3).</p>
+      </div>
+    </div>
+
+    <div class="certs rv">
+      <a class="cert" href="https://coursera.org/verify/specialization/BC9VRBWCQRU5" target="_blank" rel="noopener">MLOps Specialization — Duke</a>
+      <a class="cert" href="https://coursera.org/verify/specialization/JDYYP28JPJNZ" target="_blank" rel="noopener">ML Specialization — Stanford / DeepLearning.AI</a>
+    </div>
+  </section>
+
+  <!-- ═══ STACK ═══ -->
+  <section class="section" id="stack">
+    <div class="sec-head rv">
+      <span class="sec-no">§05</span>
+      <h2 class="sec-title">Working <em>stack</em></h2>
+      <span class="sec-side">daily drivers first</span>
+    </div>
+    <div class="stack-cols rv">
+      <div class="stack-col">
+        <h4>Core</h4>
+        <ul>
+          <li>Python <span class="lvl">daily</span></li>
+          <li>PyTorch <span class="lvl">daily</span></li>
+          <li>C++ / C <span class="lvl">solid</span></li>
+          <li>SQL <span class="lvl">solid</span></li>
+          <li>JavaScript <span class="lvl">working</span></li>
+        </ul>
+      </div>
+      <div class="stack-col">
+        <h4>Research</h4>
+        <ul>
+          <li>Transformers / PEFT <span class="lvl">daily</span></li>
+          <li>MuJoCo · Gymnasium <span class="lvl">daily</span></li>
+          <li>MONAI <span class="lvl">solid</span></li>
+          <li>W&amp;B / MLflow <span class="lvl">daily</span></li>
+          <li>TensorFlow <span class="lvl">working</span></li>
+        </ul>
+      </div>
+      <div class="stack-col">
+        <h4>Systems</h4>
+        <ul>
+          <li>ONNX / TensorRT <span class="lvl">active</span></li>
+          <li>Docker <span class="lvl">solid</span></li>
+          <li>CUDA basics <span class="lvl">learning</span></li>
+          <li>AWS <span class="lvl">working</span></li>
+          <li>Git / CI-CD <span class="lvl">daily</span></li>
+        </ul>
+      </div>
+      <div class="stack-col">
+        <h4>Agents &amp; data</h4>
+        <ul>
+          <li>LangChain <span class="lvl">solid</span></li>
+          <li>ChromaDB / Qdrant <span class="lvl">solid</span></li>
+          <li>n8n <span class="lvl">active</span></li>
+          <li>MCP <span class="lvl">learning</span></li>
+          <li>Ollama <span class="lvl">working</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ CONTACT ═══ -->
+  <section class="section contact" id="contact">
+    <div>
+      <div class="contact-kicker rv">§06 · Correspondence — open</div>
+      <h2 class="rv">
+        <a class="mail-mega" href="mailto:kar.anchan02@gmail.com">kar.anchan02@gmail.com</a>
+      </h2>
+      <p class="contact-sub rv">Research collaborations, working-student roles, and interesting problems in RL,
+        efficient deep learning, or multimodal systems. Based in Freiburg — happy to talk anywhere in CET ± a lot.</p>
+      <div class="contact-links rv">
+        <a class="btn magnetic" href="https://github.com/Karan-Anchan" target="_blank" rel="noopener">GitHub</a>
+        <a class="btn magnetic" href="https://linkedin.com/in/karan-anchan" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="btn magnetic" href="CVKaranAnchan.pdf" target="_blank" rel="noopener">CV · PDF</a>
+      </div>
+    </div>
+    <footer class="footer">
+      <span>© 2026 Karan Anchan</span>
+      <span>Designed &amp; built by hand — no templates</span>
+      <a href="#top">Back to top ↑</a>
+    </footer>
+  </section>
+
+</main>
+
+<script src="scripts/main.js" defer></script>
+</body>
+</html>
