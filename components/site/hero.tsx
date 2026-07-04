@@ -61,7 +61,7 @@ export function Hero() {
       <div className="pointer-events-none absolute inset-0 glow-lime" />
 
       {/* corner meta — awwwards furniture */}
-      <div className="absolute inset-x-0 top-16 z-10 mx-auto flex max-w-6xl justify-between px-5 font-mono text-[0.58rem] uppercase tracking-[0.2em] text-zinc-500">
+      <div className="absolute inset-x-0 top-16 z-10 mx-auto flex max-w-6xl justify-between px-5 font-mono text-[0.58rem] uppercase tracking-[0.2em] text-[var(--faint)]">
         <span>
           <span className="mr-2 inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-[var(--lime)]" />
           open to collaborations
@@ -81,7 +81,7 @@ export function Hero() {
           aria-label="Karan Anchan"
           className="mt-3 font-black uppercase leading-[0.86] tracking-tighter"
         >
-          <span className="block text-[clamp(3.5rem,13vw,10.5rem)] text-zinc-50">
+          <span className="block text-[clamp(3.5rem,13vw,10.5rem)] text-[var(--fg)]">
             {"KARAN".split("").map((ch, i) => (
               <span key={i} data-letter className="inline-block will-change-transform">
                 {ch}
@@ -106,7 +106,7 @@ export function Hero() {
               key={t}
               data-tagline
               className={`font-mono text-sm tracking-[0.18em] opacity-0 sm:text-base ${
-                i === 2 ? "text-[var(--lime)]" : "text-zinc-300"
+                ["text-[var(--lime)]", "text-[var(--accent-4)]", "text-[var(--accent-2)]"][i]
               }`}
             >
               {t}
@@ -114,17 +114,17 @@ export function Hero() {
           ))}
         </div>
 
-        <p className="mt-6 max-w-lg text-sm font-light leading-relaxed text-zinc-500">
+        <p className="mt-6 max-w-lg text-sm font-light leading-relaxed text-[var(--faint)]">
           From offline-to-online RL on humanoids to NMS-free detectors in the
           browser — paper → reproduction → ablation → deployment. The loss
           curve in the corner is your reading progress.
-          <span className="text-zinc-400"> yes, it converges.</span>
+          <span className="text-[var(--dim)]"> yes, it converges.</span>
         </p>
 
         <div className="mt-9 flex flex-wrap gap-3">
           <a
             href="#work"
-            className="rounded-full bg-[var(--lime)] px-6 py-3 font-mono text-[0.72rem] uppercase tracking-[0.16em] text-zinc-950 transition-transform hover:scale-[1.03] active:scale-95"
+            className="rounded-full bg-[var(--lime)] px-6 py-3 font-mono text-[0.72rem] uppercase tracking-[0.16em] text-[var(--on-accent)] transition-transform hover:scale-[1.03] active:scale-95"
           >
             Start the run ↓
           </a>
@@ -132,7 +132,7 @@ export function Hero() {
             href="/CVKaranAnchan.pdf"
             target="_blank"
             rel="noopener"
-            className="rounded-full border border-white/15 px-6 py-3 font-mono text-[0.72rem] uppercase tracking-[0.16em] text-zinc-200 transition-colors hover:border-[var(--lime)]/60 hover:text-[var(--lime)]"
+            className="rounded-full border border-[var(--line)] px-6 py-3 font-mono text-[0.72rem] uppercase tracking-[0.16em] text-[var(--fg2)] transition-colors hover:border-[var(--lime)]/60 hover:text-[var(--lime)]"
           >
             CV · PDF
           </a>
@@ -140,13 +140,13 @@ export function Hero() {
             href="https://github.com/Karan-Anchan"
             target="_blank"
             rel="noopener"
-            className="rounded-full border border-white/15 px-6 py-3 font-mono text-[0.72rem] uppercase tracking-[0.16em] text-zinc-200 transition-colors hover:border-[var(--lime)]/60 hover:text-[var(--lime)]"
+            className="rounded-full border border-[var(--line)] px-6 py-3 font-mono text-[0.72rem] uppercase tracking-[0.16em] text-[var(--fg2)] transition-colors hover:border-[var(--lime)]/60 hover:text-[var(--lime)]"
           >
             GitHub
           </a>
         </div>
 
-        <div className="mt-14 font-mono text-[0.6rem] lowercase tracking-[0.2em] text-zinc-600">
+        <div className="mt-14 font-mono text-[0.6rem] lowercase tracking-[0.2em] text-[var(--faint)]">
           scroll — the good stuff converges below ↓
         </div>
       </div>

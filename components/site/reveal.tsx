@@ -33,23 +33,25 @@ export function SectionHead({
   title,
   accent,
   side,
+  hue = "var(--lime)",
 }: {
   index: string;
   title: string;
   accent: string;
   side?: string;
+  hue?: string;
 }) {
   return (
     <Reveal className="mb-12 flex flex-wrap items-baseline gap-x-5 gap-y-2">
-      <span className="font-mono text-xs tracking-[0.2em] text-[var(--lime)]">
+      <span className="font-mono text-xs tracking-[0.2em]" style={{ color: hue }}>
         {index}
       </span>
-      <h2 className="text-4xl font-light tracking-tight text-zinc-100 sm:text-5xl">
+      <h2 className="text-4xl font-light tracking-tight text-[var(--fg)] sm:text-5xl">
         {title}{" "}
-        <em className="font-serif-accent italic text-[var(--lime)]">{accent}</em>
+        <em className="font-serif-accent italic" style={{ color: hue }}>{accent}</em>
       </h2>
       {side ? (
-        <span className="ml-auto font-mono text-[0.65rem] uppercase tracking-[0.18em] text-zinc-500">
+        <span className="ml-auto font-mono text-[0.65rem] uppercase tracking-[0.18em] text-[var(--faint)]">
           {side}
         </span>
       ) : null}

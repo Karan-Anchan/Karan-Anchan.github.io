@@ -10,11 +10,13 @@ import { Stack } from "@/components/site/stack";
 import { Contact } from "@/components/site/contact";
 import { Cursor } from "@/components/site/cursor";
 import { TrainingHud } from "@/components/site/hud";
+import { SoundFx } from "@/components/site/sound-fx";
 
 export default function Home() {
   return (
     <main className="grain">
       <Cursor />
+      <SoundFx />
       <TrainingHud />
       <SiteNav />
       <Hero />

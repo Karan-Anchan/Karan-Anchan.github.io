@@ -124,9 +124,9 @@ const bentoItems: BentoItem[] = [
     href: "#",
     feature: "metrics",
     metrics: [
-      { label: "tok/s vs fp16 baseline", value: 87, suffix: "%", color: "#c7f284" },
-      { label: "KV-cache saved", value: 63, suffix: "%", color: "#c7f284" },
-      { label: "quality retained (MMLU)", value: 98, suffix: "%", color: "#c7f284" },
+      { label: "tok/s vs fp16 baseline", value: 87, suffix: "%", color: "var(--lime)" },
+      { label: "KV-cache saved", value: 63, suffix: "%", color: "var(--accent-4)" },
+      { label: "quality retained (MMLU)", value: 98, suffix: "%", color: "var(--accent-2)" },
     ],
     size: "md",
   },

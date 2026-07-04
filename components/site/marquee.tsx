@@ -14,16 +14,16 @@ export function FieldMarquee() {
   return (
     <div
       aria-hidden
-      className="brand-marquee overflow-hidden border-y border-white/5 bg-zinc-900/40 py-3"
+      className="brand-marquee overflow-hidden border-y border-[var(--line)] bg-[var(--card)] py-3"
     >
       <div className="brand-marquee-track flex w-max gap-10">
         {row.map((f, i) => (
           <span
             key={i}
-            className="flex items-center gap-10 whitespace-nowrap font-mono text-[0.68rem] uppercase tracking-[0.22em] text-zinc-500"
+            className="flex items-center gap-10 whitespace-nowrap font-mono text-[0.68rem] uppercase tracking-[0.22em] text-[var(--faint)]"
           >
             {f}
-            <span className="text-[var(--lime)]">✳</span>
+            <span className={["text-[var(--lime)]","text-[var(--accent-4)]","text-[var(--accent-2)]","text-[var(--accent-3)]"][i % 4]}>✳</span>
           </span>
         ))}
       </div>

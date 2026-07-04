@@ -20,9 +20,9 @@ export function NowTicker() {
   }, []);
 
   return (
-    <div className="border-b border-white/5 bg-zinc-950">
+    <div className="border-b border-[var(--line)] bg-[var(--bg)]">
       <div className="mx-auto flex max-w-6xl items-baseline gap-3 overflow-hidden px-5 py-3">
-        <span className="shrink-0 font-mono text-[0.6rem] uppercase tracking-[0.22em] text-[var(--lime)]">
+        <span className="shrink-0 font-mono text-[0.6rem] uppercase tracking-[0.22em] text-[var(--accent-2)]">
           now ⟶
         </span>
         <div className="relative h-[1.4em] flex-1 overflow-hidden">
@@ -33,7 +33,7 @@ export function NowTicker() {
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: "-110%", opacity: 0 }}
               transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-              className="absolute inset-x-0 font-mono text-[0.68rem] lowercase tracking-[0.1em] text-zinc-400"
+              className="absolute inset-x-0 font-mono text-[0.68rem] lowercase tracking-[0.1em] text-[var(--dim)]"
             >
               {NOW[i]}
             </motion.span>

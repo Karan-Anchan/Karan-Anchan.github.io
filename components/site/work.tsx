@@ -24,8 +24,8 @@ const yoloLatency = [
   { name: "WebGPU", ms: 34.5 },
 ];
 
-const lime = "#c7f284";
-const dim = "#52525b";
+const lime = "var(--lime)";
+const dim = "var(--faint)";
 
 type Entry = {
   no: string;
@@ -55,7 +55,7 @@ function MambaFig() {
             >
               <span
                 className={`font-mono text-[0.55rem] uppercase tracking-wider ${
-                  b === "attn" ? "text-[var(--lime)]" : "text-zinc-600"
+                  b === "attn" ? "text-[var(--lime)]" : "text-[var(--faint)]"
                 }`}
               >
                 {b}
@@ -64,14 +64,14 @@ function MambaFig() {
                 className={`h-14 w-8 rounded-sm border sm:w-10 ${
                   b === "attn"
                     ? "border-[var(--lime)] bg-[var(--lime)]/80"
-                    : "border-zinc-700 bg-zinc-900"
+                    : "border-[var(--faint)] bg-[var(--card)]"
                 }`}
               />
             </motion.div>
           ),
         )}
       </div>
-      <div className="text-center font-mono text-[0.6rem] uppercase tracking-[0.16em] text-zinc-500">
+      <div className="text-center font-mono text-[0.6rem] uppercase tracking-[0.16em] text-[var(--faint)]">
         1 attention layer per 7 Mamba-2 blocks — the Jamba interleave
       </div>
     </div>
@@ -122,13 +122,13 @@ function SaeFig() {
               cx={n.x}
               cy={n.y}
               r={n.dim ? 2.4 : 3.2}
-              fill={n.dim ? "#3f3f46" : lime}
+              fill={n.dim ? "var(--faint)" : lime}
             />
             <text
               x={n.x}
               y={n.y - 5}
               textAnchor="middle"
-              className="fill-zinc-500"
+              className="fill-[var(--faint)]"
               style={{ fontSize: "3.2px", fontFamily: "var(--font-geist-mono)" }}
             >
               {n.label}
@@ -136,7 +136,7 @@ function SaeFig() {
           </motion.g>
         ))}
       </svg>
-      <div className="absolute bottom-4 left-0 right-0 text-center font-mono text-[0.6rem] uppercase tracking-[0.16em] text-zinc-500">
+      <div className="absolute bottom-4 left-0 right-0 text-center font-mono text-[0.6rem] uppercase tracking-[0.16em] text-[var(--faint)]">
         feature circuit · layers 4 → 9
       </div>
     </div>
@@ -285,7 +285,7 @@ export function Work() {
   return (
     <section id="work" className="mx-auto max-w-6xl px-5 py-24">
       <GiantTitle word="WORK" className="-mt-10 mb-2 opacity-70" />
-      <SectionHead
+      <SectionHead hue="var(--accent-4)"
         index="§02"
         title="Selected"
         accent="work"
@@ -307,14 +307,14 @@ export function Work() {
                       className={`rounded-full border px-3 py-1 font-mono text-[0.58rem] uppercase tracking-[0.14em] ${
                         t.hot
                           ? "border-[var(--lime)]/50 text-[var(--lime)]"
-                          : "border-white/10 text-zinc-400"
+                          : "border-[var(--line)] text-[var(--dim)]"
                       }`}
                     >
                       {t.label}
                     </span>
                   ))}
                 </div>
-                <h3 className="text-2xl font-light tracking-tight text-zinc-50 sm:text-3xl">
+                <h3 className="text-2xl font-light tracking-tight text-[var(--fg)] sm:text-3xl">
                   <a
                     href={e.href}
                     target="_blank"
@@ -324,7 +324,7 @@ export function Work() {
                     {e.title}
                   </a>
                 </h3>
-                <p className="mt-4 max-w-xl text-sm font-light leading-relaxed text-zinc-400">
+                <p className="mt-4 max-w-xl text-sm font-light leading-relaxed text-[var(--dim)]">
                   {e.desc}
                 </p>
                 <div className="mt-6 flex flex-wrap gap-8">
@@ -333,7 +333,7 @@ export function Work() {
                       <div className="text-xl font-light text-[var(--lime)]">
                         {m.v}
                       </div>
-                      <div className="font-mono text-[0.55rem] uppercase tracking-[0.14em] text-zinc-500">
+                      <div className="font-mono text-[0.55rem] uppercase tracking-[0.14em] text-[var(--faint)]">
                         {m.l}
                       </div>
                     </div>
@@ -346,7 +346,7 @@ export function Work() {
                       href={l.href}
                       target="_blank"
                       rel="noopener"
-                      className="border-b border-white/20 pb-0.5 font-mono text-[0.62rem] uppercase tracking-[0.16em] text-zinc-200 transition-colors hover:border-[var(--lime)] hover:text-[var(--lime)]"
+                      className="border-b border-[var(--line)] pb-0.5 font-mono text-[0.62rem] uppercase tracking-[0.16em] text-[var(--fg2)] transition-colors hover:border-[var(--lime)] hover:text-[var(--lime)]"
                     >
                       {l.label} ↗
                     </a>
@@ -360,16 +360,16 @@ export function Work() {
                 borderRadius="1rem"
                 gradientColors={[
                   "#c7f284",
-                  "#5a7a2e",
-                  "#1a1f16",
-                  "#3f6212",
+                  "#67e8f9",
+                  "#c4b5fd",
+                  "#fbbf24",
                   "#c7f284",
                 ]}
-                className="bg-zinc-950"
+                className="bg-[var(--bg)]"
               >
                 <div className="flex h-full flex-col">
                   <div className="min-h-0 flex-1">{e.fig}</div>
-                  <div className="border-t border-white/5 px-4 py-2.5 font-mono text-[0.58rem] uppercase tracking-[0.14em] text-zinc-500">
+                  <div className="border-t border-[var(--line)] px-4 py-2.5 font-mono text-[0.58rem] uppercase tracking-[0.14em] text-[var(--faint)]">
                     {e.caption}
                   </div>
                 </div>
