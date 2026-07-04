@@ -90,6 +90,14 @@ export const sound = {
     note(f * 2.76, { dur: 0.45, gain: 0.007, delay: 0.012, lowpass: 5200 });
   },
 
+  /* minecraft xp-orb ding: two quick random-pitched plings */
+  xp() {
+    if (!enabled) return;
+    const base = 1400 + Math.random() * 500;
+    note(base, { dur: 0.16, gain: 0.035, lowpass: 6000 });
+    note(base * 1.5, { dur: 0.22, gain: 0.028, delay: 0.09, lowpass: 6000 });
+  },
+
   /* ethereal theme chime — airy detuned triad, brighter for paper mode */
   chime(bright: boolean) {
     if (!enabled) return;

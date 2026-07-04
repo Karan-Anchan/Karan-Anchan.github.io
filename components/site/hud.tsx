@@ -4,6 +4,32 @@ import { useEffect, useRef, useState } from "react";
 import { sound } from "@/lib/sound";
 import { motion, useScroll, useMotionValueEvent, useSpring } from "motion/react";
 
+const HEART = [
+  [1, 0], [2, 0], [4, 0], [5, 0],
+  [0, 1], [1, 1], [2, 1], [3, 1], [4, 1], [5, 1], [6, 1],
+  [0, 2], [1, 2], [2, 2], [3, 2], [4, 2], [5, 2], [6, 2],
+  [1, 3], [2, 3], [3, 3], [4, 3], [5, 3],
+  [2, 4], [3, 4], [4, 4],
+  [3, 5],
+];
+
+function PixelHeart({ lit }: { lit: boolean }) {
+  return (
+    <svg width="12" height="11" viewBox="0 0 7 6" aria-hidden shapeRendering="crispEdges">
+      {HEART.map(([x, y], i) => (
+        <rect
+          key={i}
+          x={x}
+          y={y}
+          width="1"
+          height="1"
+          fill={lit ? "var(--accent-5)" : "color-mix(in srgb, var(--faint) 40%, transparent)"}
+        />
+      ))}
+    </svg>
+  );
+}
+
 /* The page is a training run: scrolling = epochs, loss decays as you read. */
 export function TrainingHud() {
   const { scrollYProgress } = useScroll();
@@ -30,9 +56,16 @@ export function TrainingHud() {
       aria-hidden
       className="fixed bottom-4 left-4 z-[100] hidden select-none rounded-lg border border-[var(--line)] glass px-3.5 py-2.5 font-mono text-[0.6rem] leading-relaxed tracking-[0.08em] text-[var(--dim)] backdrop-blur-md lg:block"
     >
-      <div className="mb-1 flex items-center gap-2 text-[0.55rem] uppercase tracking-[0.18em] text-[var(--faint)]">
-        <span className="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-[var(--accent-5)]" />
-        run: karan-v3 · live
+      <div className="mb-1 flex items-center justify-between gap-4 text-[0.55rem] uppercase tracking-[0.18em] text-[var(--faint)]">
+        <span>
+          <span className="mr-1.5 inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-[var(--accent-5)]" />
+          run: karan-v3 · live
+        </span>
+        <span className="flex gap-0.5" title="reader hp">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <PixelHeart key={i} lit={p * 5 >= i + 0.5} />
+          ))}
+        </span>
       </div>
       <div>
         ckpt <span className="text-[var(--accent-2)]">{String(ckpt).padStart(2, "0")}/06</span>
@@ -40,11 +73,12 @@ export function TrainingHud() {
         <span className="text-[var(--accent-3)]">{loss.toFixed(3)}</span> ↓
         {"  ·  "}lr <span className="text-[var(--accent-4)]">{lr}</span>
       </div>
-      <div className="mt-1.5 h-0.5 w-full overflow-hidden rounded bg-[var(--card)]">
+      <div className="xp-track relative mt-1.5 h-[7px] w-full overflow-hidden rounded-sm">
         <div
-          className="btn-spectrum h-full transition-[width] duration-150"
+          className="xp-fill h-full transition-[width] duration-150"
           style={{ width: `${p * 100}%` }}
         />
+        <div className="xp-notches absolute inset-0" />
       </div>
     </motion.aside>
   );

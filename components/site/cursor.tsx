@@ -45,11 +45,23 @@ export function Cursor() {
 
   return (
     <>
-      <motion.div
+      <motion.svg
         aria-hidden
-        className="hue-drift pointer-events-none fixed left-0 top-0 z-[200] h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[var(--lime)]"
+        width="11"
+        height="11"
+        viewBox="0 0 11 11"
+        shapeRendering="crispEdges"
+        className="hue-drift pointer-events-none fixed left-0 top-0 z-[200] -translate-x-1/2 -translate-y-1/2"
         style={{ x: mx, y: my }}
-      />
+      >
+        <g fill="var(--lime)">
+          <rect x="5" y="0" width="1" height="3" />
+          <rect x="5" y="8" width="1" height="3" />
+          <rect x="0" y="5" width="3" height="1" />
+          <rect x="8" y="5" width="3" height="1" />
+          <rect x="5" y="5" width="1" height="1" />
+        </g>
+      </motion.svg>
       <motion.div
         aria-hidden
         animate={{

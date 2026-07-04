@@ -17,6 +17,7 @@ declare module "react" {
         "shadow-intensity"?: string;
         "disable-zoom"?: boolean;
         "camera-orbit"?: string;
+        "tone-mapping"?: string;
       };
     }
   }

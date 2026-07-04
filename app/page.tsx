@@ -11,12 +11,14 @@ import { Contact } from "@/components/site/contact";
 import { Cursor } from "@/components/site/cursor";
 import { TrainingHud } from "@/components/site/hud";
 import { SoundFx } from "@/components/site/sound-fx";
+import { Achievement } from "@/components/site/achievement";
 
 export default function Home() {
   return (
     <main className="grain">
       <Cursor />
       <SoundFx />
+      <Achievement />
       <TrainingHud />
       <SiteNav />
       <Hero />
