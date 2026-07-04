@@ -31,7 +31,7 @@ export function ForestBackdrop() {
   return (
     <div
       aria-hidden
-      className="pointer-events-none absolute inset-x-0 bottom-[-9%] z-[2] hidden h-[152%] md:block"
+      className="pointer-events-none absolute inset-x-0 bottom-[-9%] z-[2] hidden h-[168%] md:block"
       style={{ opacity: 0.95, filter: "saturate(0.95)" }}
     >
       <model-viewer
@@ -46,7 +46,7 @@ export function ForestBackdrop() {
         shadow-intensity="1.2"
         shadow-softness="0.9"
         exposure="1.25"
-        camera-orbit="30deg 50deg 74%"
+        camera-orbit="30deg 78deg 66%"
         style={{ width: "100%", height: "100%", background: "transparent" }}
       />
     </div>
