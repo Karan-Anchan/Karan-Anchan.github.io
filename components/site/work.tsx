@@ -309,8 +309,10 @@ export function Work() {
               <div>
                 <div className="mb-4 flex flex-wrap gap-2">
                   {e.tags.map((t) => (
-                    <span
+                    <motion.span
                       key={t.label}
+                      whileHover={{ scale: 1.07, rotate: -1.5 }}
+                      transition={{ type: "spring", stiffness: 400, damping: 12 }}
                       className={`rounded-full border px-3 py-1 font-mono text-[0.58rem] uppercase tracking-[0.14em] ${
                         t.hot
                           ? "border-[var(--e)]/50 text-[var(--e)]"
@@ -318,7 +320,7 @@ export function Work() {
                       }`}
                     >
                       {t.label}
-                    </span>
+                    </motion.span>
                   ))}
                 </div>
                 <h3 className="text-2xl font-light tracking-tight text-[var(--fg)] sm:text-3xl">

@@ -3,6 +3,7 @@
 import { Link003 } from "@/components/ui/skiper-ui/skiper40";
 import ParticleButton from "@/components/kokonutui/particle-button";
 import { Reveal } from "@/components/site/reveal";
+import { Magnetic } from "@/components/site/magnetic";
 
 export function Contact() {
   return (
@@ -57,14 +58,14 @@ export function Contact() {
           </Reveal>
           <Reveal delay={0.15}>
             <div className="mt-8 flex flex-wrap items-center gap-6">
-              <ParticleButton
+              <Magnetic><ParticleButton
                 className="btn-spectrum rounded-full px-6 py-2.5 font-mono text-[0.7rem] uppercase tracking-[0.14em] hover:opacity-90"
                 onClick={() => {
                   window.location.href = "mailto:kar.anchan02@gmail.com";
                 }}
               >
                 Say hello
-              </ParticleButton>
+              </ParticleButton></Magnetic>
               <Link003
                 href="https://github.com/Karan-Anchan"
                 className="font-mono text-[0.7rem] uppercase tracking-[0.16em] text-[var(--fg2)]"

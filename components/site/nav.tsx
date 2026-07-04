@@ -20,6 +20,7 @@ export function SiteNav() {
           className="font-serif-accent text-lg italic tracking-tight"
         >
           K<span className="text-[var(--accent-5)]">·</span>A
+          <span aria-hidden className="btn-spectrum blink ml-1 inline-block h-[0.72em] w-[0.34em] align-baseline" />
         </a>
         <div className="hidden items-center gap-7 sm:flex">
           {links.map((l) => (

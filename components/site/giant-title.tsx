@@ -26,9 +26,17 @@ export function GiantTitle({
     >
       <motion.div
         style={{ x }}
-        className="text-outline-faint whitespace-nowrap text-[16vw] font-black uppercase leading-[0.85] tracking-tighter"
+        className="relative whitespace-nowrap text-[16vw] font-black uppercase leading-[0.85] tracking-tighter"
       >
-        {word}&nbsp;{word}
+        <span
+          aria-hidden
+          className="text-spectrum-shimmer absolute inset-0 select-none opacity-[0.22] blur-[7px]"
+        >
+          {word}&nbsp;{word}
+        </span>
+        <span className="text-outline-faint relative">
+          {word}&nbsp;{word}
+        </span>
       </motion.div>
     </div>
   );

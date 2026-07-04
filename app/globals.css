@@ -360,3 +360,24 @@ html.theme-anim, html.theme-anim * {
   background-clip: text;
   color: transparent;
 }
+
+/* ── shimmering gradient aura for the giant outline titles ──── */
+.text-spectrum-shimmer {
+  background: linear-gradient(100deg, var(--lime), var(--accent-4) 25%, var(--accent-2) 50%, var(--accent-5) 75%, var(--accent-3) 100%);
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: spectrum-slide 9s ease-in-out infinite alternate;
+}
+@keyframes spectrum-slide {
+  from { background-position: 0% 50%; }
+  to { background-position: 100% 50%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .text-spectrum-shimmer { animation: none; }
+}
+
+/* terminal cursor blink for the wordmark */
+@keyframes blink { 0%, 46% { opacity: 1; } 50%, 100% { opacity: 0; } }
+.blink { animation: blink 1.25s steps(1) infinite; }
