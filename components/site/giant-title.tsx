@@ -1,9 +1,18 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useScroll, useTransform } from "motion/react";
+import { useId, useRef } from "react";
+import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 
-/* Oversized outlined word drifting behind each section — awwwards staple. */
+const STOPS = [
+  "var(--lime)",
+  "var(--accent-4)",
+  "var(--accent-2)",
+  "var(--accent-5)",
+  "var(--accent-3)",
+];
+
+/* Oversized section word — the shimmer lives ONLY in the letter borders:
+   SVG text with fill="none" and an animated gradient stroke. */
 export function GiantTitle({
   word,
   className = "",
@@ -12,11 +21,23 @@ export function GiantTitle({
   className?: string;
 }) {
   const ref = useRef<HTMLDivElement>(null);
+  const reduced = useReducedMotion();
+  const gradId = "gt" + useId().replace(/[^a-zA-Z0-9]/g, "");
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"],
   });
   const x = useTransform(scrollYProgress, [0, 1], ["4%", "-14%"]);
+  const text = `${word} ${word}`;
+
+  const textStyle: React.CSSProperties = {
+    fontSize: "15vw",
+    fontFamily: "var(--font-geist-sans), sans-serif",
+    fontWeight: 900,
+    letterSpacing: "-0.05em",
+    textTransform: "uppercase",
+    fill: "none",
+  };
 
   return (
     <div
@@ -24,19 +45,68 @@ export function GiantTitle({
       aria-hidden
       className={`pointer-events-none select-none overflow-hidden ${className}`}
     >
-      <motion.div
-        style={{ x }}
-        className="relative whitespace-nowrap text-[16vw] font-black uppercase leading-[0.85] tracking-tighter"
-      >
-        <span
-          aria-hidden
-          className="text-spectrum-shimmer absolute inset-0 select-none opacity-[0.22] blur-[7px]"
+      <motion.div style={{ x }}>
+        <svg
+          className="block w-[300vw] overflow-visible"
+          style={{ height: "13vw" }}
         >
-          {word}&nbsp;{word}
-        </span>
-        <span className="text-outline-faint relative">
-          {word}&nbsp;{word}
-        </span>
+          <defs>
+            <linearGradient
+              id={gradId}
+              gradientUnits="userSpaceOnUse"
+              x1="0"
+              y1="0"
+              x2="900"
+              y2="0"
+              spreadMethod="reflect"
+            >
+              {STOPS.map((c, i) => (
+                <stop
+                  key={i}
+                  offset={i / (STOPS.length - 1)}
+                  stopColor={c}
+                />
+              ))}
+              {!reduced && (
+                <animateTransform
+                  attributeName="gradientTransform"
+                  type="translate"
+                  from="0 0"
+                  to="1800 0"
+                  dur="11s"
+                  repeatCount="indefinite"
+                />
+              )}
+            </linearGradient>
+          </defs>
+          {/* soft aura hugging the border */}
+          <text
+            x="0"
+            y="96%"
+            style={{
+              ...textStyle,
+              stroke: `url(#${gradId})`,
+              strokeWidth: 5,
+              opacity: 0.09,
+              filter: "blur(5px)",
+            }}
+          >
+            {text}
+          </text>
+          {/* crisp gradient outline */}
+          <text
+            x="0"
+            y="96%"
+            style={{
+              ...textStyle,
+              stroke: `url(#${gradId})`,
+              strokeWidth: 1.4,
+              opacity: 0.42,
+            }}
+          >
+            {text}
+          </text>
+        </svg>
       </motion.div>
     </div>
   );

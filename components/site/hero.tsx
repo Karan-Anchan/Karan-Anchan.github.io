@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import { animate, stagger } from "animejs";
 import BeamsBackground from "@/components/kokonutui/beams-background";
 import ShimmerText from "@/components/kokonutui/shimmer-text";
-import { HeroForest } from "@/components/site/forest";
 import { Magnetic } from "@/components/site/magnetic";
 
 const TAGLINES = [
@@ -42,20 +41,6 @@ export function Hero() {
         ease: "outExpo",
       });
     }
-    const wiggles: Array<[Element, () => void]> = [];
-    letters?.forEach((el) => {
-      const fn = () => {
-        animate(el, {
-          translateY: [0, -12, 0],
-          rotate: [0, Math.random() * 10 - 5, 0],
-          duration: 420,
-          ease: "outQuad",
-        });
-      };
-      el.addEventListener("pointerenter", fn);
-      wiggles.push([el, fn]);
-    });
-
     const lines = document.querySelectorAll("[data-tagline]");
     if (lines.length) {
       animate(lines, {
@@ -66,9 +51,6 @@ export function Hero() {
         ease: "outQuart",
       });
     }
-    return () => {
-      wiggles.forEach(([el, fn]) => el.removeEventListener("pointerenter", fn));
-    };
   }, []);
 
   return (
@@ -79,7 +61,6 @@ export function Hero() {
       />
       <div className="pointer-events-none absolute inset-0 dot-grid opacity-40" />
       <div className="pointer-events-none absolute inset-0 glow-mesh" />
-      <HeroForest />
 
       {/* corner meta — awwwards furniture */}
       <div className="absolute inset-x-0 top-16 z-10 mx-auto flex max-w-6xl justify-between px-5 font-mono text-[0.58rem] uppercase tracking-[0.2em] text-[var(--faint)]">
@@ -104,14 +85,14 @@ export function Hero() {
         >
           <span className="block text-[clamp(3.5rem,13vw,10.5rem)] text-[var(--fg)]">
             {"KARAN".split("").map((ch, i) => (
-              <span key={i} data-letter className="inline-block cursor-default will-change-transform">
+              <span key={i} data-letter className="inline-block will-change-transform">
                 {ch}
               </span>
             ))}
           </span>
           <span className="text-outline block text-[clamp(3.5rem,13vw,10.5rem)]">
             {"ANCHAN".split("").map((ch, i) => (
-              <span key={i} data-letter className="inline-block cursor-default will-change-transform">
+              <span key={i} data-letter className="inline-block will-change-transform">
                 {ch}
               </span>
             ))}

@@ -31,6 +31,7 @@ const dim = "var(--faint)";
 type Entry = {
   no: string;
   hue: string;
+  cover: string;
   tags: { label: string; hot?: boolean }[];
   title: string;
   href: string;
@@ -148,6 +149,7 @@ function SaeFig() {
 const entries: Entry[] = [
   {
     no: "01",
+    cover: "/covers/rlpd.webp",
     hue: "var(--lime)",
     tags: [
       { label: "Active · 2026", hot: true },
@@ -188,6 +190,7 @@ const entries: Entry[] = [
   },
   {
     no: "02",
+    cover: "/covers/yolo.webp",
     hue: "var(--accent-4)",
     tags: [
       { label: "Active · 2026", hot: true },
@@ -227,6 +230,7 @@ const entries: Entry[] = [
   },
   {
     no: "03",
+    cover: "/covers/mamba.webp",
     hue: "var(--accent-2)",
     tags: [
       { label: "In progress" },
@@ -257,6 +261,7 @@ const entries: Entry[] = [
   },
   {
     no: "04",
+    cover: "/covers/sae.webp",
     hue: "var(--accent-3)",
     tags: [
       { label: "In progress" },
@@ -374,10 +379,19 @@ export function Work() {
                   "#fbbf24",
                   "#c7f284",
                 ]}
-                className="bg-[var(--bg)]"
+                className="group/card bg-[var(--bg)]"
               >
                 <div className="flex h-full flex-col">
-                  <div className="min-h-0 flex-1">{e.fig}</div>
+                  <div className="relative min-h-0 flex-1">
+                    {e.fig}
+                    <img
+                      src={e.cover}
+                      alt=""
+                      loading="lazy"
+                      decoding="async"
+                      className="absolute inset-0 h-full w-full rounded-t-[1rem] object-cover opacity-0 transition-opacity duration-500 group-hover/card:opacity-100"
+                    />
+                  </div>
                   <div className="border-t border-[var(--line)] px-4 py-2.5 font-mono text-[0.58rem] uppercase tracking-[0.14em] text-[var(--faint)]">
                     {e.caption}
                   </div>

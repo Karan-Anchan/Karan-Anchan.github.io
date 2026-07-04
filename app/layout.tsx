@@ -23,12 +23,18 @@ export const metadata: Metadata = {
   title: "Karan Anchan — AI Researcher & Engineer",
   description:
     "Karan Anchan — M.Sc. Computer Science (AI), University of Freiburg. Reinforcement learning, efficient deep learning, and systems that ship.",
+  metadataBase: new URL("https://karan-anchan.github.io"),
   openGraph: {
     title: "Karan Anchan — AI Researcher & Engineer",
     description:
       "Reinforcement learning · efficient deep learning · multimodal systems.",
     url: "https://karan-anchan.github.io/",
     type: "website",
+    images: [{ url: "/og.jpg", width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: ["/og.jpg"],
   },
 };
 

@@ -57,6 +57,7 @@ export function About() {
     <section id="about" className="mx-auto max-w-6xl px-5 py-24">
       <GiantTitle word="AUTHOR" className="-mt-10 mb-2 opacity-70" />
       <SectionHead hue="var(--accent-5)" index="§01" title="About the" accent="author" side="ckpt 01 — bio loaded" />
+      <div className="grid items-start gap-12 lg:grid-cols-[1.55fr_1fr]">
       <div className="max-w-3xl space-y-6 text-xl font-light leading-relaxed text-[var(--dim)] sm:text-2xl">
         <Reveal>
           <p>
@@ -100,6 +101,23 @@ export function About() {
             — a study with n=1 and strong priors.
           </p>
         </Reveal>
+      </div>
+
+      <Reveal delay={0.15}>
+        <figure className="group mx-auto max-w-sm rotate-1 transition-transform duration-500 hover:rotate-0 lg:mx-0">
+          <img
+            src="/portrait.webp"
+            alt="Dithered duotone portrait of Karan Anchan drinking chai"
+            loading="lazy"
+            decoding="async"
+            className="w-full rounded-2xl border border-[var(--line)]"
+          />
+          <figcaption className="mt-3 flex justify-between font-mono text-[0.58rem] lowercase tracking-[0.16em] text-[var(--faint)]">
+            <span>fig. 0 — the author</span>
+            <span>chai, not coffee · n=1</span>
+          </figcaption>
+        </figure>
+      </Reveal>
       </div>
 
       <Reveal delay={0.2} className="mt-12">
