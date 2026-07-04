@@ -42,11 +42,11 @@ export function ForestBackdrop() {
         rotation-per-second="3deg"
         interaction-prompt="none"
         disable-zoom
-        environment-image="legacy"
+        environment-image="/env/studio.hdr"
         shadow-intensity="1.2"
         shadow-softness="0.9"
-        exposure="1.5"
-        camera-orbit="30deg 62deg 74%"
+        exposure="1.25"
+        camera-orbit="30deg 50deg 74%"
         style={{ width: "100%", height: "100%", background: "transparent" }}
       />
     </div>
