@@ -8,6 +8,7 @@ import ShimmerText from "@/components/kokonutui/shimmer-text";
 const TAGLINES = [
   "I TRAIN AGENTS.",
   "I COMPRESS MODELS.",
+  "I SHIP SYSTEMS.",
   "I MEASURE EVERYTHING.",
 ];
 
@@ -106,7 +107,7 @@ export function Hero() {
               key={t}
               data-tagline
               className={`font-mono text-sm tracking-[0.18em] opacity-0 sm:text-base ${
-                ["text-[var(--lime)]", "text-[var(--accent-4)]", "text-[var(--accent-2)]"][i]
+                ["text-[var(--lime)]", "text-[var(--accent-4)]", "text-[var(--accent-2)]", "text-[var(--accent-5)]"][i]
               }`}
             >
               {t}
@@ -115,9 +116,10 @@ export function Hero() {
         </div>
 
         <p className="mt-6 max-w-lg text-sm font-light leading-relaxed text-[var(--faint)]">
-          From offline-to-online RL on humanoids to NMS-free detectors in the
-          browser — paper → reproduction → ablation → deployment. The loss
-          curve in the corner is your reading progress.
+          RL on humanoids, detectors running in a browser tab, RAG in
+          production, and agents that watch my training runs while I sleep —
+          research-grade when it needs rigor, product-grade when it needs to
+          ship. The loss curve in the corner is your reading progress.
           <span className="text-[var(--dim)]"> yes, it converges.</span>
         </p>
 

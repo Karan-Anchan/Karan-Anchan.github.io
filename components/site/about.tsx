@@ -77,12 +77,17 @@ export function About() {
         </Reveal>
         <Reveal delay={0.1}>
           <p>
-            My default mode is{" "}
+            Hand me a strong paper and I&apos;ll{" "}
             <strong className="font-medium text-[var(--fg)]">
-              reproduce, then extend
+              rebuild it, then push past it
             </strong>
-            : take a strong paper, rebuild it honestly, ablate what the authors
-            didn&apos;t, and ship the result.
+            . Hand me a vague problem and I&apos;ll scope it, build the
+            pipeline, and ship the unglamorous parts too — data, evals,
+            deployment, automation.{" "}
+            <em className="font-serif-accent italic text-[var(--accent-4)]">
+              The whole stack of making models useful
+            </em>
+            , not just the fun layer.
           </p>
         </Reveal>
         <Reveal delay={0.15}>
