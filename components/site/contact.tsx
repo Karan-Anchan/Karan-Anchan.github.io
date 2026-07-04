@@ -90,7 +90,18 @@ export function Contact() {
 
         <footer className="mt-16 flex flex-wrap items-center justify-between gap-3 border-t border-[var(--line)] pt-6 font-mono text-[0.58rem] lowercase tracking-[0.16em] text-[var(--faint)]">
           <span>© 2026 karan anchan</span>
-          <span>handcrafted at 2am between training runs — no template, some libraries</span>
+          <span>
+            handcrafted at 2am between training runs — 3d forest by{" "}
+            <a
+              href="https://sketchfab.com/3d-models/forest-demo-1269b7e00f9d4ce09931c0c95967bc33"
+              target="_blank"
+              rel="noopener"
+              className="underline decoration-dotted underline-offset-2 transition-colors hover:text-[var(--accent-2)]"
+            >
+              patrix
+            </a>{" "}
+            (cc-by-sa 4.0)
+          </span>
           <a href="#top" className="transition-colors hover:text-[var(--accent-4)]">
             back to epoch 0 ↑
           </a>

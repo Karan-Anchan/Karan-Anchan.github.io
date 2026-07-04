@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { animate, stagger } from "animejs";
 import BeamsBackground from "@/components/kokonutui/beams-background";
 import ShimmerText from "@/components/kokonutui/shimmer-text";
+import { ForestBackdrop } from "@/components/site/forest";
 import { Magnetic } from "@/components/site/magnetic";
 
 const TAGLINES = [
@@ -59,6 +60,7 @@ export function Hero() {
         intensity="medium"
         className="absolute inset-0 h-full min-h-0"
       />
+      <ForestBackdrop />
       <div className="pointer-events-none absolute inset-0 dot-grid opacity-40" />
       <div className="pointer-events-none absolute inset-0 glow-mesh" />
 

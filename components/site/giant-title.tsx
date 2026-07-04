@@ -30,8 +30,10 @@ export function GiantTitle({
   const x = useTransform(scrollYProgress, [0, 1], ["4%", "-14%"]);
   const text = `${word} ${word}`;
 
+  /* one word ~= 95vw on phones; the two-copy strip on larger screens */
+  const mobileSize = `${(152 / word.length).toFixed(1)}vw`;
+
   const textStyle: React.CSSProperties = {
-    fontSize: "15vw",
     fontFamily: "var(--font-geist-sans), sans-serif",
     fontWeight: 900,
     letterSpacing: "-0.05em",
@@ -43,13 +45,11 @@ export function GiantTitle({
     <div
       ref={ref}
       aria-hidden
+      style={{ ["--gts" as string]: mobileSize }}
       className={`pointer-events-none select-none overflow-hidden ${className}`}
     >
       <motion.div style={{ x }}>
-        <svg
-          className="block w-[300vw] overflow-visible"
-          style={{ height: "13vw" }}
-        >
+        <svg className="block h-[calc(var(--gts)*0.9)] w-[300vw] overflow-visible sm:h-[13vw]">
           <defs>
             <linearGradient
               id={gradId}
@@ -83,6 +83,7 @@ export function GiantTitle({
           <text
             x="0"
             y="96%"
+            className="text-[length:var(--gts)] sm:text-[length:15vw]"
             style={{
               ...textStyle,
               stroke: `url(#${gradId})`,
@@ -97,6 +98,7 @@ export function GiantTitle({
           <text
             x="0"
             y="96%"
+            className="text-[length:var(--gts)] sm:text-[length:15vw]"
             style={{
               ...textStyle,
               stroke: `url(#${gradId})`,
