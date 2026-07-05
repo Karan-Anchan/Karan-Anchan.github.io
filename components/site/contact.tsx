@@ -4,7 +4,6 @@ import { Link003 } from "@/components/ui/skiper-ui/skiper40";
 import ParticleButton from "@/components/kokonutui/particle-button";
 import { Reveal } from "@/components/site/reveal";
 import { Magnetic } from "@/components/site/magnetic";
-import { Campfire } from "@/components/site/campfire";
 
 export function Contact() {
   return (
@@ -16,17 +15,16 @@ export function Contact() {
       {/* dusk pixel panorama, slowly drifting — the cozy horizon */}
       <div
         aria-hidden
-        className="panorama-drift pixelated pointer-events-none absolute inset-x-0 bottom-0 h-64 opacity-45 dark:opacity-60"
+        className="panorama-drift pixelated pointer-events-none absolute inset-x-0 bottom-0 h-64 opacity-35 dark:opacity-60"
         style={{
           backgroundImage: "url(/mc/panorama.png)",
           backgroundRepeat: "repeat-x",
           backgroundSize: "auto 100%",
           backgroundPosition: "bottom left",
-          maskImage: "linear-gradient(to bottom, transparent, black 45%)",
-          WebkitMaskImage: "linear-gradient(to bottom, transparent, black 45%)",
+          maskImage: "linear-gradient(to bottom, transparent, black 45%, black 70%, rgba(0,0,0,0.25) 92%)",
+          WebkitMaskImage: "linear-gradient(to bottom, transparent, black 45%, black 70%, rgba(0,0,0,0.25) 92%)",
         }}
       />
-      <Campfire />
 
       {/* giant marquee CTA — the whole strip is a mailto */}
       <a
@@ -103,7 +101,7 @@ export function Contact() {
           </Reveal>
         </div>
 
-        <footer className="mt-16 flex flex-wrap items-center justify-between gap-3 border-t border-[var(--line)] pt-6 font-mono text-[0.58rem] lowercase tracking-[0.16em] text-[var(--faint)]">
+        <footer className="glass relative mt-16 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-[var(--line)] px-5 py-4 font-mono text-[0.58rem] lowercase tracking-[0.16em] text-[var(--dim)]">
           <span className="flex items-center gap-3">
             <img
               src="/mc/avatar.png"
