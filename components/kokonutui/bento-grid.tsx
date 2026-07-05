@@ -27,13 +27,6 @@ import {
 } from "motion/react";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import Anthropic from "@/components/kokonutui/anthropic";
-import AnthropicDark from "@/components/kokonutui/anthropic-dark";
-import DeepSeek from "@/components/kokonutui/deepseek";
-import Google from "@/components/kokonutui/gemini";
-import MistralAI from "@/components/kokonutui/mistral";
-import OpenAI from "@/components/kokonutui/open-ai";
-import OpenAIDark from "@/components/kokonutui/open-ai-dark";
 import { cn } from "@/lib/utils";
 
 interface BentoItem {
@@ -230,60 +223,6 @@ const ChartAnimation = ({ value }: { value: number }) => (
   </div>
 );
 
-const IconsFeature = () => (
-  <div className="mt-4 grid grid-cols-3 gap-4">
-    <motion.div className="group flex flex-col items-center gap-2 rounded-xl border border-neutral-200/50 bg-gradient-to-b from-neutral-100/80 to-neutral-100 p-3 transition-all duration-300 hover:border-neutral-300 dark:border-neutral-700/50 dark:from-neutral-800/80 dark:to-neutral-800 dark:hover:border-neutral-600">
-      <div className="relative flex h-8 w-8 items-center justify-center">
-        <OpenAI className="h-7 w-7 transition-transform dark:hidden" />
-        <OpenAIDark className="hidden h-7 w-7 transition-transform dark:block" />
-      </div>
-      <span className="text-center font-medium text-neutral-600 text-xs group-hover:text-neutral-900 dark:text-neutral-400 dark:group-hover:text-neutral-200">
-        OpenAI
-      </span>
-    </motion.div>
-    <motion.div className="group flex flex-col items-center gap-2 rounded-xl border border-neutral-200/50 bg-gradient-to-b from-neutral-100/80 to-neutral-100 p-3 transition-all duration-300 hover:border-neutral-300 dark:border-neutral-700/50 dark:from-neutral-800/80 dark:to-neutral-800 dark:hover:border-neutral-600">
-      <div className="relative flex h-8 w-8 items-center justify-center">
-        <Anthropic className="h-7 w-7 transition-transform dark:hidden" />
-        <AnthropicDark className="hidden h-7 w-7 transition-transform dark:block" />
-      </div>
-      <span className="text-center font-medium text-neutral-600 text-xs group-hover:text-neutral-900 dark:text-neutral-400 dark:group-hover:text-neutral-200">
-        Anthropic
-      </span>
-    </motion.div>
-    <motion.div className="group flex flex-col items-center gap-2 rounded-xl border border-neutral-200/50 bg-gradient-to-b from-neutral-100/80 to-neutral-100 p-3 transition-all duration-300 hover:border-neutral-300 dark:border-neutral-700/50 dark:from-neutral-800/80 dark:to-neutral-800 dark:hover:border-neutral-600">
-      <div className="relative flex h-8 w-8 items-center justify-center">
-        <Google className="h-7 w-7 transition-transform" />
-      </div>
-      <span className="text-center font-medium text-neutral-600 text-xs group-hover:text-neutral-900 dark:text-neutral-400 dark:group-hover:text-neutral-200">
-        Google
-      </span>
-    </motion.div>
-    <motion.div className="group flex flex-col items-center gap-2 rounded-xl border border-neutral-200/50 bg-gradient-to-b from-neutral-100/80 to-neutral-100 p-3 transition-all duration-300 hover:border-neutral-300 dark:border-neutral-700/50 dark:from-neutral-800/80 dark:to-neutral-800 dark:hover:border-neutral-600">
-      <div className="relative flex h-8 w-8 items-center justify-center">
-        <MistralAI className="h-7 w-7 transition-transform" />
-      </div>
-      <span className="text-center font-medium text-neutral-600 text-xs group-hover:text-neutral-900 dark:text-neutral-400 dark:group-hover:text-neutral-200">
-        Mistral
-      </span>
-    </motion.div>
-    <motion.div className="group flex flex-col items-center gap-2 rounded-xl border border-neutral-200/50 bg-gradient-to-b from-neutral-100/80 to-neutral-100 p-3 transition-all duration-300 hover:border-neutral-300 dark:border-neutral-700/50 dark:from-neutral-800/80 dark:to-neutral-800 dark:hover:border-neutral-600">
-      <div className="relative flex h-8 w-8 items-center justify-center">
-        <DeepSeek className="h-7 w-7 transition-transform" />
-      </div>
-      <span className="text-center font-medium text-neutral-600 text-xs group-hover:text-neutral-900 dark:text-neutral-400 dark:group-hover:text-neutral-200">
-        DeepSeek
-      </span>
-    </motion.div>
-    <motion.div className="group flex flex-col items-center gap-2 rounded-xl border border-neutral-200/50 bg-gradient-to-b from-neutral-100/80 to-neutral-100 p-3 transition-all duration-300 hover:border-neutral-300 dark:border-neutral-700/50 dark:from-neutral-800/80 dark:to-neutral-800 dark:hover:border-neutral-600">
-      <div className="relative flex h-8 w-8 items-center justify-center">
-        <Plus className="h-6 w-6 text-neutral-600 transition-transform dark:text-neutral-400" />
-      </div>
-      <span className="text-center font-medium text-neutral-600 text-xs group-hover:text-neutral-900 dark:text-neutral-400 dark:group-hover:text-neutral-200">
-        More
-      </span>
-    </motion.div>
-  </div>
-);
 
 const TimelineFeature = ({
   timeline,
@@ -658,8 +597,6 @@ const BentoCard = ({ item }: { item: BentoItem }) => {
               <TimelineFeature timeline={item.timeline} />
             )}
 
-            {item.feature === "icons" && <IconsFeature />}
-
             {item.feature === "typing" && item.typingText && (
               <TypingCodeFeature text={item.typingText} />
             )}
@@ -668,17 +605,6 @@ const BentoCard = ({ item }: { item: BentoItem }) => {
               <MetricsFeature metrics={item.metrics} />
             )}
 
-            {item.icons && !item.feature && (
-              <div className="mt-auto flex flex-wrap items-center gap-4 border-neutral-200/70 border-t pt-4 dark:border-neutral-800/70">
-                <OpenAI className="h-5 w-5 opacity-70 transition-opacity hover:opacity-100 dark:hidden" />
-                <OpenAIDark className="hidden h-5 w-5 opacity-70 transition-opacity hover:opacity-100 dark:block" />
-                <AnthropicDark className="hidden h-5 w-5 opacity-70 transition-opacity hover:opacity-100 dark:block" />
-                <Anthropic className="h-5 w-5 opacity-70 transition-opacity hover:opacity-100 dark:hidden" />
-                <Google className="h-5 w-5 opacity-70 transition-opacity hover:opacity-100" />
-                <MistralAI className="h-5 w-5 opacity-70 transition-opacity hover:opacity-100" />
-                <DeepSeek className="h-5 w-5 opacity-70 transition-opacity hover:opacity-100" />
-              </div>
-            )}
           </div>
         </div>
       </Link>
