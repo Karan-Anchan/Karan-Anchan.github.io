@@ -296,7 +296,7 @@ export function Work() {
   return (
     <section id="work" className="mx-auto max-w-6xl px-5 py-24">
       <GiantTitle word="WORK" className="-mt-10 mb-2 opacity-70" />
-      <SectionHead hue="var(--accent-4)"
+      <SectionHead sprite="/mc/sprite-diamond.png" hue="var(--accent-4)"
         index="§02"
         title="Selected"
         accent="work"

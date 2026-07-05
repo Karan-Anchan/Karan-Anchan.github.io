@@ -48,7 +48,7 @@ export function Stack() {
   return (
     <section id="stack" className="mx-auto max-w-6xl px-5 py-24">
       <GiantTitle word="STACK" className="-mt-10 mb-2 opacity-70" />
-      <SectionHead hue="var(--accent-4)" index="§05" title="Working" accent="stack" side="ckpt 05 — daily drivers first" />
+      <SectionHead sprite="/mc/sprite-potion.png" hue="var(--accent-4)" index="§05" title="Working" accent="stack" side="ckpt 05 — daily drivers first" />
       <div className="grid gap-px overflow-hidden rounded-2xl border border-[var(--line)] bg-[var(--card)] sm:grid-cols-2 lg:grid-cols-4">
         {cols.map((c, i) => (
           <Reveal key={c.head} delay={i * 0.06} className="bg-[var(--bg)] p-6">

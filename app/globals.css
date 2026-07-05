@@ -408,3 +408,30 @@ html.theme-anim, html.theme-anim * {
 .xp-notches {
   background: repeating-linear-gradient(90deg, transparent 0 11px, rgba(0, 0, 0, 0.45) 11px 12px);
 }
+
+/* -- cozy minecraft layer -- */
+.pixelated { image-rendering: pixelated; }
+
+@keyframes bob {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50% { transform: translateY(-7px) rotate(2deg); }
+}
+.bob { animation: bob 4.5s ease-in-out infinite; }
+
+@keyframes panorama-drift {
+  from { background-position-x: 0; }
+  to { background-position-x: -1920px; }
+}
+.panorama-drift { animation: panorama-drift 140s linear infinite; }
+
+@keyframes fire-flicker {
+  0%, 100% { opacity: 0.85; transform: scale(1); }
+  35% { opacity: 1; transform: scale(1.04); }
+  60% { opacity: 0.75; transform: scale(0.985); }
+  80% { opacity: 0.95; transform: scale(1.02); }
+}
+.fire-flicker { animation: fire-flicker 2.6s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .bob, .panorama-drift, .fire-flicker { animation: none; }
+}

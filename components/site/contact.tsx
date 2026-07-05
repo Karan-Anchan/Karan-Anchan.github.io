@@ -4,6 +4,7 @@ import { Link003 } from "@/components/ui/skiper-ui/skiper40";
 import ParticleButton from "@/components/kokonutui/particle-button";
 import { Reveal } from "@/components/site/reveal";
 import { Magnetic } from "@/components/site/magnetic";
+import { Campfire } from "@/components/site/campfire";
 
 export function Contact() {
   return (
@@ -12,6 +13,20 @@ export function Contact() {
       className="relative overflow-hidden border-t border-[var(--line)]"
     >
       <div className="glow-mesh pointer-events-none absolute inset-x-0 bottom-0 h-2/3" />
+      {/* dusk pixel panorama, slowly drifting — the cozy horizon */}
+      <div
+        aria-hidden
+        className="panorama-drift pixelated pointer-events-none absolute inset-x-0 bottom-0 h-64 opacity-45 dark:opacity-60"
+        style={{
+          backgroundImage: "url(/mc/panorama.png)",
+          backgroundRepeat: "repeat-x",
+          backgroundSize: "auto 100%",
+          backgroundPosition: "bottom left",
+          maskImage: "linear-gradient(to bottom, transparent, black 45%)",
+          WebkitMaskImage: "linear-gradient(to bottom, transparent, black 45%)",
+        }}
+      />
+      <Campfire />
 
       {/* giant marquee CTA — the whole strip is a mailto */}
       <a
@@ -89,7 +104,16 @@ export function Contact() {
         </div>
 
         <footer className="mt-16 flex flex-wrap items-center justify-between gap-3 border-t border-[var(--line)] pt-6 font-mono text-[0.58rem] lowercase tracking-[0.16em] text-[var(--faint)]">
-          <span>© 2026 karan anchan</span>
+          <span className="flex items-center gap-3">
+            <img
+              src="/mc/avatar.png"
+              alt="Pixel avatar of Karan holding a chai cup"
+              loading="lazy"
+              className="pixelated h-14 w-auto transition-transform duration-300 hover:-translate-y-1"
+              title="chai break"
+            />
+            © 2026 karan anchan
+          </span>
           <span>
             handcrafted at 2am between training runs — 3d forest by{" "}
             <a

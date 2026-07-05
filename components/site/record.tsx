@@ -31,7 +31,7 @@ export function Record() {
   return (
     <section id="record" className="mx-auto max-w-6xl px-5 py-24">
       <GiantTitle word="RECORD" className="-mt-10 mb-2 opacity-70" />
-      <SectionHead hue="var(--accent-3)" index="§04" title="The" accent="record" side="ckpt 04 — the receipts" />
+      <SectionHead sprite="/mc/sprite-xp-orb.png" hue="var(--accent-3)" index="§04" title="The" accent="record" side="ckpt 04 — the receipts" />
 
       <div className="divide-y divide-[var(--line)] border-y border-[var(--line)]">
         {xp.map((x) => (
