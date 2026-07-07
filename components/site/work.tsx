@@ -1,8 +1,6 @@
 "use client";
 
 import { AreaChart, Area } from "@/components/charts/area-chart";
-import { BarChart } from "@/components/charts/bar-chart";
-import { Bar } from "@/components/charts/bar";
 import GlowBorderCard from "@/components/ui/glow-border-card";
 import { Reveal, SectionHead } from "@/components/site/reveal";
 import { GiantTitle } from "@/components/site/giant-title";
@@ -17,13 +15,6 @@ const rlpdCurve = Array.from({ length: 26 }, (_, i) => {
     sac: Math.round(1000 * (1 - Math.exp(-1.4 * t)) * 0.72 + 10 * Math.cos(i)),
   };
 });
-
-/* measured p95 latency per frame (ms) — RTX 5070 / Ryzen 7700 / WebGPU */
-const yoloLatency = [
-  { name: "TensorRT · GPU", ms: 2.9 },
-  { name: "WebGPU · browser", ms: 41.0 },
-  { name: "ONNX RT · CPU", ms: 41.3 },
-];
 
 const lime = "var(--lime)";
 const amber = "var(--accent-3)";
@@ -227,13 +218,16 @@ const entries: Entry[] = [
       },
     ],
     fig: (
-      <div className="p-5">
-        <BarChart data={yoloLatency} xDataKey="name" aspectRatio="16 / 9">
-          <Bar dataKey="ms" fill="var(--accent-4)" />
-        </BarChart>
+      <div className="aspect-[16/10] w-full">
+        <img
+          src="/covers/yolo-benchmark.png"
+          alt="Accuracy cost of quantization — FP16/FP8 pass the 2% budget, INT8 fails"
+          loading="lazy"
+          className="h-full w-full object-cover"
+        />
       </div>
     ),
-    caption: "fig. 2 — p95 latency per frame (ms), lower is better",
+    caption: "fig. 2 — accuracy cost of quantization · measured on RTX 5070",
   },
   {
     no: "03",
