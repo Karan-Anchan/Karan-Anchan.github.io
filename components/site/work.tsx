@@ -18,10 +18,11 @@ const rlpdCurve = Array.from({ length: 26 }, (_, i) => {
   };
 });
 
+/* measured p95 latency per frame (ms) — RTX 5070 / Ryzen 7700 / WebGPU */
 const yoloLatency = [
-  { name: "TensorRT · INT8", ms: 6.4 },
-  { name: "ONNX RT · CPU", ms: 21.8 },
-  { name: "WebGPU", ms: 34.5 },
+  { name: "TensorRT · GPU", ms: 2.9 },
+  { name: "WebGPU · browser", ms: 41.0 },
+  { name: "ONNX RT · CPU", ms: 41.3 },
 ];
 
 const lime = "var(--lime)";
@@ -190,7 +191,7 @@ const entries: Entry[] = [
   },
   {
     no: "02",
-    cover: "/covers/yolo.webp",
+    cover: "/covers/yolo-demo.gif",
     hue: "var(--accent-4)",
     tags: [
       { label: "Active · 2026", hot: true },
@@ -203,15 +204,17 @@ const entries: Entry[] = [
       <>
         Fine-tune an <strong>NMS-free YOLO26</strong>, ship the{" "}
         <em className="font-serif-accent italic">same network</em> to TensorRT
-        (INT8, RTX 5070), ONNX Runtime (Ryzen 7700) and{" "}
-        <strong>WebGPU in the browser</strong> — an MLPerf-style
-        latency-per-watt study under a ≤2% mAP budget.
+        (RTX 5070), ONNX Runtime (Ryzen 7700) and{" "}
+        <strong>WebGPU in the browser</strong>, then measure every path with
+        MLPerf-style rigor + NVML power. On Blackwell, <strong>FP8 hits 560
+        FPS</strong> and FP16 wins latency-per-watt — while INT8, the reflex
+        default, is dominated on accuracy, speed <em>and</em> power.
       </>
     ),
     metrics: [
       { v: "3", l: "runtimes, one model" },
-      { v: "≤2%", l: "mAP budget" },
-      { v: "INT8", l: "PTQ calibrated" },
+      { v: "560", l: "FPS · GPU (FP8)" },
+      { v: "44", l: "FPS · in-browser" },
     ],
     links: [
       {
