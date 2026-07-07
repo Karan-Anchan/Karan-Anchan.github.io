@@ -215,6 +215,10 @@ const entries: Entry[] = [
     ],
     links: [
       {
+        label: "Live demo",
+        href: "https://karan-anchan.github.io/edge-yolo26-deployment/",
+      },
+      {
         label: "Repository",
         href: "https://github.com/Karan-Anchan/edge-yolo26-deployment",
       },
