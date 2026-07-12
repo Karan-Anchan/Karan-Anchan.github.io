@@ -256,6 +256,9 @@
 
 ::selection { background: var(--lime); color: #09090b; }
 
+/* bobbing pixel tree for the forest terrain loader */
+@keyframes mcBob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+
 @media (hover: hover) and (pointer: fine) {
   .custom-cursor-on, .custom-cursor-on a, .custom-cursor-on button {
     cursor: none;
