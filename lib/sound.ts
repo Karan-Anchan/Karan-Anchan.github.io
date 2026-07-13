@@ -90,6 +90,24 @@ export const sound = {
     note(f * 2.76, { dur: 0.45, gain: 0.007, delay: 0.012, lowpass: 5200 });
   },
 
+  /* "enter the world" — warm low swell + rising arpeggio into a shimmering
+     major triad. Plays once when the intro preloader opens the site. */
+  enter() {
+    if (!enabled) return;
+    // low swell for body
+    note(87.31, { type: "sine", dur: 1.5, gain: 0.05, lowpass: 700 });
+    note(130.81, { type: "sine", dur: 1.4, gain: 0.03, lowpass: 900, delay: 0.02 });
+    // rising arpeggio: C4 E4 G4 C5
+    [261.63, 329.63, 392.0, 523.25].forEach((f, i) =>
+      note(f, { type: "triangle", dur: 0.5, gain: 0.03, delay: i * 0.085, lowpass: 5200 }),
+    );
+    // shimmering triad on top: C5 E5 G5
+    [523.25, 659.25, 783.99].forEach((f, i) => {
+      note(f, { type: "triangle", dur: 1.7, gain: 0.022, delay: 0.36 + i * 0.03, detune: i % 2 ? 6 : -5, lowpass: 4600 });
+      note(f, { dur: 1.9, gain: 0.012, delay: 0.38 + i * 0.03, detune: i % 2 ? -6 : 5, lowpass: 2000 });
+    });
+  },
+
   /* minecraft xp-orb ding: two quick random-pitched plings */
   xp() {
     if (!enabled) return;
