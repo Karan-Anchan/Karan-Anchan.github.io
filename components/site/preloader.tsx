@@ -1,82 +1,86 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { sound } from "@/lib/sound";
 
-/* Full-page Minecraft-flavoured intro. Covers the site while assets load,
-   fills a terrain bar to 100%, then waits for a click / Enter to play the
-   "enter the world" sound and slide up, revealing the (already-loaded) page.
-   The hero is a real grass block (Blender → GLB) that rotates slowly and
-   bounces very slightly. Shown once per tab session. */
+/* Full-page intro. The wordmark decodes out of pixel noise while a spectrum
+   hairline fills along the bottom edge. Shown on every visit for at least
+   MIN_MS, then — once the page has actually loaded — it auto-exits with a
+   two-layer wipe: the panel slides up, a spectrum flash trails it. */
+
+const NAME = "KARAN·ANCHAN";
+const GLYPHS = "<>/\\#%&@+=*?KARANCHN013";
 const MESSAGES = [
-  "Building terrain",
-  "Growing the forest",
-  "Loading chunks",
-  "Spawning agents",
-  "Compiling shaders",
-  "Measuring everything",
+  "planting pixels",
+  "growing the forest",
+  "loading chunks",
+  "compiling shaders",
 ];
 
-export function Preloader() {
-  const [progress, setProgress] = useState(0);
-  const [ready, setReady] = useState(false);
-  const [exiting, setExiting] = useState(false);
-  const [done, setDone] = useState(false);
-  const [msg, setMsg] = useState(0);
-  const [blockReady, setBlockReady] = useState(false);
-  const start = useRef(0);
-  const loaded = useRef(false);
+const MIN_MS = 4000; // never shorter than this
+const HARD_MS = 9000; // never longer than this, even if `load` misfires
+const EXIT_MS = 950; // wipe duration before unmount
 
-  // session gate + scroll lock
+export function Preloader() {
+  const [display, setDisplay] = useState<string[]>(() =>
+    NAME.split("").map((c) => (c === "·" ? "·" : "#"))
+  );
+  const [progress, setProgress] = useState(0);
+  const [msg, setMsg] = useState(0);
+  const [done, setDone] = useState(false); // hit 100%, brief hold
+  const [exiting, setExiting] = useState(false); // wipe running
+  const [hidden, setHidden] = useState(false); // unmounted
+  const reduced = useRef(false);
+
+  // scroll lock while visible
   useEffect(() => {
-    if (sessionStorage.getItem("ka-entered")) {
-      setDone(true);
-      return;
-    }
-    start.current = performance.now();
+    reduced.current = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     document.body.style.overflow = "hidden";
     return () => {
       document.body.style.overflow = "";
     };
   }, []);
 
-  // register the <model-viewer> element for the spinning block
+  // time-based progress, gated on the real load signal + 4s minimum
   useEffect(() => {
-    if (done) return;
-    let alive = true;
-    import("@google/model-viewer")
-      .then(() => alive && setBlockReady(true))
-      .catch(() => {});
-    return () => {
-      alive = false;
-    };
-  }, [done]);
-
-  // time-based progress; real load signals let it finish sooner
-  useEffect(() => {
-    if (done) return;
-    if (!start.current) start.current = performance.now();
-    const MIN = 1400;
-    const onLoad = () => (loaded.current = true);
-    if (document.readyState === "complete") onLoad();
-    else window.addEventListener("load", onLoad, { once: true });
+    const start = performance.now();
+    let loaded = document.readyState === "complete";
+    const onLoad = () => (loaded = true);
+    window.addEventListener("load", onLoad, { once: true });
     document.fonts?.ready.then(onLoad);
 
-    const DURATION = 2200;
     let raf = 0,
-      alive = true;
+      alive = true,
+      lastScramble = 0;
+
     const tick = () => {
       if (!alive) return;
-      const elapsed = performance.now() - start.current;
-      const canFinish = elapsed > MIN && (loaded.current || elapsed > 2800);
-      const ceiling = canFinish ? 100 : 90;
-      const p = Math.min(ceiling, (elapsed / DURATION) * 100);
-      if (p >= 100 && canFinish) {
-        setProgress(100);
-        setReady(true);
-        return;
+      // wall clock, not the rAF timestamp — the latter can skew in
+      // throttled/headless frames and on the very first callback
+      const now = performance.now();
+      const elapsed = Math.max(0, now - start);
+      const canFinish = elapsed >= MIN_MS && (loaded || elapsed > HARD_MS);
+      const pct = Math.min((elapsed / MIN_MS) * 100, canFinish ? 100 : 96);
+      setProgress(pct);
+
+      // decode: letters resolve left→right with the bar; the rest churn
+      const resolved = Math.floor((pct / 100) * NAME.length);
+      if (reduced.current) {
+        setDisplay(NAME.split(""));
+      } else if (now - lastScramble > 70 || pct >= 100) {
+        lastScramble = now;
+        setDisplay(
+          NAME.split("").map((c, i) =>
+            c === "·" || i < resolved || pct >= 100
+              ? c
+              : GLYPHS[Math.floor(Math.random() * GLYPHS.length)]
+          )
+        );
       }
-      setProgress(p);
+
+      if (pct >= 100) {
+        setDone(true);
+        return; // hold handled below
+      }
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
@@ -85,183 +89,181 @@ export function Preloader() {
       cancelAnimationFrame(raf);
       window.removeEventListener("load", onLoad);
     };
-  }, [done]);
+  }, []);
 
   // cycle status lines while loading
   useEffect(() => {
-    if (done || ready) return;
-    const id = window.setInterval(() => setMsg((m) => (m + 1) % MESSAGES.length), 850);
+    if (done) return;
+    const id = window.setInterval(() => setMsg((m) => (m + 1) % MESSAGES.length), 900);
     return () => clearInterval(id);
-  }, [done, ready]);
+  }, [done]);
 
-  const enter = () => {
-    if (!ready || exiting) return;
-    try {
-      sound.unlock();
-      sound.enter();
-    } catch {}
-    sessionStorage.setItem("ka-entered", "1");
-    setExiting(true);
-    window.setTimeout(() => {
-      document.body.style.overflow = "";
-      setDone(true);
-    }, 900);
-  };
-
+  // short hold at 100%, then the wipe, then unmount
   useEffect(() => {
-    if (!ready) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Enter" || e.key === " ") enter();
+    if (!done) return;
+    const hold = window.setTimeout(() => setExiting(true), 450);
+    const gone = window.setTimeout(() => {
+      document.body.style.overflow = "";
+      setHidden(true);
+    }, 450 + EXIT_MS);
+    return () => {
+      clearTimeout(hold);
+      clearTimeout(gone);
     };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ready, exiting]);
+  }, [done]);
 
-  if (done) return null;
+  if (hidden) return null;
 
   const pct = Math.floor(progress);
+  const resolved = Math.floor((progress / 100) * NAME.length);
+  const wipe = reduced.current
+    ? { transition: "opacity .5s ease", opacity: exiting ? 0 : 1 }
+    : {
+        transition: "transform .8s cubic-bezier(.76,0,.24,1)",
+        transform: exiting ? "translateY(-100%)" : "none",
+      };
 
   return (
-    <div
-      id="ka-preloader"
-      role="dialog"
-      aria-label="Loading Karan Anchan's portfolio"
-      onClick={enter}
-      className={`fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden ${
-        ready ? "cursor-pointer" : ""
-      }`}
-      style={{
-        background: "radial-gradient(120% 90% at 50% 42%, #12140f 0%, #09090b 60%, #060705 100%)",
-        transform: exiting ? "translateY(-100%)" : "none",
-        transition: "transform .85s cubic-bezier(.76,0,.24,1)",
-      }}
-    >
-      {/* pixel grid, faded at the edges */}
+    <>
+      {/* spectrum flash that trails the panel during the wipe */}
       <div
-        className="pointer-events-none absolute inset-0"
+        aria-hidden
+        className="fixed inset-0 z-[99]"
         style={{
-          backgroundImage:
-            "linear-gradient(rgba(199,242,132,.04) 1px, transparent 1px), linear-gradient(90deg, rgba(199,242,132,.04) 1px, transparent 1px)",
-          backgroundSize: "36px 36px",
-          maskImage: "radial-gradient(ellipse 78% 68% at 50% 46%, #000, transparent)",
-          WebkitMaskImage: "radial-gradient(ellipse 78% 68% at 50% 46%, #000, transparent)",
+          background:
+            "linear-gradient(115deg, var(--lime), var(--accent-4) 35%, var(--accent-2) 70%, var(--accent-5))",
+          ...wipe,
+          ...(reduced.current
+            ? {}
+            : { transition: "transform .8s cubic-bezier(.76,0,.24,1) .12s" }),
         }}
       />
 
       <div
-        className="relative flex flex-col items-center px-6 text-center"
-        style={{ opacity: exiting ? 0 : 1, transition: "opacity .4s ease" }}
+        id="ka-preloader"
+        role="status"
+        aria-label="Loading Karan Anchan's portfolio"
+        className="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden bg-[var(--bg)]"
+        style={wipe}
       >
-        {/* rotating + softly-floating grass block */}
-        <div className="relative flex h-[168px] w-[168px] items-center justify-center">
-          {/* grass-green glow behind the block */}
+        {/* the site's dot grid, faded toward the edges */}
+        <div
+          className="dot-grid pointer-events-none absolute inset-0"
+          style={{
+            maskImage: "radial-gradient(ellipse 75% 62% at 50% 46%, #000, transparent)",
+            WebkitMaskImage:
+              "radial-gradient(ellipse 75% 62% at 50% 46%, #000, transparent)",
+          }}
+        />
+
+        <div
+          className="relative flex flex-col items-center px-6 text-center"
+          style={{ opacity: exiting ? 0 : 1, transition: "opacity .3s ease" }}
+        >
+          {/* decoding wordmark */}
           <div
-            className="pointer-events-none absolute inset-0"
-            style={{ background: "radial-gradient(circle at 50% 55%, rgba(140,195,74,.18), transparent 62%)" }}
-          />
-          <div
+            aria-hidden
             style={{
-              width: 150,
-              height: 150,
-              pointerEvents: "none",
-              animation: "mcFloat 2.6s ease-in-out infinite",
-              filter: "drop-shadow(0 16px 20px rgba(0,0,0,.55))",
+              fontFamily: "var(--font-pixel)",
+              fontSize: "clamp(26px, 7.5vw, 76px)",
+              lineHeight: 1,
+              whiteSpace: "nowrap",
             }}
           >
-            {blockReady ? (
-              <model-viewer
-                src="/models/grass.glb"
-                auto-rotate
-                auto-rotate-delay="0"
-                rotation-per-second="30deg"
-                interaction-prompt="none"
-                disable-zoom
-                disable-tap
-                disable-pan
-                camera-orbit="30deg 62deg auto"
-                exposure="1.15"
-                shadow-intensity="0"
-                style={{ width: "100%", height: "100%", background: "transparent" }}
-              />
-            ) : (
-              <div className="flex h-full w-full items-center justify-center">
-                <div
-                  className="animate-pulse"
-                  style={{ width: 52, height: 52, background: "#6ea92f", opacity: 0.4 }}
-                />
-              </div>
+            {display.map((c, i) =>
+              NAME[i] === "·" ? (
+                <span
+                  key={i}
+                  className={done ? "blink" : ""}
+                  style={{
+                    display: "inline-block",
+                    width: ".45em",
+                    color: "var(--accent-5)",
+                  }}
+                >
+                  ·
+                </span>
+              ) : (
+                <span
+                  key={i}
+                  style={{
+                    display: "inline-block",
+                    width: ".62em",
+                    color: done
+                      ? "var(--lime)"
+                      : i < resolved
+                        ? "var(--fg)"
+                        : "var(--faint)",
+                    transition: "color .25s ease",
+                  }}
+                >
+                  {c}
+                </span>
+              )
             )}
+          </div>
+
+          {/* status line */}
+          <div
+            style={{
+              fontFamily: "var(--font-mono)",
+              fontSize: 11,
+              letterSpacing: ".26em",
+              textTransform: "uppercase",
+              color: done ? "var(--lime)" : "var(--dim)",
+              transition: "color .25s ease",
+              minHeight: 15,
+              marginTop: 26,
+            }}
+          >
+            {done ? "ready — entering world" : `${MESSAGES[msg]}…`}
           </div>
         </div>
 
+        {/* footer row */}
         <div
-          style={{
-            fontFamily: "var(--font-pixel)",
-            color: "#c7f284",
-            fontSize: "clamp(22px,4vw,40px)",
-            letterSpacing: ".1em",
-            lineHeight: 1,
-            marginTop: 4,
-          }}
+          className="absolute inset-x-0 bottom-0 flex items-end justify-between px-5 pb-4 sm:px-7 sm:pb-5"
+          style={{ opacity: exiting ? 0 : 1, transition: "opacity .3s ease" }}
         >
-          KARAN ANCHAN
+          <span
+            style={{
+              fontFamily: "var(--font-mono)",
+              fontSize: 10,
+              letterSpacing: ".2em",
+              textTransform: "uppercase",
+              color: "var(--faint)",
+            }}
+          >
+            karan-anchan.github.io
+          </span>
+          <span
+            style={{
+              fontFamily: "var(--font-pixel)",
+              fontSize: "clamp(20px, 3vw, 30px)",
+              lineHeight: 1,
+              color: done ? "var(--lime)" : "var(--fg2)",
+              transition: "color .25s ease",
+              fontVariantNumeric: "tabular-nums",
+            }}
+          >
+            {pct}%
+          </span>
         </div>
 
-        <div
-          style={{
-            fontFamily: "var(--font-mono)",
-            fontSize: 11.5,
-            letterSpacing: ".24em",
-            textTransform: "uppercase",
-            color: ready ? "#c7f284" : "#7c8070",
-            minHeight: 15,
-            marginTop: 20,
-          }}
-        >
-          {ready ? "▶ Press start" : `${MESSAGES[msg]}…`}
-        </div>
-
-        {/* blocky terrain bar */}
-        <div
-          style={{
-            width: "min(340px,72vw)",
-            height: 16,
-            background: "rgba(0,0,0,.55)",
-            border: "3px solid #2b3320",
-            padding: 3,
-            marginTop: 16,
-          }}
-        >
+        {/* spectrum hairline — the actual progress bar */}
+        <div className="absolute inset-x-0 bottom-0 h-[3px] bg-[var(--line)]">
           <div
             style={{
               height: "100%",
               width: `${pct}%`,
-              background: "#c7f284",
-              transition: "width .12s linear",
+              background:
+                "linear-gradient(90deg, var(--lime), var(--accent-4) 35%, var(--accent-2) 70%, var(--accent-5))",
+              backgroundSize: "100vw 100%",
+              transition: "width .15s linear",
             }}
           />
         </div>
-        <div style={{ fontFamily: "var(--font-pixel)", fontSize: 14, color: "#9aa88a", marginTop: 12 }}>
-          {pct}%
-        </div>
-
-        <div
-          className={ready ? "animate-pulse" : ""}
-          style={{
-            fontFamily: "var(--font-mono)",
-            fontSize: 10,
-            letterSpacing: ".2em",
-            textTransform: "uppercase",
-            color: "#5a5f50",
-            marginTop: 18,
-            opacity: ready ? 1 : 0,
-            transition: "opacity .4s ease",
-          }}
-        >
-          click anywhere · or press enter
-        </div>
       </div>
-    </div>
+    </>
   );
 }

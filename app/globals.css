@@ -256,10 +256,6 @@
 
 ::selection { background: var(--lime); color: #09090b; }
 
-/* gentle float for the intro's rotating grass block */
-@keyframes mcBob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
-@keyframes mcFloat { 0%, 100% { transform: translateY(2px); } 50% { transform: translateY(-6px); } }
-
 @media (hover: hover) and (pointer: fine) {
   .custom-cursor-on, .custom-cursor-on a, .custom-cursor-on button {
     cursor: none;
