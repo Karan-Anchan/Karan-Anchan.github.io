@@ -239,22 +239,23 @@ const entries: Entry[] = [
       { label: "Language modelling" },
     ],
     title: "Mamba-2 × attention — a hybrid LM ratio study",
-    href: "https://github.com/Karan-Anchan",
+    href: "https://github.com/Karan-Anchan/mamba-hybrid-lm",
     desc: (
       <>
-        A <strong>160M-param hybrid LM</strong> interleaving Mamba-2 SSM blocks
-        with sparse attention (the Jamba pattern), trained on FineWeb-Edu at
-        matched FLOPs. The 1:7 mix holds full-attention perplexity within{" "}
-        <strong>~3%</strong> at a fraction of the KV-cache.
+        A <strong>~50M-param hybrid LM</strong> interleaving Mamba-2 SSM blocks
+        with causal attention (the Jamba pattern), trained on OpenWebText at
+        matched tokens-seen. Sweeping the attention:SSM ratio —{" "}
+        <strong>1:7 leads the reduced-scale preview</strong>; KV-cache and
+        inference columns land next.
       </>
     ),
     metrics: [
-      { v: "160M", l: "parameters" },
-      { v: "1:7", l: "attn : ssm sweet spot" },
-      { v: "32K", l: "eval context" },
+      { v: "~50M", l: "parameters" },
+      { v: "1:7", l: "attn : ssm front-runner" },
+      { v: "102.4", l: "val ppl · preview" },
     ],
     links: [
-      { label: "Repo — soon", href: "https://github.com/Karan-Anchan" },
+      { label: "Repo", href: "https://github.com/Karan-Anchan/mamba-hybrid-lm" },
       { label: "Mamba-2 paper", href: "https://arxiv.org/abs/2405.21060" },
     ],
     fig: <MambaFig />,
