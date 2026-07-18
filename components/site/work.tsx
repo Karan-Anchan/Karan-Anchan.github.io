@@ -1,22 +1,10 @@
 "use client";
 
-import { AreaChart, Area } from "@/components/charts/area-chart";
 import GlowBorderCard from "@/components/ui/glow-border-card";
 import { Reveal, SectionHead } from "@/components/site/reveal";
 import { GiantTitle } from "@/components/site/giant-title";
 import { motion } from "motion/react";
 
-/* synthetic figure data — see README: illustrative until real results land */
-const rlpdCurve = Array.from({ length: 26 }, (_, i) => {
-  const t = i / 25;
-  return {
-    date: new Date(2026, 0, 1 + i * 7),
-    rlpd: Math.round(1000 * (1 - Math.exp(-4.2 * t)) + 12 * Math.sin(i)),
-    sac: Math.round(1000 * (1 - Math.exp(-1.4 * t)) * 0.72 + 10 * Math.cos(i)),
-  };
-});
-
-const lime = "var(--lime)";
 const amber = "var(--accent-3)";
 const dim = "var(--faint)";
 
@@ -154,14 +142,16 @@ const entries: Entry[] = [
       <>
         Reproduction and extension of <strong>RLPD</strong> (Ball et al., ICML
         2023) in PyTorch with Minari offline data: symmetric 50/50 sampling,
-        LayerNorm critics, large ensembles at high UTD — reproduced on three
-        MuJoCo suites, then pushed to <strong>Humanoid-v5</strong>.
+        LayerNorm critics, large ensembles at high UTD. Full-length 250k runs
+        put <strong>all three MuJoCo tasks at or past the D4RL expert line</strong>{" "}
+        — Walker2d at 139 normalized — next: 3-seed aggregates and{" "}
+        <strong>Humanoid-v5</strong>.
       </>
     ),
     metrics: [
-      { v: "3×3", l: "envs × seeds" },
-      { v: "10", l: "critic ensemble" },
-      { v: "UTD 20", l: "update-to-data" },
+      { v: "139", l: "walker2d normalized (d4rl)" },
+      { v: "3/3", l: "tasks at expert line" },
+      { v: "250k", l: "env-steps · seed 0" },
     ],
     links: [
       {
@@ -171,14 +161,16 @@ const entries: Entry[] = [
       { label: "Paper", href: "https://arxiv.org/abs/2302.02948" },
     ],
     fig: (
-      <div className="p-5">
-        <AreaChart data={rlpdCurve} aspectRatio="16 / 9">
-          <Area dataKey="rlpd" fill={lime} fillOpacity={0.35} />
-          <Area dataKey="sac" fill={dim} fillOpacity={0.15} />
-        </AreaChart>
+      <div className="aspect-[16/10] w-full">
+        <img
+          src="/covers/rlpd-returns.png"
+          alt="Normalized return vs environment steps — Hopper, Walker2d, HalfCheetah, seed 0, 250k steps"
+          loading="lazy"
+          className="h-full w-full object-cover"
+        />
       </div>
     ),
-    caption: "fig. 1 — return vs env steps · rlpd (lime) vs sac+data",
+    caption: "fig. 1 — normalized return vs env steps · seed 0 · 250k",
   },
   {
     no: "02",
@@ -231,6 +223,51 @@ const entries: Entry[] = [
   },
   {
     no: "03",
+    cover: "/covers/nmt-attn.png",
+    hue: "var(--accent-5)",
+    tags: [
+      { label: "Shipped · 2026" },
+      { label: "NLP · from scratch" },
+      { label: "Rebuilt honestly" },
+    ],
+    title: "Attention Is All You Need — from scratch, EN → HI",
+    href: "https://github.com/Karan-Anchan/en-hi-nmt-transformer",
+    desc: (
+      <>
+        A 6-layer Transformer in <strong>raw PyTorch</strong> — no{" "}
+        <code>nn.Transformer</code>, no <code>transformers</code> — trained
+        EN→HI on Samanantar with byte-level BPE, a Noam schedule and beam
+        search. The 2024 original reported a mirage BLEU on an in-loop slice;
+        the rebuild scores on a <strong>frozen 5k test set</strong> and ships a
+        Gradio demo with live attention maps.
+      </>
+    ),
+    metrics: [
+      { v: "16.9", l: "sacrebleu · beam k=4" },
+      { v: "41.6", l: "chrf++ · frozen test set" },
+      { v: "~43M", l: "params, from scratch" },
+    ],
+    links: [
+      {
+        label: "Repository",
+        href: "https://github.com/Karan-Anchan/en-hi-nmt-transformer",
+      },
+      { label: "Paper", href: "https://arxiv.org/abs/1706.03762" },
+    ],
+    fig: (
+      <div className="aspect-[16/10] w-full">
+        <img
+          src="/covers/nmt-metrics.png"
+          alt="Validation SacreBLEU and chrF++ climbing over training steps"
+          loading="lazy"
+          className="h-full w-full object-cover"
+        />
+      </div>
+    ),
+    caption: "fig. 3 — validation sacrebleu & chrf++ over training",
+  },
+  {
+    no: "04",
     cover: "/covers/mamba.webp",
     hue: "var(--accent-2)",
     tags: [
@@ -259,10 +296,10 @@ const entries: Entry[] = [
       { label: "Mamba-2 paper", href: "https://arxiv.org/abs/2405.21060" },
     ],
     fig: <MambaFig />,
-    caption: "fig. 3 — interleave pattern & kv-cache saving",
+    caption: "fig. 4 — interleave pattern & kv-cache saving",
   },
   {
-    no: "04",
+    no: "05",
     cover: "/covers/sae.webp",
     hue: "var(--accent-3)",
     tags: [
@@ -290,7 +327,7 @@ const entries: Entry[] = [
       { label: "Circuits thread", href: "https://transformer-circuits.pub/" },
     ],
     fig: <SaeFig />,
-    caption: "fig. 4 — feature circuit, induction",
+    caption: "fig. 5 — feature circuit, induction",
   },
 ];
 
@@ -302,7 +339,7 @@ export function Work() {
         index="§02"
         title="Selected"
         accent="work"
-        side="ckpt 02 — two shipping, two brewing"
+        side="ckpt 02 — three shipped, two brewing"
       />
       <div className="space-y-20">
         {entries.map((e, i) => (
