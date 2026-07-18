@@ -6,7 +6,7 @@ import { AnimatePresence, motion } from "motion/react";
 const NOW = [
   "training RLPD on Humanoid-v5 — seed 2 still hates me",
   "re-reading the Dreamer 4 paper. it holds up",
-  "calibrating INT8 on the RTX 5070 (again)",
+  "sweeping attention:ssm ratios — 1:7 still leads",
   "teaching n8n to triage my inbox so I don't have to",
   "somewhere between masala chai and filter coffee no. 3",
   "waiting for a W&B run — you're reading this because of it",
