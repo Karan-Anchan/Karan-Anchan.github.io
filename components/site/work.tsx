@@ -224,7 +224,7 @@ const entries: Entry[] = [
   },
   {
     no: "03",
-    cover: "/covers/nmt-attn.webp",
+    cover: "/covers/nmt-decode.webp",
     hue: "var(--accent-5)",
     tags: [
       { label: "Shipped · 2026" },
@@ -238,9 +238,11 @@ const entries: Entry[] = [
         A 6-layer Transformer in <strong>raw PyTorch</strong> — no{" "}
         <code>nn.Transformer</code>, no <code>transformers</code> — trained
         EN→HI on Samanantar with byte-level BPE, a Noam schedule and beam
-        search. The 2024 original reported a mirage BLEU on an in-loop slice;
-        the rebuild scores on a <strong>frozen 5k test set</strong> and ships a
-        Gradio demo with live attention maps.
+        search. The 2024 original reported a mirage BLEU; the rebuild scores a{" "}
+        <strong>frozen 5k test set</strong> and finds beam&apos;s +0.2 chrF++
+        is really a <strong>two-way rewrite</strong> — 162 sentences better,
+        140 worse — at 9.3× the latency. Hover: the decoder translating live,
+        attention and all.
       </>
     ),
     metrics: [
@@ -258,14 +260,14 @@ const entries: Entry[] = [
     fig: (
       <div className="aspect-[16/10] w-full">
         <img
-          src="/covers/nmt-metrics.webp"
-          alt="Validation SacreBLEU and chrF++ climbing over training steps"
+          src="/covers/nmt-beam.webp"
+          alt="Per-sentence chrF++ scatter, greedy vs beam decode — beam's +0.2 corpus gain hides 162 improved and 140 worsened sentences at 9.3 times the latency"
           loading="lazy"
           className="h-full w-full object-cover"
         />
       </div>
     ),
-    caption: "fig. 3 — validation sacrebleu & chrf++ over training",
+    caption: "fig. 3 — what beam search actually buys · frozen 500-pair test",
   },
   {
     no: "04",
