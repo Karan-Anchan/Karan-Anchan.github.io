@@ -4,7 +4,8 @@ import { useEffect, useRef, useState } from "react";
 
 /* Full-page intro. The wordmark decodes out of pixel noise while a spectrum
    hairline fills along the bottom edge. Shown on every visit for at least
-   MIN_MS, then — once the page has actually loaded — it auto-exits with a
+   a minimum hold (full on first visit, brief on repeats), then — once the
+   page has actually loaded — it auto-exits with a
    two-layer wipe: the panel slides up, a spectrum flash trails it. */
 
 const NAME = "KARAN·ANCHAN";
@@ -16,7 +17,8 @@ const MESSAGES = [
   "compiling shaders",
 ];
 
-const MIN_MS = 4000; // never shorter than this
+const MIN_MS_FIRST = 4000; // full decode on the first visit of a session
+const MIN_MS_REPEAT = 1200; // fast-path once the intro has been seen
 const HARD_MS = 9000; // never longer than this, even if `load` misfires
 const EXIT_MS = 950; // wipe duration before unmount
 
@@ -40,8 +42,16 @@ export function Preloader() {
     };
   }, []);
 
-  // time-based progress, gated on the real load signal + 4s minimum
+  // time-based progress, gated on the real load signal + a minimum hold:
+  // the full 4s decode on a session's first visit, a fast-path after that
   useEffect(() => {
+    let minMs = MIN_MS_FIRST;
+    try {
+      if (sessionStorage.getItem("kn-intro-seen")) minMs = MIN_MS_REPEAT;
+      sessionStorage.setItem("kn-intro-seen", "1");
+    } catch {
+      /* privacy mode — keep the full intro */
+    }
     const start = performance.now();
     let loaded = document.readyState === "complete";
     const onLoad = () => (loaded = true);
@@ -58,8 +68,8 @@ export function Preloader() {
       // throttled/headless frames and on the very first callback
       const now = performance.now();
       const elapsed = Math.max(0, now - start);
-      const canFinish = elapsed >= MIN_MS && (loaded || elapsed > HARD_MS);
-      const pct = Math.min((elapsed / MIN_MS) * 100, canFinish ? 100 : 96);
+      const canFinish = elapsed >= minMs && (loaded || elapsed > HARD_MS);
+      const pct = Math.min((elapsed / minMs) * 100, canFinish ? 100 : 96);
       setProgress(pct);
 
       // decode: letters resolve left→right with the bar; the rest churn

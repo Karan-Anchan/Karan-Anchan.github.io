@@ -1,9 +1,33 @@
 "use client";
 
+import { animate } from "animejs";
 import { Link003 } from "@/components/ui/skiper-ui/skiper40";
 import ParticleButton from "@/components/kokonutui/particle-button";
 import { Reveal } from "@/components/site/reveal";
 import { Magnetic } from "@/components/site/magnetic";
+
+/* "back to epoch 0" — an eased ride to the top instead of the browser's
+   default smooth scroll. On arrival the hero replays its decode entrance
+   (see hero.tsx), like a fresh run from initialization. */
+function backToEpochZero(e: React.MouseEvent<HTMLAnchorElement>) {
+  e.preventDefault();
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    window.scrollTo(0, 0);
+    return;
+  }
+  const state = { y: window.scrollY };
+  const ride = animate(state, {
+    y: 0,
+    duration: 1100,
+    ease: "inOutQuart",
+    // "instant" per frame so the CSS scroll-behavior:smooth doesn't fight us
+    onUpdate: () => window.scrollTo({ top: state.y, behavior: "instant" }),
+    onComplete: () => window.dispatchEvent(new Event("kn:epoch0")),
+  });
+  // the user grabbing the wheel mid-ride wins
+  window.addEventListener("wheel", () => ride.pause(), { once: true, passive: true });
+  window.addEventListener("touchstart", () => ride.pause(), { once: true, passive: true });
+}
 
 export function Contact() {
   return (
@@ -17,7 +41,7 @@ export function Contact() {
         aria-hidden
         className="panorama-drift pixelated pointer-events-none absolute inset-x-0 bottom-0 h-64 opacity-35 dark:opacity-60"
         style={{
-          backgroundImage: "url(/mc/panorama.png)",
+          backgroundImage: "url(/mc/panorama.webp)",
           backgroundRepeat: "repeat-x",
           backgroundSize: "auto 100%",
           backgroundPosition: "bottom left",
@@ -124,7 +148,11 @@ export function Contact() {
             </a>{" "}
             (cc-by-sa 4.0)
           </span>
-          <a href="#top" className="transition-colors hover:text-[var(--accent-4)]">
+          <a
+            href="#top"
+            onClick={backToEpochZero}
+            className="transition-colors hover:text-[var(--accent-4)]"
+          >
             back to epoch 0 ↑
           </a>
         </footer>

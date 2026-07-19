@@ -32,26 +32,32 @@ export function Hero() {
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const letters = nameRef.current?.querySelectorAll("span[data-letter]");
-    if (letters?.length) {
-      animate(letters, {
-        translateY: ["1.05em", "0em"],
-        opacity: [0, 1],
-        duration: 850,
-        delay: stagger(38, { start: 200 }),
-        ease: "outExpo",
-      });
-    }
-    const lines = document.querySelectorAll("[data-tagline]");
-    if (lines.length) {
-      animate(lines, {
-        translateX: [-18, 0],
-        opacity: [0, 1],
-        duration: 700,
-        delay: stagger(140, { start: 900 }),
-        ease: "outQuart",
-      });
-    }
+    const play = () => {
+      const letters = nameRef.current?.querySelectorAll("span[data-letter]");
+      if (letters?.length) {
+        animate(letters, {
+          translateY: ["1.05em", "0em"],
+          opacity: [0, 1],
+          duration: 850,
+          delay: stagger(38, { start: 200 }),
+          ease: "outExpo",
+        });
+      }
+      const lines = document.querySelectorAll("[data-tagline]");
+      if (lines.length) {
+        animate(lines, {
+          translateX: [-18, 0],
+          opacity: [0, 1],
+          duration: 700,
+          delay: stagger(140, { start: 900 }),
+          ease: "outQuart",
+        });
+      }
+    };
+    play();
+    // "back to epoch 0" in the footer replays the entrance on arrival
+    window.addEventListener("kn:epoch0", play);
+    return () => window.removeEventListener("kn:epoch0", play);
   }, []);
 
   return (

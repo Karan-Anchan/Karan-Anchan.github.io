@@ -174,7 +174,7 @@ const entries: Entry[] = [
   },
   {
     no: "02",
-    cover: "/covers/yolo-demo.gif",
+    cover: "/covers/yolo-demo.webp",
     hue: "var(--accent-4)",
     tags: [
       { label: "Active · 2026", hot: true },
