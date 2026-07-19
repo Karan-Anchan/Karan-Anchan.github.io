@@ -26,7 +26,7 @@ export function SoundToggle({ className = "" }: { className?: string }) {
     <button
       type="button"
       onClick={flip}
-      aria-label="Toggle interface sounds"
+      aria-label={`snd: ${on === null ? "…" : on ? "on" : "off"} — toggle interface sounds`}
       className={`group flex items-center gap-2 rounded-full border border-[var(--line)] px-3.5 py-1.5 font-mono text-[0.62rem] lowercase tracking-[0.14em] text-[var(--dim)] transition-colors hover:border-[var(--accent-4)]/60 hover:text-[var(--fg)] ${className}`}
     >
       <span

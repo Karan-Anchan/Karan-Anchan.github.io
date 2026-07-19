@@ -40,7 +40,7 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
     <button
       type="button"
       onClick={flip}
-      aria-label="Toggle light / dark theme"
+      aria-label={`mode: ${dark === null ? "…" : dark ? "lab" : "paper"} — toggle light / dark theme`}
       className={`group flex items-center gap-2 rounded-full border border-[var(--line)] px-3.5 py-1.5 font-mono text-[0.62rem] lowercase tracking-[0.14em] text-[var(--dim)] transition-colors hover:border-[var(--accent-3)]/60 hover:text-[var(--fg)] ${className}`}
     >
       <span className="relative inline-block h-2 w-2">

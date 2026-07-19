@@ -163,7 +163,7 @@ const entries: Entry[] = [
     fig: (
       <div className="aspect-[16/10] w-full">
         <img
-          src="/covers/rlpd-returns.png"
+          src="/covers/rlpd-returns.webp"
           alt="Normalized return vs environment steps — Hopper, Walker2d, HalfCheetah, seed 0, 250k steps"
           loading="lazy"
           className="h-full w-full object-cover"
@@ -212,7 +212,7 @@ const entries: Entry[] = [
     fig: (
       <div className="aspect-[16/10] w-full">
         <img
-          src="/covers/yolo-benchmark.png"
+          src="/covers/yolo-benchmark.webp"
           alt="Accuracy cost of quantization — FP16/FP8 pass the 2% budget, INT8 fails"
           loading="lazy"
           className="h-full w-full object-cover"
@@ -223,7 +223,7 @@ const entries: Entry[] = [
   },
   {
     no: "03",
-    cover: "/covers/nmt-attn.png",
+    cover: "/covers/nmt-attn.webp",
     hue: "var(--accent-5)",
     tags: [
       { label: "Shipped · 2026" },
@@ -257,7 +257,7 @@ const entries: Entry[] = [
     fig: (
       <div className="aspect-[16/10] w-full">
         <img
-          src="/covers/nmt-metrics.png"
+          src="/covers/nmt-metrics.webp"
           alt="Validation SacreBLEU and chrF++ climbing over training steps"
           loading="lazy"
           className="h-full w-full object-cover"

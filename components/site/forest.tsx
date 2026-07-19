@@ -15,17 +15,42 @@ export function ForestBackdrop() {
 
   useEffect(() => {
     let alive = true;
-    const load = () =>
+    const load = () => {
+      // model-viewer pulls its draco decoder from gstatic — warm the
+      // connection so the wasm fetch doesn't pay DNS+TLS on top
+      const pre = document.createElement("link");
+      pre.rel = "preconnect";
+      pre.href = "https://www.gstatic.com";
+      pre.crossOrigin = "anonymous";
+      document.head.appendChild(pre);
       import("@google/model-viewer").then(() => {
         if (alive) setReady(true);
       });
-    if ("requestIdleCallback" in window) {
-      requestIdleCallback(() => load(), { timeout: 1500 });
-    } else {
-      setTimeout(load, 600);
+    };
+    // the backdrop is hidden below md — don't pay for ~300KB of
+    // model-viewer JS (or the glb) on phones. Loads if the window is
+    // ever widened past the breakpoint.
+    const mq = window.matchMedia("(min-width: 768px)");
+    const schedule = () => {
+      if ("requestIdleCallback" in window) {
+        requestIdleCallback(() => load(), { timeout: 1500 });
+      } else {
+        setTimeout(load, 600);
+      }
+    };
+    if (mq.matches) {
+      schedule();
+      return () => {
+        alive = false;
+      };
     }
+    const onChange = (e: MediaQueryListEvent) => {
+      if (e.matches) schedule();
+    };
+    mq.addEventListener("change", onChange);
     return () => {
       alive = false;
+      mq.removeEventListener("change", onChange);
     };
   }, []);
 

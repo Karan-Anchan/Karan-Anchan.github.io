@@ -54,7 +54,7 @@ export function Contact() {
       <a
         href="mailto:kar.anchan02@gmail.com"
         className="brand-marquee group block overflow-hidden border-b border-[var(--line)] py-6"
-        aria-label="Email Karan"
+        aria-label="Let's talk — email Karan"
       >
         <div className="brand-marquee-track flex w-max items-center gap-8">
           {Array.from({ length: 6 }).map((_, i) => (
@@ -130,6 +130,8 @@ export function Contact() {
             <img
               src="/mc/avatar.png"
               alt="Pixel avatar of Karan holding a chai cup"
+              width={256}
+              height={256}
               loading="lazy"
               className="pixelated h-14 w-auto transition-transform duration-300 hover:-translate-y-1"
               title="chai break"

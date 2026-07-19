@@ -30,18 +30,61 @@ export const metadata: Metadata = {
   description:
     "Karan Anchan — M.Sc. Computer Science (AI), University of Freiburg. Reinforcement learning, efficient deep learning, and systems that ship.",
   metadataBase: new URL("https://karan-anchan.github.io"),
+  alternates: { canonical: "/" },
+  authors: [{ name: "Karan Anchan", url: "https://karan-anchan.github.io/" }],
+  creator: "Karan Anchan",
   openGraph: {
     title: "Karan Anchan — AI Researcher & Engineer",
     description:
       "Reinforcement learning · efficient deep learning · multimodal systems.",
     url: "https://karan-anchan.github.io/",
     type: "website",
-    images: [{ url: "/og.jpg", width: 1200, height: 630 }],
+    siteName: "Karan Anchan",
+    images: [
+      {
+        url: "/og.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Karan Anchan — AI Researcher & Engineer",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
+    title: "Karan Anchan — AI Researcher & Engineer",
+    description:
+      "Reinforcement learning · efficient deep learning · multimodal systems.",
     images: ["/og.jpg"],
   },
+};
+
+const personJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Karan Anchan",
+  url: "https://karan-anchan.github.io/",
+  image: "https://karan-anchan.github.io/portrait.webp",
+  jobTitle: "AI Researcher & Engineer",
+  email: "mailto:kar.anchan02@gmail.com",
+  affiliation: {
+    "@type": "CollegeOrUniversity",
+    name: "University of Freiburg",
+  },
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Freiburg",
+    addressCountry: "DE",
+  },
+  sameAs: [
+    "https://github.com/Karan-Anchan",
+    "https://linkedin.com/in/karan-anchan",
+  ],
+  knowsAbout: [
+    "Reinforcement Learning",
+    "Efficient Deep Learning",
+    "Computer Vision",
+    "Multimodal Systems",
+  ],
 };
 
 export default function RootLayout({
@@ -61,6 +104,10 @@ export default function RootLayout({
             __html:
               "try{var t=localStorage.getItem('theme');if(!t)t=matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';document.documentElement.classList.toggle('dark',t==='dark')}catch(e){document.documentElement.classList.add('dark')}",
           }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
         />
         {children}
         <Preloader />

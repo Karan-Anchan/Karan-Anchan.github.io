@@ -108,9 +108,11 @@ export function About() {
           <img
             src="/portrait.webp"
             alt="Dithered duotone portrait of Karan Anchan drinking chai"
+            width={770}
+            height={1036}
             loading="lazy"
             decoding="async"
-            className="w-full rounded-2xl border border-[var(--line)]"
+            className="h-auto w-full rounded-2xl border border-[var(--line)]"
           />
           <figcaption className="mt-3 flex justify-between font-mono text-[0.58rem] lowercase tracking-[0.16em] text-[var(--faint)]">
             <span>fig. 0 — the author</span>

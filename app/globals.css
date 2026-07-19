@@ -278,7 +278,7 @@
   --fg: #171410;
   --fg2: #3a352c;
   --dim: #5b564a;
-  --faint: #8a8577;
+  --faint: #6b675c; /* ≥4.5:1 on --bg and --card (WCAG AA) */
   --line: rgba(28, 22, 8, 0.12);
   --lime: #5c8a0a;
   --accent-2: #7c3aed;
@@ -297,7 +297,7 @@
   --fg: #fafafa;
   --fg2: #d4d4d8;
   --dim: #a1a1aa;
-  --faint: #71717a;
+  --faint: #7d7d86; /* ≥4.5:1 on --bg and --card (WCAG AA) */
   --line: rgba(255, 255, 255, 0.09);
   --lime: #c7f284;
   --accent-2: #c4b5fd;
