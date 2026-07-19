@@ -129,7 +129,7 @@ function SaeFig() {
 const entries: Entry[] = [
   {
     no: "01",
-    cover: "/covers/rlpd.webp",
+    cover: "/covers/rlpd-humanoid.webp",
     hue: "var(--lime)",
     tags: [
       { label: "Active · 2026", hot: true },
@@ -142,16 +142,17 @@ const entries: Entry[] = [
       <>
         Reproduction and extension of <strong>RLPD</strong> (Ball et al., ICML
         2023) in PyTorch with Minari offline data: symmetric 50/50 sampling,
-        LayerNorm critics, large ensembles at high UTD. Full-length 250k runs
-        put <strong>all three MuJoCo tasks at or past the D4RL expert line</strong>{" "}
-        — Walker2d at 139 normalized — next: 3-seed aggregates and{" "}
-        <strong>Humanoid-v5</strong>.
+        LayerNorm critics, large ensembles at high UTD. On medium data,{" "}
+        <strong>3-seed RLPD reaches 88–90% of the Minari v5 expert on all
+        three MuJoCo tasks</strong> — past the old D4RL expert line everywhere,
+        IQL trailing, SACfD collapsing — now scaling to{" "}
+        <strong>Humanoid-v5</strong> (hover: a 1M-step run learning to stand).
       </>
     ),
     metrics: [
-      { v: "139", l: "walker2d normalized (d4rl)" },
-      { v: "3/3", l: "tasks at expert line" },
-      { v: "250k", l: "env-steps · seed 0" },
+      { v: "88–90", l: "minari-normalized · 3 tasks" },
+      { v: "3×3", l: "seeds × methods · 245k steps" },
+      { v: "1M", l: "humanoid env-steps · live" },
     ],
     links: [
       {
@@ -163,14 +164,14 @@ const entries: Entry[] = [
     fig: (
       <div className="aspect-[16/10] w-full">
         <img
-          src="/covers/rlpd-returns.webp"
-          alt="Normalized return vs environment steps — Hopper, Walker2d, HalfCheetah, seed 0, 250k steps"
+          src="/covers/rlpd-benchmark.webp"
+          alt="RLPD vs IQL and SACfD on medium offline data — normalized return over 245k steps, mean ± std across 3 seeds; RLPD reaches 88–90 on the Minari v5 expert scale on Hopper, Walker2d and HalfCheetah"
           loading="lazy"
           className="h-full w-full object-cover"
         />
       </div>
     ),
-    caption: "fig. 1 — normalized return vs env steps · seed 0 · 250k",
+    caption: "fig. 1 — rlpd vs iql vs sacfd · medium data · 3 seeds ± std",
   },
   {
     no: "02",
