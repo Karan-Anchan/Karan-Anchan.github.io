@@ -129,7 +129,7 @@ function SaeFig() {
 const entries: Entry[] = [
   {
     no: "01",
-    cover: "/covers/rlpd-benchmark.webp",
+    cover: "/covers/rlpd-rollouts.gif",
     hue: "var(--lime)",
     tags: [
       { label: "Shipped · 2026", hot: true },
@@ -164,30 +164,16 @@ const entries: Entry[] = [
       { label: "Paper", href: "https://arxiv.org/abs/2302.02948" },
     ],
     fig: (
-      <div className="grid aspect-[16/10] w-full grid-cols-3 gap-2 p-3">
-        {[
-          { f: "hopper", label: "Hopper" },
-          { f: "walker2d", label: "Walker2d" },
-          { f: "halfcheetah", label: "HalfCheetah" },
-        ].map(({ f, label }) => (
-          <div
-            key={f}
-            className="relative overflow-hidden rounded-md border border-white/10 bg-black/30"
-          >
-            <img
-              src={`/covers/rlpd-${f}.gif`}
-              alt={`Trained RLPD ${label} policy rolling out in MuJoCo`}
-              loading="lazy"
-              className="h-full w-full object-cover"
-            />
-            <span className="absolute bottom-1 left-1 rounded bg-black/60 px-1.5 py-0.5 font-mono text-[0.5rem] tracking-wide text-white/85">
-              {label}
-            </span>
-          </div>
-        ))}
+      <div className="aspect-[16/10] w-full">
+        <img
+          src="/covers/rlpd-benchmark.webp"
+          alt="RLPD vs IQL and SACfD on medium offline data — normalized return over 245k steps, mean ± std across 3 seeds; RLPD reaches 88–90 on the Minari v5 expert scale on Hopper, Walker2d and HalfCheetah"
+          loading="lazy"
+          className="h-full w-full object-cover"
+        />
       </div>
     ),
-    caption: "fig. 1 — trained policies rolling out · hover for the benchmark",
+    caption: "fig. 1 — rlpd vs iql vs sacfd · 3 seeds ± std · hover for the policies",
   },
   {
     no: "02",
