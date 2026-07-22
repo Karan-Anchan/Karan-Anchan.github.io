@@ -115,6 +115,13 @@
   figure{margin:26px 0}
   figure img{width:100%;display:block;border:1px solid var(--line);border-radius:14px;background:#0a1120}
   figcaption{font-family:var(--mono);font-size:12px;color:var(--faint);margin-top:10px;text-align:center}
+  .humanoid-clip{max-width:360px;margin:32px auto 8px;position:relative;border:1px solid var(--line2);
+    border-radius:16px;overflow:hidden;background:#05070d;
+    box-shadow:0 34px 64px -34px rgba(0,0,0,.9),0 0 80px -38px var(--rlpd)}
+  .humanoid-clip img{width:100%;display:block}
+  .humanoid-clip .tag{position:absolute;left:11px;bottom:10px;font-family:var(--mono);font-size:10.5px;
+    letter-spacing:.05em;color:#d6e2f2;background:rgba(5,8,14,.74);border:1px solid var(--line2);
+    padding:3px 9px;border-radius:7px}
 
   .pull{font-family:var(--disp);font-weight:600;font-size:clamp(1.4rem,3vw,1.9rem);line-height:1.32;
     color:#fff;margin:34px 0;padding-left:22px;border-left:2px solid var(--rlpd);letter-spacing:-0.01em}
@@ -259,6 +266,10 @@
   <h2 class="reveal">Humanoid, where the honesty lives</h2>
   <p class="reveal">The paper stops at the easy bodies. I ran all three methods on Humanoid at a million steps,
   and the numbers got interesting for the wrong reasons.</p>
+  <div class="humanoid-clip reveal">
+    <img src="/covers/rlpd-humanoid.gif" alt="Best trained Humanoid policy walking in MuJoCo (IQL, best of 3 seeds)">
+    <span class="tag">Humanoid-v5 · IQL · best of 3 seeds</span>
+  </div>
   <div class="kpis">
     <div class="kpi reveal" style="--kc:var(--iql)"><div class="n" data-count="70">0</div><div class="l">IQL final — but see the asterisk</div></div>
     <div class="kpi reveal" style="--kc:var(--rlpd)"><div class="n" data-count="13">0</div><div class="l">RLPD, learning online from scratch</div></div>
