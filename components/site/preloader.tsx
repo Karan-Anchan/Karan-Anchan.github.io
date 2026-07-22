@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 
 /* Full-page intro. The wordmark decodes out of pixel noise while a spectrum
    hairline fills along the bottom edge. Shown on every visit for at least
@@ -23,6 +24,8 @@ const HARD_MS = 9000; // never longer than this, even if `load` misfires
 const EXIT_MS = 950; // wipe duration before unmount
 
 export function Preloader() {
+  const pathname = usePathname();
+  const skip = pathname !== "/";
   const [display, setDisplay] = useState<string[]>(() =>
     NAME.split("").map((c) => (c === "·" ? "·" : "#"))
   );
@@ -35,16 +38,18 @@ export function Preloader() {
 
   // scroll lock while visible
   useEffect(() => {
+    if (skip) return;
     reduced.current = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     document.body.style.overflow = "hidden";
     return () => {
       document.body.style.overflow = "";
     };
-  }, []);
+  }, [skip]);
 
   // time-based progress, gated on the real load signal + a minimum hold:
   // the full 4s decode on a session's first visit, a fast-path after that
   useEffect(() => {
+    if (skip) return;
     let minMs = MIN_MS_FIRST;
     try {
       if (sessionStorage.getItem("kn-intro-seen")) minMs = MIN_MS_REPEAT;
@@ -99,17 +104,19 @@ export function Preloader() {
       cancelAnimationFrame(raf);
       window.removeEventListener("load", onLoad);
     };
-  }, []);
+  }, [skip]);
 
   // cycle status lines while loading
   useEffect(() => {
+    if (skip) return;
     if (done) return;
     const id = window.setInterval(() => setMsg((m) => (m + 1) % MESSAGES.length), 900);
     return () => clearInterval(id);
-  }, [done]);
+  }, [done, skip]);
 
   // short hold at 100%, then the wipe, then unmount
   useEffect(() => {
+    if (skip) return;
     if (!done) return;
     const hold = window.setTimeout(() => setExiting(true), 450);
     const gone = window.setTimeout(() => {
@@ -120,9 +127,9 @@ export function Preloader() {
       clearTimeout(hold);
       clearTimeout(gone);
     };
-  }, [done]);
+  }, [done, skip]);
 
-  if (hidden) return null;
+  if (skip || hidden) return null;
 
   const pct = Math.floor(progress);
   const resolved = Math.floor((progress / 100) * NAME.length);

@@ -1,22 +1,73 @@
 import type { Metadata } from "next";
-import RlpdContent from "./content";
+import { RlpdExperience } from "./rlpd-experience";
 
 export const metadata: Metadata = {
-  title: "RLPD — offline-to-online RL, reproduced · Karan Anchan",
+  title: "RLPD — an offline-to-online RL reproduction",
   description:
-    "Reproducing RLPD in PyTorch, extending it to Humanoid-v5, and the ablation that contradicts the method — a first-person write-up by Karan Anchan.",
+    "A three-person PyTorch reproduction and critical evaluation of RLPD across MuJoCo locomotion and Humanoid-v5.",
   alternates: { canonical: "/rlpd/" },
+  authors: [
+    { name: "Karan Anchan" },
+    { name: "Pranav Menon" },
+    { name: "Sridhar Kandi" },
+  ],
+  creator: "Karan Anchan, Pranav Menon, and Sridhar Kandi",
   openGraph: {
-    title: "RLPD — offline-to-online RL, reproduced",
+    title: "RLPD — the ablation changed the story",
     description:
-      "I rebuilt RLPD, pushed it onto Humanoid, and hit an ablation that argued against the whole premise.",
+      "We reproduced offline-to-online reinforcement learning, extended it to Humanoid-v5, and found a +21.9 point online-only result at the matched 500k horizon.",
     url: "https://karan-anchan.github.io/rlpd/",
     type: "article",
-    images: [{ url: "/og-rlpd.jpg", width: 1200, height: 630, alt: "RLPD deep-dive" }],
+    siteName: "RLPD reproduction study",
+    images: [
+      {
+        url: "/rlpd/og.jpg",
+        width: 1200,
+        height: 630,
+        alt: "A blue wireframe humanoid walking through an offline-to-online reinforcement learning telemetry field",
+      },
+    ],
   },
-  twitter: { card: "summary_large_image", images: ["/og-rlpd.jpg"] },
+  twitter: {
+    card: "summary_large_image",
+    title: "RLPD — the ablation changed the story",
+    description:
+      "A team reproduction of RLPD, from three-seed locomotion to a surprising Humanoid-v5 ablation.",
+    images: ["/rlpd/og.jpg"],
+  },
 };
 
-export default function Page() {
-  return <RlpdContent />;
+const projectJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ScholarlyArticle",
+  headline: "RLPD — an offline-to-online reinforcement learning reproduction",
+  description:
+    "A PyTorch reproduction and critical evaluation of RLPD on MuJoCo locomotion and Humanoid-v5.",
+  url: "https://karan-anchan.github.io/rlpd/",
+  image: "https://karan-anchan.github.io/rlpd/og.jpg",
+  author: [
+    { "@type": "Person", name: "Karan Anchan" },
+    { "@type": "Person", name: "Pranav Menon" },
+    { "@type": "Person", name: "Sridhar Kandi" },
+  ],
+  about: [
+    "Reinforcement learning",
+    "Offline-to-online reinforcement learning",
+    "RLPD",
+    "MuJoCo",
+  ],
+  codeRepository:
+    "https://github.com/Karan-Anchan/rlpd-offline-to-online-rl",
+};
+
+export default function RlpdPage() {
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(projectJsonLd) }}
+      />
+      <RlpdExperience />
+    </>
+  );
 }

@@ -1,12 +1,10 @@
 "use client";
 
-import { useState } from "react";
 import GlowBorderCard from "@/components/ui/glow-border-card";
 import { Reveal, SectionHead } from "@/components/site/reveal";
 import { GiantTitle } from "@/components/site/giant-title";
 import { motion } from "motion/react";
-
-const isExternal = (href: string) => href.startsWith("http");
+import { useState } from "react";
 
 const amber = "var(--accent-3)";
 const dim = "var(--faint)";
@@ -18,12 +16,66 @@ type Entry = {
   tags: { label: string; hot?: boolean }[];
   title: string;
   href: string;
+  external?: boolean;
   desc: React.ReactNode;
   metrics: { v: string; l: string }[];
-  links: { label: string; href: string }[];
+  links: { label: string; href: string; external?: boolean }[];
   fig: React.ReactNode;
   caption: string;
 };
+
+function RlpdCardMedia({ figure }: { figure: React.ReactNode }) {
+  const [hovered, setHovered] = useState(false);
+  const [locked, setLocked] = useState(false);
+  const [focusWithin, setFocusWithin] = useState(false);
+  const active = hovered || locked || focusWithin;
+
+  return (
+    <div
+      className="relative h-full"
+      onPointerEnter={(event) => {
+        if (event.pointerType === "mouse") setHovered(true);
+      }}
+      onPointerLeave={() => setHovered(false)}
+      onFocusCapture={() => setFocusWithin(true)}
+      onBlurCapture={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+          setFocusWithin(false);
+        }
+      }}
+    >
+      {figure}
+      {active ? (
+        <div className="absolute inset-0 grid grid-cols-3 overflow-hidden rounded-t-[1rem] bg-[#05070d]">
+          {[
+            ["/rlpd/rollout-hopper.webp", "Hopper-v5"],
+            ["/rlpd/rollout-walker.webp", "Walker2d-v5"],
+            ["/rlpd/rollout-halfcheetah.webp", "HalfCheetah-v5"],
+          ].map(([src, label]) => (
+            <div key={label} className="relative overflow-hidden border-r border-white/10 last:border-r-0">
+              <img
+                src={src}
+                alt={`${label} trained RLPD policy rollout`}
+                className="h-full w-full object-cover"
+              />
+              <span className="absolute inset-x-0 bottom-0 bg-black/75 px-2 py-2 text-center font-mono text-[0.48rem] uppercase tracking-[0.1em] text-cyan-200 backdrop-blur-sm">
+                {label}
+              </span>
+            </div>
+          ))}
+        </div>
+      ) : null}
+      <button
+        type="button"
+        aria-pressed={locked}
+        onClick={() => setLocked((value) => !value)}
+        className="absolute right-3 top-3 z-10 border border-white/20 bg-black/75 px-2.5 py-1.5 font-mono text-[0.5rem] uppercase tracking-[0.1em] text-white backdrop-blur-md transition-colors hover:border-cyan-300 hover:text-cyan-200"
+      >
+        {locked ? "Show graph" : "Preview policies"}
+      </button>
+    </div>
+  );
+}
 
 function MambaFig() {
   return (
@@ -132,34 +184,33 @@ function SaeFig() {
 const entries: Entry[] = [
   {
     no: "01",
-    cover: "/covers/rlpd-rollouts.gif",
+    cover: "/covers/rlpd-humanoid.webp",
     hue: "var(--lime)",
     tags: [
-      { label: "Shipped · 2026", hot: true },
+      { label: "Completed · 2026", hot: true },
       { label: "Reinforcement Learning" },
       { label: "Lab project · team of 3" },
     ],
     title: "RLPD — offline-to-online RL, extended to humanoids",
     href: "/rlpd/",
+    external: false,
     desc: (
       <>
-        Reproduction and extension of <strong>RLPD</strong> (Ball et al., ICML
-        2023) in PyTorch on Minari offline data: symmetric 50/50 sampling,
-        LayerNorm critics, large ensembles at high UTD.{" "}
-        <strong>3-seed RLPD reaches 88–90% of the Minari v5 expert</strong> on
-        all three MuJoCo tasks, IQL trailing, the SACfD critic diverging. Then I
-        pushed it onto <strong>Humanoid-v5</strong> — never in the paper — and
-        ran the ablations, where throwing the offline data out entirely{" "}
-        <em>beat</em> the full method.
+        A three-person PyTorch reproduction and critical evaluation of{" "}
+        <strong>RLPD</strong> (Ball et al., ICML 2023). Across the complete
+        locomotion matrix, RLPD finishes at 88–90 normalized on all three tasks.
+        On Humanoid-v5, the registered follow-up becomes the real story:{" "}
+        <strong>online-only beats the 50/50 offline mix by +21.9 points</strong>
+        at the matched 500k horizon.
       </>
     ),
     metrics: [
       { v: "88–90", l: "minari-normalized · 3 tasks" },
+      { v: "+21.9", l: "online-only · matched 500k" },
       { v: "3×3", l: "seeds × methods · 245k steps" },
-      { v: "+20.1", l: "online-only Δ · humanoid ablation" },
     ],
     links: [
-      { label: "Read the deep dive", href: "/rlpd/" },
+      { label: "Read the deep dive", href: "/rlpd/", external: false },
       {
         label: "Repository",
         href: "https://github.com/Karan-Anchan/rlpd-offline-to-online-rl",
@@ -176,7 +227,7 @@ const entries: Entry[] = [
         />
       </div>
     ),
-    caption: "fig. 1 — rlpd vs iql vs sacfd · 3 seeds ± std · hover / tap → trained policies",
+    caption: "fig. 1 — rlpd vs iql vs sacfd · medium data · 3 seeds ± std",
   },
   {
     no: "02",
@@ -340,7 +391,6 @@ const entries: Entry[] = [
 ];
 
 export function Work() {
-  const [active, setActive] = useState<number | null>(null);
   return (
     <section id="work" className="mx-auto max-w-6xl px-5 py-24">
       <GiantTitle word="WORK" className="-mt-10 mb-2 opacity-70" />
@@ -379,8 +429,8 @@ export function Work() {
                 <h3 className="text-2xl font-light tracking-tight text-[var(--fg)] sm:text-3xl">
                   <a
                     href={e.href}
-                    target={isExternal(e.href) ? "_blank" : undefined}
-                    rel={isExternal(e.href) ? "noopener" : undefined}
+                    target={e.external === false ? undefined : "_blank"}
+                    rel={e.external === false ? undefined : "noopener"}
                     className="transition-colors hover:text-[var(--e)]"
                   >
                     {e.title}
@@ -406,11 +456,11 @@ export function Work() {
                     <a
                       key={l.label}
                       href={l.href}
-                      target={isExternal(l.href) ? "_blank" : undefined}
-                      rel={isExternal(l.href) ? "noopener" : undefined}
+                      target={l.external === false ? undefined : "_blank"}
+                      rel={l.external === false ? undefined : "noopener"}
                       className="border-b border-[var(--line)] pb-0.5 font-mono text-[0.62rem] uppercase tracking-[0.16em] text-[var(--fg2)] transition-colors hover:border-[var(--e)] hover:text-[var(--e)]"
                     >
-                      {l.label} {isExternal(l.href) ? "↗" : "→"}
+                      {l.label} ↗
                     </a>
                   ))}
                 </div>
@@ -430,24 +480,22 @@ export function Work() {
                 className="group/card bg-[var(--bg)]"
               >
                 <div className="flex h-full flex-col">
-                  <button
-                    type="button"
-                    onClick={() => setActive(active === i ? null : i)}
-                    aria-pressed={active === i}
-                    aria-label={`Toggle media preview for ${e.title}`}
-                    className="relative min-h-0 w-full flex-1 cursor-pointer border-0 bg-transparent p-0 text-left focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[var(--e)]"
-                  >
-                    {e.fig}
-                    <img
-                      src={e.cover}
-                      alt=""
-                      loading="lazy"
-                      decoding="async"
-                      className={`absolute inset-0 h-full w-full rounded-t-[1rem] object-cover transition-opacity duration-500 group-hover/card:opacity-100 group-focus-within/card:opacity-100 ${
-                        active === i ? "opacity-100" : "opacity-0"
-                      }`}
-                    />
-                  </button>
+                  <div className="relative min-h-0 flex-1">
+                    {e.no === "01" ? (
+                      <RlpdCardMedia figure={e.fig} />
+                    ) : (
+                      <>
+                        {e.fig}
+                        <img
+                          src={e.cover}
+                          alt=""
+                          loading="lazy"
+                          decoding="async"
+                          className="absolute inset-0 h-full w-full rounded-t-[1rem] object-cover opacity-0 transition-opacity duration-500 group-hover/card:opacity-100 group-focus-within/card:opacity-100"
+                        />
+                      </>
+                    )}
+                  </div>
                   <div className="border-t border-[var(--line)] px-4 py-2.5 font-mono text-[0.58rem] uppercase tracking-[0.14em] text-[var(--faint)]">
                     {e.caption}
                   </div>

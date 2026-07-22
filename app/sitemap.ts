@@ -14,7 +14,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: "https://karan-anchan.github.io/rlpd/",
       lastModified: new Date(),
       changeFrequency: "monthly",
-      priority: 0.8,
+      priority: 0.9,
     },
   ];
 }
