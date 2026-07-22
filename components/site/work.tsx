@@ -1,9 +1,12 @@
 "use client";
 
+import { useState } from "react";
 import GlowBorderCard from "@/components/ui/glow-border-card";
 import { Reveal, SectionHead } from "@/components/site/reveal";
 import { GiantTitle } from "@/components/site/giant-title";
 import { motion } from "motion/react";
+
+const isExternal = (href: string) => href.startsWith("http");
 
 const amber = "var(--accent-3)";
 const dim = "var(--faint)";
@@ -137,7 +140,7 @@ const entries: Entry[] = [
       { label: "Lab project · team of 3" },
     ],
     title: "RLPD — offline-to-online RL, extended to humanoids",
-    href: "https://karan-anchan.github.io/rlpd/",
+    href: "/rlpd/",
     desc: (
       <>
         Reproduction and extension of <strong>RLPD</strong> (Ball et al., ICML
@@ -153,10 +156,10 @@ const entries: Entry[] = [
     metrics: [
       { v: "88–90", l: "minari-normalized · 3 tasks" },
       { v: "3×3", l: "seeds × methods · 245k steps" },
-      { v: "+20", l: "online-only Δ · humanoid ablation" },
+      { v: "+20.1", l: "online-only Δ · humanoid ablation" },
     ],
     links: [
-      { label: "Deep-dive", href: "/rlpd/" },
+      { label: "Read the deep dive", href: "/rlpd/" },
       {
         label: "Repository",
         href: "https://github.com/Karan-Anchan/rlpd-offline-to-online-rl",
@@ -173,7 +176,7 @@ const entries: Entry[] = [
         />
       </div>
     ),
-    caption: "fig. 1 — rlpd vs iql vs sacfd · 3 seeds ± std · hover for the policies",
+    caption: "fig. 1 — rlpd vs iql vs sacfd · 3 seeds ± std · hover / tap → trained policies",
   },
   {
     no: "02",
@@ -337,6 +340,7 @@ const entries: Entry[] = [
 ];
 
 export function Work() {
+  const [active, setActive] = useState<number | null>(null);
   return (
     <section id="work" className="mx-auto max-w-6xl px-5 py-24">
       <GiantTitle word="WORK" className="-mt-10 mb-2 opacity-70" />
@@ -375,8 +379,8 @@ export function Work() {
                 <h3 className="text-2xl font-light tracking-tight text-[var(--fg)] sm:text-3xl">
                   <a
                     href={e.href}
-                    target="_blank"
-                    rel="noopener"
+                    target={isExternal(e.href) ? "_blank" : undefined}
+                    rel={isExternal(e.href) ? "noopener" : undefined}
                     className="transition-colors hover:text-[var(--e)]"
                   >
                     {e.title}
@@ -402,11 +406,11 @@ export function Work() {
                     <a
                       key={l.label}
                       href={l.href}
-                      target="_blank"
-                      rel="noopener"
+                      target={isExternal(l.href) ? "_blank" : undefined}
+                      rel={isExternal(l.href) ? "noopener" : undefined}
                       className="border-b border-[var(--line)] pb-0.5 font-mono text-[0.62rem] uppercase tracking-[0.16em] text-[var(--fg2)] transition-colors hover:border-[var(--e)] hover:text-[var(--e)]"
                     >
-                      {l.label} ↗
+                      {l.label} {isExternal(l.href) ? "↗" : "→"}
                     </a>
                   ))}
                 </div>
@@ -426,16 +430,24 @@ export function Work() {
                 className="group/card bg-[var(--bg)]"
               >
                 <div className="flex h-full flex-col">
-                  <div className="relative min-h-0 flex-1">
+                  <button
+                    type="button"
+                    onClick={() => setActive(active === i ? null : i)}
+                    aria-pressed={active === i}
+                    aria-label={`Toggle media preview for ${e.title}`}
+                    className="relative min-h-0 w-full flex-1 cursor-pointer border-0 bg-transparent p-0 text-left focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[var(--e)]"
+                  >
                     {e.fig}
                     <img
                       src={e.cover}
                       alt=""
                       loading="lazy"
                       decoding="async"
-                      className="absolute inset-0 h-full w-full rounded-t-[1rem] object-cover opacity-0 transition-opacity duration-500 group-hover/card:opacity-100"
+                      className={`absolute inset-0 h-full w-full rounded-t-[1rem] object-cover transition-opacity duration-500 group-hover/card:opacity-100 group-focus-within/card:opacity-100 ${
+                        active === i ? "opacity-100" : "opacity-0"
+                      }`}
                     />
-                  </div>
+                  </button>
                   <div className="border-t border-[var(--line)] px-4 py-2.5 font-mono text-[0.58rem] uppercase tracking-[0.14em] text-[var(--faint)]">
                     {e.caption}
                   </div>
