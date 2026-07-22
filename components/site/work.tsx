@@ -129,32 +129,34 @@ function SaeFig() {
 const entries: Entry[] = [
   {
     no: "01",
-    cover: "/covers/rlpd-humanoid.webp",
+    cover: "/covers/rlpd-benchmark.webp",
     hue: "var(--lime)",
     tags: [
-      { label: "Active · 2026", hot: true },
+      { label: "Shipped · 2026", hot: true },
       { label: "Reinforcement Learning" },
       { label: "Lab project · team of 3" },
     ],
     title: "RLPD — offline-to-online RL, extended to humanoids",
-    href: "https://github.com/Karan-Anchan/rlpd-offline-to-online-rl",
+    href: "https://karan-anchan.github.io/rlpd/",
     desc: (
       <>
         Reproduction and extension of <strong>RLPD</strong> (Ball et al., ICML
-        2023) in PyTorch with Minari offline data: symmetric 50/50 sampling,
-        LayerNorm critics, large ensembles at high UTD. On medium data,{" "}
-        <strong>3-seed RLPD reaches 88–90% of the Minari v5 expert on all
-        three MuJoCo tasks</strong> — past the old D4RL expert line everywhere,
-        IQL trailing, SACfD collapsing — now scaling to{" "}
-        <strong>Humanoid-v5</strong> (hover: a 1M-step run learning to stand).
+        2023) in PyTorch on Minari offline data: symmetric 50/50 sampling,
+        LayerNorm critics, large ensembles at high UTD.{" "}
+        <strong>3-seed RLPD reaches 88–90% of the Minari v5 expert</strong> on
+        all three MuJoCo tasks, IQL trailing, the SACfD critic diverging. Then I
+        pushed it onto <strong>Humanoid-v5</strong> — never in the paper — and
+        ran the ablations, where throwing the offline data out entirely{" "}
+        <em>beat</em> the full method.
       </>
     ),
     metrics: [
       { v: "88–90", l: "minari-normalized · 3 tasks" },
       { v: "3×3", l: "seeds × methods · 245k steps" },
-      { v: "1M", l: "humanoid env-steps · live" },
+      { v: "+20", l: "online-only Δ · humanoid ablation" },
     ],
     links: [
+      { label: "Deep-dive", href: "/rlpd/" },
       {
         label: "Repository",
         href: "https://github.com/Karan-Anchan/rlpd-offline-to-online-rl",
@@ -162,16 +164,30 @@ const entries: Entry[] = [
       { label: "Paper", href: "https://arxiv.org/abs/2302.02948" },
     ],
     fig: (
-      <div className="aspect-[16/10] w-full">
-        <img
-          src="/covers/rlpd-benchmark.webp"
-          alt="RLPD vs IQL and SACfD on medium offline data — normalized return over 245k steps, mean ± std across 3 seeds; RLPD reaches 88–90 on the Minari v5 expert scale on Hopper, Walker2d and HalfCheetah"
-          loading="lazy"
-          className="h-full w-full object-cover"
-        />
+      <div className="grid aspect-[16/10] w-full grid-cols-3 gap-2 p-3">
+        {[
+          { f: "hopper", label: "Hopper" },
+          { f: "walker2d", label: "Walker2d" },
+          { f: "halfcheetah", label: "HalfCheetah" },
+        ].map(({ f, label }) => (
+          <div
+            key={f}
+            className="relative overflow-hidden rounded-md border border-white/10 bg-black/30"
+          >
+            <img
+              src={`/covers/rlpd-${f}.gif`}
+              alt={`Trained RLPD ${label} policy rolling out in MuJoCo`}
+              loading="lazy"
+              className="h-full w-full object-cover"
+            />
+            <span className="absolute bottom-1 left-1 rounded bg-black/60 px-1.5 py-0.5 font-mono text-[0.5rem] tracking-wide text-white/85">
+              {label}
+            </span>
+          </div>
+        ))}
       </div>
     ),
-    caption: "fig. 1 — rlpd vs iql vs sacfd · medium data · 3 seeds ± std",
+    caption: "fig. 1 — trained policies rolling out · hover for the benchmark",
   },
   {
     no: "02",

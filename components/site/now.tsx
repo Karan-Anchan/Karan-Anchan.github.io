@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 
 const NOW = [
-  "training RLPD on Humanoid-v5 — seed 2 still hates me",
+  "still chewing on why RLPD did better with the offline data thrown out",
   "re-reading the Dreamer 4 paper. it holds up",
   "sweeping attention:ssm ratios — 1:7 still leads",
   "teaching n8n to triage my inbox so I don't have to",
