@@ -21,10 +21,10 @@ export const metadata: Metadata = {
     siteName: "RLPD reproduction study",
     images: [
       {
-        url: "/rlpd/og.jpg",
-        width: 1200,
-        height: 630,
-        alt: "A blue wireframe humanoid walking through an offline-to-online reinforcement learning telemetry field",
+        url: "/rlpd/og-robot-v2.jpg",
+        width: 1726,
+        height: 911,
+        alt: "A graphite humanoid training agent walking through a dark embodied-learning observation field",
       },
     ],
   },
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     title: "RLPD — the ablation changed the story",
     description:
       "A team reproduction of RLPD, from three-seed locomotion to a surprising Humanoid-v5 ablation.",
-    images: ["/rlpd/og.jpg"],
+    images: ["/rlpd/og-robot-v2.jpg"],
   },
 };
 
@@ -44,7 +44,7 @@ const projectJsonLd = {
   description:
     "A PyTorch reproduction and critical evaluation of RLPD on MuJoCo locomotion and Humanoid-v5.",
   url: "https://karan-anchan.github.io/rlpd/",
-  image: "https://karan-anchan.github.io/rlpd/og.jpg",
+  image: "https://karan-anchan.github.io/rlpd/og-robot-v2.jpg",
   author: [
     { "@type": "Person", name: "Karan Anchan" },
     { "@type": "Person", name: "Pranav Menon" },

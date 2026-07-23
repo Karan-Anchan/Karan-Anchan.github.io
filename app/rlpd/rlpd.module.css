@@ -321,7 +321,9 @@
   max-height: 680px;
   overflow: hidden;
   border: 1px solid var(--line-strong);
-  background: #07101a;
+  background:
+    radial-gradient(circle at 62% 38%, rgba(53, 127, 214, 0.14), transparent 48%),
+    #050a12;
   box-shadow: 0 50px 100px rgba(0, 0, 0, 0.45);
 }
 
@@ -335,21 +337,13 @@
   content: "";
 }
 
-.heroPoster,
-.heroVideo {
+.heroPoster {
   position: absolute;
   width: 100%;
   height: 100%;
   inset: 0;
-  object-fit: cover;
-  object-position: 66% center;
-}
-
-.heroVideo {
-  z-index: 1;
-  opacity: 0.66;
-  filter: saturate(0.9) contrast(1.06);
-  mix-blend-mode: screen;
+  object-fit: contain;
+  object-position: center;
 }
 
 .stageGrid {
@@ -590,9 +584,11 @@
   position: relative;
   z-index: 1;
   width: 100%;
-  height: 98px;
-  background: url("/rlpd/section-ambience.webp") center / 100% 100% no-repeat;
-  opacity: 0.75;
+  height: 72px;
+  background:
+    linear-gradient(90deg, transparent 4%, rgba(103, 229, 255, 0.42) 28%, rgba(106, 168, 255, 0.18) 58%, transparent 94%) center / 100% 1px no-repeat,
+    radial-gradient(ellipse at 42% 50%, rgba(50, 126, 213, 0.11), transparent 52%);
+  opacity: 0.82;
 }
 
 .guardrailSection {
@@ -1794,11 +1790,10 @@
   .heroCopy { padding-top: 22px; }
   .heroTitle { font-size: clamp(3.45rem, 12vw, 6.5rem); }
   .heroStage {
-    aspect-ratio: 1.45;
+    aspect-ratio: 1.12;
     max-height: none;
   }
-  .heroPoster,
-  .heroVideo { object-position: 70% 38%; }
+  .heroPoster { object-position: center; }
 
   .telemetryStrip { grid-template-columns: 1fr 1fr; }
   .telemetryStrip div:nth-child(3),
@@ -1867,32 +1862,35 @@
   .hero {
     padding: 76px 16px 20px;
   }
+  .heroGrid { gap: 28px; }
   .heroKicker { align-items: flex-start; flex-direction: column; gap: 0.6rem; }
   .heroTitle {
-    margin-top: 1.8rem;
-    font-size: clamp(3.2rem, 16vw, 5rem);
+    margin-top: 1.45rem;
+    font-size: clamp(3rem, 15vw, 4.6rem);
     letter-spacing: -0.07em;
   }
   .heroTitle em { font-size: 0.71em; line-height: 0.95; }
-  .heroIntro { font-size: 0.95rem; }
+  .heroIntro { margin-top: 1.4rem; font-size: 0.95rem; }
+  .heroActions { margin-top: 1.45rem; }
   .heroActions { flex-direction: column; }
   .primaryAction,
   .secondaryAction { width: 100%; }
-  .teamLine { display: grid; grid-template-columns: 1fr 1fr; }
+  .teamLine { display: grid; margin-top: 1.6rem; grid-template-columns: 1fr 1fr; }
   .teamLine span { grid-column: 1 / -1; }
-  .heroStage { aspect-ratio: 0.94; }
-  .heroFinding { right: 12px; bottom: 12px; width: calc(100% - 24px); max-width: none; }
+  .heroStage { aspect-ratio: 0.82; }
+  .heroFinding { right: 12px; bottom: 12px; width: min(230px, 76%); padding: 0.75rem 0.85rem; }
+  .heroFinding strong { font-size: 2.6rem; }
   .stageReadout { font-size: 0.46rem; }
 
-  .telemetryStrip { grid-template-columns: 1fr; }
-  .telemetryStrip div { min-height: 64px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-  .telemetryStrip div:last-child { border-bottom: 0; }
+  .telemetryStrip { grid-template-columns: 1fr 1fr; }
+  .telemetryStrip div { min-height: 72px; padding: 0.8rem; }
 
-  .section { padding: 72px 16px; }
+  .section { padding: 64px 16px; }
   .sectionIntro h2,
-  .failureHeader h2 { font-size: clamp(2.5rem, 12vw, 4rem); }
+  .failureHeader h2 { font-size: clamp(2.35rem, 11vw, 3.8rem); }
+  .ambientRule { height: 46px; }
   .flow { grid-template-columns: 1fr; }
-  .flowNode { min-height: 145px; border-right: 0; border-bottom: 1px solid var(--line); }
+  .flowNode { min-height: 132px; border-right: 0; border-bottom: 1px solid var(--line); }
   .flowNode:last-child { border-bottom: 0; }
 
   .resultBoard { padding: 16px 12px; }

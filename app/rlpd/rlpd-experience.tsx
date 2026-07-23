@@ -6,7 +6,7 @@ import {
   useScroll,
   useSpring,
 } from "motion/react";
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import Link from "next/link";
 import styles from "./rlpd.module.css";
 
@@ -131,18 +131,6 @@ function Header() {
 
 function Hero() {
   const reduced = useReducedMotion();
-  const [videoEnabled, setVideoEnabled] = useState(false);
-
-  useEffect(() => {
-    const media = window.matchMedia("(min-width: 780px)");
-    const update = () => setVideoEnabled(media.matches && !reduced);
-    const timer = window.setTimeout(update, 700);
-    media.addEventListener("change", update);
-    return () => {
-      window.clearTimeout(timer);
-      media.removeEventListener("change", update);
-    };
-  }, [reduced]);
 
   return (
     <section className={styles.hero} id="top">
@@ -221,27 +209,13 @@ function Hero() {
           transition={{ duration: 1, delay: 0.05, ease: [0.22, 1, 0.36, 1] }}
         >
           <img
-            src="/rlpd/hero-poster.webp"
-            alt=""
+            src="/rlpd/hero-robot-v2.jpg"
+            alt="Humanoid training agent walking through a dark embodied-learning observation field"
             className={styles.heroPoster}
-            width={1600}
-            height={845}
+            width={1024}
+            height={1536}
             fetchPriority="high"
           />
-          {videoEnabled ? (
-            <video
-              className={styles.heroVideo}
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="metadata"
-              poster="/rlpd/hero-poster.webp"
-              aria-hidden
-            >
-              <source src="/rlpd/hero-telemetry.mp4" type="video/mp4" />
-            </video>
-          ) : null}
           <div className={styles.stageGrid} aria-hidden />
           <div className={styles.stageReadout}>
             <span>policy / humanoid-v5</span>
