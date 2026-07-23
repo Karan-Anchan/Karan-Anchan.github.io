@@ -6,7 +6,7 @@ panels; the website supplies those elements as accessible HTML.
 
 ## 01 — Primary Humanoid hero
 
-**Target filename:** `hero-robot-v3.webp`  
+**Target filename:** `hero-robot-v3.webp`
 **Generate at:** 1536 × 1536, high quality, sRGB
 
 > Create a high-end editorial 3D still for a scientific reinforcement-learning
@@ -37,7 +37,7 @@ panels; the website supplies those elements as accessible HTML.
 
 ## 02 — Mineral-spectrum ambient field
 
-**Target filename:** `observatory-ambient.webp`  
+**Target filename:** `observatory-ambient.webp`
 **Generate at:** 3840 × 2160, high quality, sRGB
 
 > Create an abstract, low-contrast full-screen atmosphere for an interactive
@@ -61,7 +61,7 @@ panels; the website supplies those elements as accessible HTML.
 
 ## 03 — Light ablation chapter texture
 
-**Target filename:** `ablation-paper-field.webp`  
+**Target filename:** `ablation-paper-field.webp`
 **Generate at:** 2400 × 1600, high quality, sRGB
 
 > Create a luminous editorial background for a surprising scientific ablation
@@ -81,7 +81,7 @@ panels; the website supplies those elements as accessible HTML.
 
 ## 04 — Repository / social preview artwork
 
-**Target filename:** `rlpd-social-cover.webp`  
+**Target filename:** `rlpd-social-cover.webp`
 **Generate at:** 1600 × 832, high quality, sRGB
 
 > Create a cinematic landscape cover for a team reproduction of offline-to-online
@@ -108,4 +108,3 @@ panels; the website supplies those elements as accessible HTML.
   stylize or regenerate them.
 - Result charts are drawn from the recorded data or opened at source resolution.
   Do not replace them with AI-generated charts.
-
