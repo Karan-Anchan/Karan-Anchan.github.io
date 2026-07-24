@@ -96,8 +96,6 @@ function RlpdSoundToggle() {
       onClick={toggle}
     >
       <SoundGlyph on={on} />
-      <span>SND {on ? "on" : "off"}</span>
-      <i aria-hidden />
     </button>
   );
 }
