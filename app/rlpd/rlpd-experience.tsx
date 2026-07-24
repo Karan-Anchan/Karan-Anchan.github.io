@@ -20,6 +20,9 @@ import styles from "./rlpd.module.css";
 const REPOSITORY =
   "https://github.com/Karan-Anchan/rlpd-offline-to-online-rl";
 
+const EASE_OUT = [0.23, 1, 0.32, 1] as const;
+const EASE_IN_OUT = [0.77, 0, 0.175, 1] as const;
+
 const subscribeToHydration = () => () => {};
 
 function useStableMotionPreference() {
@@ -239,7 +242,7 @@ function OverviewPanel({ onExplore }: { onExplore: () => void }) {
         className={styles.heroStage}
         initial={reduced ? false : { opacity: 0, scale: 0.96 }}
         animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 0.48, ease: EASE_OUT }}
       >
         <Image
           src="/rlpd/hero-robot-v3.webp"
@@ -279,16 +282,11 @@ function MixGlyph() {
           key={index}
           className={index < 12 ? styles.offlineSample : styles.onlineSample}
           initial={reduced ? false : { scaleY: 0.2, opacity: 0 }}
-          animate={reduced ? { scaleY: 1, opacity: 1 } : {
-            scaleY: [0.58, 1, 0.74, 0.92],
-            opacity: [0.58, 1, 0.76, 0.94],
-          }}
+          animate={{ scaleY: 1, opacity: 1 }}
           transition={reduced ? undefined : {
-            duration: 2.8,
-            delay: index * 0.045,
-            repeat: Infinity,
-            repeatType: "mirror",
-            ease: "easeInOut",
+            duration: 0.66,
+            delay: index * 0.025,
+            ease: EASE_OUT,
           }}
         />
       ))}
@@ -308,16 +306,10 @@ function BoundGlyph() {
         className={styles.boundTrace}
         d="M4 71 C45 66 63 22 102 39 S162 70 202 47 S262 21 293 44 S329 61 356 32"
         initial={reduced ? false : { pathLength: 0, opacity: 0.55 }}
-        animate={reduced ? { pathLength: 1, opacity: 1 } : {
-          pathLength: [0, 1, 1],
-          opacity: [0.55, 1, 1],
-        }}
+        animate={{ pathLength: 1, opacity: 1 }}
         transition={reduced ? undefined : {
-          duration: 3.4,
-          times: [0, 0.48, 1],
-          repeat: Infinity,
-          repeatDelay: 0.5,
-          ease: [0.22, 1, 0.36, 1],
+          duration: 1.1,
+          ease: EASE_OUT,
         }}
       />
     </svg>
@@ -333,17 +325,11 @@ function EnsembleGlyph() {
         <motion.i
           key={index}
           initial={reduced ? false : { opacity: 0, y: 7 }}
-          animate={reduced ? { opacity: 1, y: 0 } : {
-            opacity: [0.42, 1, 0.72],
-            y: [5, 0, -2],
-            scale: [0.97, 1, 0.985],
-          }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={reduced ? undefined : {
-            duration: 2.6,
-            delay: index * 0.09,
-            repeat: Infinity,
-            repeatType: "mirror",
-            ease: "easeInOut",
+            duration: 0.55,
+            delay: index * 0.045,
+            ease: EASE_OUT,
           }}
         ><span /></motion.i>
       ))}
@@ -451,9 +437,9 @@ function MethodPanel() {
           <motion.article
             className={styles.guardrail}
             key={guardrail.title}
-            initial={{ opacity: 0, y: 14 }}
+            initial={reduced ? false : { opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.08 }}
+            transition={{ duration: 0.32, delay: index * 0.06, ease: EASE_OUT }}
           >
             <div className={styles.guardrailMeta}><span>{guardrail.label}</span><strong>{guardrail.value}</strong></div>
             {guardrail.glyph}
@@ -517,6 +503,7 @@ function BenchmarksPanel() {
               initial={reduced ? false : { opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={reduced ? undefined : { opacity: 0, y: -8 }}
+              transition={{ duration: 0.22, ease: EASE_OUT }}
             >
               {result.values.map((item, index) => (
                 <div className={styles.scoreRow} key={item.method}>
@@ -525,7 +512,7 @@ function BenchmarksPanel() {
                     className={styles[item.tone]}
                     initial={reduced ? false : { scaleX: 0 }}
                     animate={{ scaleX: 1 }}
-                    transition={{ duration: 0.65, delay: index * 0.08 }}
+                    transition={{ duration: 0.52, delay: index * 0.06, ease: EASE_OUT }}
                     style={{ width: `${item.value}%` }}
                   /></div>
                   <strong>{item.value.toFixed(1)} <small>± {item.spread.toFixed(1)}</small></strong>
@@ -552,6 +539,7 @@ function BenchmarksPanel() {
             initial={reduced ? false : { opacity: 0, scale: 0.97 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={reduced ? undefined : { opacity: 0, scale: 0.98 }}
+            transition={{ duration: 0.24, ease: EASE_OUT }}
           >
             <video
               src={result.rollout}
@@ -680,7 +668,7 @@ function CriticPanel() {
                 r="4"
                 className={styles.traceSignal}
                 animate={{ opacity: [0.2, 1, 0.2], scale: [0.72, 1.35, 0.72] }}
-                transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+                transition={{ duration: 1.8, repeat: Infinity, ease: EASE_IN_OUT }}
               >
                 <animateMotion dur="3.8s" repeatCount="indefinite" path={linePath(criticSACfD)} />
               </motion.circle>
@@ -760,6 +748,7 @@ function FigureLauncher({
   const launcherRef = useRef<HTMLButtonElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
   const reduced = useStableMotionPreference();
+  const [animateOpen, setAnimateOpen] = useState(true);
 
   useEffect(() => {
     if (!open) return;
@@ -788,6 +777,10 @@ function FigureLauncher({
         ref={launcherRef}
         className={styles.figureLauncher}
         onClick={() => setOpen(true)}
+        onPointerDown={() => setAnimateOpen(true)}
+        onKeyDown={(event) => {
+          if (event.key === "Enter" || event.key === " ") setAnimateOpen(false);
+        }}
         whileTap={reduced ? undefined : { scale: 0.98 }}
       >
         <span>{label}</span>
@@ -799,9 +792,10 @@ function FigureLauncher({
           {open && (
             <motion.div
               className={styles.figureOverlay}
-              initial={reduced ? false : { opacity: 0 }}
+              initial={reduced || !animateOpen ? false : { opacity: 0 }}
               animate={{ opacity: 1 }}
-              exit={reduced ? undefined : { opacity: 0 }}
+              exit={reduced || !animateOpen ? undefined : { opacity: 0 }}
+              transition={{ duration: 0.18, ease: EASE_OUT }}
               onMouseDown={(event) => {
                 if (event.target === event.currentTarget) {
                   setOpen(false);
@@ -814,9 +808,10 @@ function FigureLauncher({
                 role="dialog"
                 aria-modal="true"
                 aria-label={caption}
-                initial={reduced ? false : { opacity: 0, scale: 0.96, y: 20 }}
+                initial={reduced || !animateOpen ? false : { opacity: 0, scale: 0.97, y: 14 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={reduced ? undefined : { opacity: 0, scale: 0.97, y: 12 }}
+                exit={reduced || !animateOpen ? undefined : { opacity: 0, scale: 0.985, y: 8 }}
+                transition={{ duration: 0.24, ease: EASE_OUT }}
               >
                 <button
                   type="button"
@@ -943,7 +938,7 @@ function AblationPanel() {
                 className={bar.className}
                 initial={reduced ? false : { scaleX: 0 }}
                 animate={{ scaleX: 1 }}
-                transition={{ duration: 0.75, delay: index * 0.1 }}
+                transition={{ duration: 0.56, delay: index * 0.08, ease: EASE_OUT }}
                 style={{ width: `${(bar.value / 32) * 100}%` }}
               /></div>
               <p>{bar.note}</p>
@@ -1061,32 +1056,40 @@ function EvidencePanel() {
   );
 }
 
+type PanelMotion = { direction: number; instant: boolean };
+
 const panelVariants = {
-  enter: (direction: number) => ({
+  enter: ({ direction, instant }: PanelMotion) => ({
     opacity: 0,
-    x: direction > 0 ? 48 : -48,
-    filter: "blur(8px)",
+    transform: instant
+      ? "translate3d(0, 0, 0)"
+      : `translate3d(${direction > 0 ? 22 : -22}px, 0, 0)`,
+    filter: instant ? "blur(0px)" : "blur(4px)",
   }),
-  center: { opacity: 1, x: 0, filter: "blur(0px)" },
-  exit: (direction: number) => ({
+  center: { opacity: 1, transform: "translate3d(0, 0, 0)", filter: "blur(0px)" },
+  exit: ({ direction, instant }: PanelMotion) => ({
     opacity: 0,
-    x: direction > 0 ? -36 : 36,
-    filter: "blur(6px)",
+    transform: instant
+      ? "translate3d(0, 0, 0)"
+      : `translate3d(${direction > 0 ? -16 : 16}px, 0, 0)`,
+    filter: instant ? "blur(0px)" : "blur(3px)",
   }),
 };
 
 export function RlpdExperience() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [direction, setDirection] = useState(1);
+  const [instantNavigation, setInstantNavigation] = useState(false);
   const chapterButtonRefs = useRef<Array<HTMLButtonElement | null>>([]);
   const reduced = useStableMotionPreference();
   const activeChapter = chapters[activeIndex];
   const previousChapter = chapters[activeIndex - 1];
   const nextChapter = chapters[activeIndex + 1];
 
-  const navigate = useCallback((nextIndex: number, updateHistory = true) => {
+  const navigate = useCallback((nextIndex: number, updateHistory = true, instant = false) => {
     const bounded = Math.max(0, Math.min(chapters.length - 1, nextIndex));
     if (bounded === activeIndex) return;
+    setInstantNavigation(instant);
     setDirection(bounded > activeIndex ? 1 : -1);
     setActiveIndex(bounded);
     if (updateHistory) {
@@ -1098,6 +1101,7 @@ export function RlpdExperience() {
     const syncFromHash = () => {
       const chapterIndex = chapters.findIndex((chapter) => chapter.id === window.location.hash.slice(1));
       if (chapterIndex < 0) return;
+      setInstantNavigation(true);
       setActiveIndex((current) => {
         setDirection(chapterIndex >= current ? 1 : -1);
         return chapterIndex;
@@ -1122,15 +1126,15 @@ export function RlpdExperience() {
       if (target.closest("button, a")) return;
       if (event.key === "ArrowRight" || event.key === "ArrowDown") {
         event.preventDefault();
-        navigate(activeIndex + 1);
+        navigate(activeIndex + 1, true, true);
       }
       if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
         event.preventDefault();
-        navigate(activeIndex - 1);
+        navigate(activeIndex - 1, true, true);
       }
       const numeric = Number(event.key);
       if (numeric >= 1 && numeric <= chapters.length) {
-        navigate(numeric - 1);
+        navigate(numeric - 1, true, true);
       }
     };
     window.addEventListener("keydown", onKeyDown);
@@ -1146,6 +1150,7 @@ export function RlpdExperience() {
     <AblationPanel key="ablation" />,
     <EvidencePanel key="evidence" />,
   ];
+  const panelMotion = { direction, instant: instantNavigation };
 
   return (
     <main className={styles.app} data-tone={activeChapter.tone}>
@@ -1182,19 +1187,19 @@ export function RlpdExperience() {
         </nav>
 
         <section className={styles.stage}>
-          <AnimatePresence mode="wait" custom={direction}>
+          <AnimatePresence mode="wait" custom={panelMotion}>
             <motion.article
               id="rlpd-active-panel"
               role="tabpanel"
               aria-label={activeChapter.label}
               key={activeChapter.id}
               className={cx(styles.panel, activeChapter.id === "ablation" && styles.lightPanel)}
-              custom={direction}
+              custom={panelMotion}
               variants={panelVariants}
-              initial={reduced ? false : "enter"}
+              initial={reduced || instantNavigation ? false : "enter"}
               animate="center"
-              exit={reduced ? undefined : "exit"}
-              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              exit={reduced || instantNavigation ? undefined : "exit"}
+              transition={{ duration: instantNavigation ? 0 : 0.26, ease: EASE_OUT }}
             >
               {panels[activeIndex]}
             </motion.article>
