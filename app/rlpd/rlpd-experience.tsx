@@ -8,11 +8,30 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { createPortal } from "react-dom";
-import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from "react";
 import styles from "./rlpd.module.css";
 
 const REPOSITORY =
   "https://github.com/Karan-Anchan/rlpd-offline-to-online-rl";
+
+const subscribeToHydration = () => () => {};
+
+function useStableMotionPreference() {
+  const reduced = useReducedMotion();
+  const hydrated = useSyncExternalStore(
+    subscribeToHydration,
+    () => true,
+    () => false,
+  );
+
+  return !hydrated || Boolean(reduced);
+}
 
 const chapters = [
   { id: "overview", index: "01", label: "Overview", hint: "The premise", tone: "amber" },
@@ -28,8 +47,10 @@ const results = [
   {
     task: "Hopper-v5",
     short: "Hopper",
-    rollout: "/rlpd/rollout-hopper.webp",
+    rollout: "/rlpd/rollout-hopper.mp4",
+    poster: "/rlpd/rollout-hopper.webp",
     rolloutScore: "97.1",
+    reading: "RLPD holds a 22.4-point lead over IQL while preserving a complete three-seed result.",
     values: [
       { method: "RLPD", value: 88.0, spread: 6.8, tone: "rlpd" },
       { method: "IQL", value: 65.6, spread: 29.2, tone: "iql" },
@@ -39,8 +60,10 @@ const results = [
   {
     task: "Walker2d-v5",
     short: "Walker2d",
-    rollout: "/rlpd/rollout-walker.webp",
+    rollout: "/rlpd/rollout-walker.mp4",
+    poster: "/rlpd/rollout-walker.webp",
     rolloutScore: "96.8",
+    reading: "The narrow ±0.7 seed spread is the strongest consistency signal in the locomotion study.",
     values: [
       { method: "RLPD", value: 89.6, spread: 0.7, tone: "rlpd" },
       { method: "IQL", value: 84.3, spread: 6.6, tone: "iql" },
@@ -50,8 +73,10 @@ const results = [
   {
     task: "HalfCheetah-v5",
     short: "HalfCheetah",
-    rollout: "/rlpd/rollout-halfcheetah.webp",
+    rollout: "/rlpd/rollout-halfcheetah.mp4",
+    poster: "/rlpd/rollout-halfcheetah.webp",
     rolloutScore: "103.1",
+    reading: "RLPD edges IQL by 2.6 points and remains inside the same 88–90 band as the other tasks.",
     values: [
       { method: "RLPD", value: 88.6, spread: 1.6, tone: "rlpd" },
       { method: "IQL", value: 86.0, spread: 7.8, tone: "iql" },
@@ -93,12 +118,12 @@ const criticSACfD: Array<[number, number]> = [
 ];
 
 const auditRows = [
-  ["Locomotion · medium", "27 complete", "primary comparison"],
-  ["Locomotion · expert", "seed 0 complete", "seeds 1–2 stop at 57.5k"],
-  ["Humanoid · IQL / RLPD", "3 seeds · 1M", "different pretraining budgets"],
-  ["Humanoid · SACfD", "2 of 3 NaN", "divergence retained"],
-  ["Online-only", "3 seeds · 500k", "matched-horizon ablation"],
-  ["RLPD · expert Humanoid", "n = 1 · 1M", "4.0 last-five"],
+  ["Locomotion · medium", "27 complete", "three algorithms × three seeds × three tasks"],
+  ["Locomotion · expert", "seed 0 complete", "seeds 1–2 stop at 57.5k and remain labeled"],
+  ["Humanoid · IQL / RLPD", "3 seeds · 1M", "IQL begins after one million offline updates"],
+  ["Humanoid · SACfD", "2 of 3 NaN", "divergent runs remain inside the aggregate record"],
+  ["Online-only", "3 seeds · 500k", "the only ablation with matched three-seed coverage"],
+  ["RLPD · expert Humanoid", "n = 1 · 1M", "single-seed result; excluded from aggregate claims"],
 ] as const;
 
 const sparkles = [
@@ -173,7 +198,7 @@ function PanelHeader({
 }
 
 function OverviewPanel({ onExplore }: { onExplore: () => void }) {
-  const reduced = useReducedMotion();
+  const reduced = useStableMotionPreference();
 
   return (
     <div className={styles.overviewLayout}>
@@ -189,8 +214,14 @@ function OverviewPanel({ onExplore }: { onExplore: () => void }) {
           and forced to explain a result the paper did not predict.
         </p>
         <div className={styles.overviewActions}>
-          <motion.button type="button" onClick={onExplore} whileTap={reduced ? undefined : { scale: 0.97 }}>
-            Explore the method <Arrow direction="right" />
+          <motion.button
+            type="button"
+            className={styles.primaryAction}
+            onClick={onExplore}
+            whileTap={reduced ? undefined : { scale: 0.97 }}
+          >
+            <span><small>Start here</small>Explore the method</span>
+            <Arrow direction="right" />
           </motion.button>
           <a href={REPOSITORY} target="_blank" rel="noreferrer">
             View repository <Arrow />
@@ -239,15 +270,26 @@ function OverviewPanel({ onExplore }: { onExplore: () => void }) {
 }
 
 function MixGlyph() {
+  const reduced = useStableMotionPreference();
+
   return (
     <div className={styles.mixGlyph} aria-hidden>
       {Array.from({ length: 24 }).map((_, index) => (
         <motion.i
           key={index}
           className={index < 12 ? styles.offlineSample : styles.onlineSample}
-          initial={{ scaleY: 0.2, opacity: 0 }}
-          animate={{ scaleY: 1, opacity: 1 }}
-          transition={{ duration: 0.3, delay: index * 0.015 }}
+          initial={reduced ? false : { scaleY: 0.2, opacity: 0 }}
+          animate={reduced ? { scaleY: 1, opacity: 1 } : {
+            scaleY: [0.58, 1, 0.74, 0.92],
+            opacity: [0.58, 1, 0.76, 0.94],
+          }}
+          transition={reduced ? undefined : {
+            duration: 2.8,
+            delay: index * 0.045,
+            repeat: Infinity,
+            repeatType: "mirror",
+            ease: "easeInOut",
+          }}
         />
       ))}
     </div>
@@ -255,6 +297,8 @@ function MixGlyph() {
 }
 
 function BoundGlyph() {
+  const reduced = useStableMotionPreference();
+
   return (
     <svg className={styles.boundGlyph} viewBox="0 0 360 92" preserveAspectRatio="none" aria-hidden>
       <line x1="0" x2="360" y1="15" y2="15" />
@@ -263,23 +307,44 @@ function BoundGlyph() {
       <motion.path
         className={styles.boundTrace}
         d="M4 71 C45 66 63 22 102 39 S162 70 202 47 S262 21 293 44 S329 61 356 32"
-        initial={{ pathLength: 0 }}
-        animate={{ pathLength: 1 }}
-        transition={{ duration: 0.9 }}
+        initial={reduced ? false : { pathLength: 0, opacity: 0.55 }}
+        animate={reduced ? { pathLength: 1, opacity: 1 } : {
+          pathLength: [0, 1, 1],
+          opacity: [0.55, 1, 1],
+        }}
+        transition={reduced ? undefined : {
+          duration: 3.4,
+          times: [0, 0.48, 1],
+          repeat: Infinity,
+          repeatDelay: 0.5,
+          ease: [0.22, 1, 0.36, 1],
+        }}
       />
     </svg>
   );
 }
 
 function EnsembleGlyph() {
+  const reduced = useStableMotionPreference();
+
   return (
     <div className={styles.ensembleGlyph} aria-hidden>
       {Array.from({ length: 10 }).map((_, index) => (
         <motion.i
           key={index}
-          initial={{ opacity: 0, y: 7 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: index * 0.035 }}
+          initial={reduced ? false : { opacity: 0, y: 7 }}
+          animate={reduced ? { opacity: 1, y: 0 } : {
+            opacity: [0.42, 1, 0.72],
+            y: [5, 0, -2],
+            scale: [0.97, 1, 0.985],
+          }}
+          transition={reduced ? undefined : {
+            duration: 2.6,
+            delay: index * 0.09,
+            repeat: Infinity,
+            repeatType: "mirror",
+            ease: "easeInOut",
+          }}
         ><span /></motion.i>
       ))}
     </div>
@@ -289,7 +354,7 @@ function EnsembleGlyph() {
 function MethodPanel() {
   const [activeGuardrail, setActiveGuardrail] = useState(0);
   const guardrailGridRef = useRef<HTMLDivElement>(null);
-  const reduced = useReducedMotion();
+  const reduced = useStableMotionPreference();
   const guardrails = [
     {
       code: "ratio = 0.5 · batch = 256",
@@ -412,7 +477,7 @@ function MethodPanel() {
 
 function BenchmarksPanel() {
   const [selectedTask, setSelectedTask] = useState(0);
-  const reduced = useReducedMotion();
+  const reduced = useStableMotionPreference();
   const result = results[selectedTask];
   const lead = result.values[0].value - result.values[1].value;
 
@@ -473,7 +538,11 @@ function BenchmarksPanel() {
             <div><span>seed spread</span><strong>±{result.values[0].spread.toFixed(1)}</strong></div>
             <div><span>coverage</span><strong>3 / 3 runs</strong></div>
           </div>
-          <p>245k environment steps · Minari v5 normalization · expert score = 100.</p>
+          <div className={styles.scoreReading}>
+            <span>What to notice</span>
+            <p>{result.reading}</p>
+            <small>245k environment steps · Minari v5 normalization · expert score = 100.</small>
+          </div>
         </div>
 
         <AnimatePresence mode="wait">
@@ -484,13 +553,17 @@ function BenchmarksPanel() {
             animate={{ opacity: 1, scale: 1 }}
             exit={reduced ? undefined : { opacity: 0, scale: 0.98 }}
           >
-            <Image
+            <video
               src={result.rollout}
-              alt={`${result.task} RLPD policy rollout`}
-              fill
-              sizes="(max-width: 680px) calc(100vw - 50px), (max-width: 980px) 40vw, 30vw"
+              poster={result.poster}
+              aria-label={`${result.task} RLPD policy rollout`}
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="metadata"
             />
-            <span>policy replay · expert-data seed 0</span>
+            <span>live policy loop · medium-data seed 0</span>
             <figcaption>
               <div><strong>{result.task}</strong><small>RLPD · observed behavior</small></div>
               <div><strong>{result.rolloutScore}</strong><small>normalized</small></div>
@@ -528,7 +601,7 @@ function formatCriticStep(step: number) {
 
 function CriticPanel() {
   const [activeSeries, setActiveSeries] = useState<"both" | "rlpd" | "sacfd">("both");
-  const reduced = useReducedMotion();
+  const reduced = useStableMotionPreference();
   const sacEnd = chartPoint(criticSACfD[criticSACfD.length - 1]);
   const rlpdEnd = chartPoint(criticRLPD[criticRLPD.length - 1]);
   const firstLogX = chartPoint(criticSACfD[0]).x;
@@ -586,22 +659,32 @@ function CriticPanel() {
               return <text key={tick} x={x} y="260" textAnchor="middle">{formatCriticStep(tick)}</text>;
             })}
             <text x="327" y="279" textAnchor="middle" className={styles.axisTitle}>environment steps</text>
-            <path d={linePath(criticSACfD)} className={cx(styles.sacCurve, styles.curveUnderlay)} />
-            <path d={linePath(criticRLPD)} className={cx(styles.rlpdCurve, styles.curveUnderlay)} />
-            <motion.path
+            <path
               d={linePath(criticSACfD)}
-              className={cx(styles.sacCurve, activeSeries === "rlpd" && styles.curveMuted)}
-              initial={reduced ? false : { pathLength: 0 }}
-              animate={{ pathLength: 1 }}
-              transition={{ duration: 0.85 }}
+              className={cx(styles.sacCurve, styles.curveUnderlay)}
             />
-            <motion.path
+            <path
               d={linePath(criticRLPD)}
-              className={cx(styles.rlpdCurve, activeSeries === "sacfd" && styles.curveMuted)}
-              initial={reduced ? false : { pathLength: 0 }}
-              animate={{ pathLength: 1 }}
-              transition={{ duration: 0.75, delay: 0.08 }}
+              className={cx(styles.rlpdCurve, styles.curveUnderlay)}
             />
+            <path
+              d={linePath(criticSACfD)}
+              className={cx(styles.sacCurve, styles.curveComplete, activeSeries === "rlpd" && styles.curveMuted)}
+            />
+            <path
+              d={linePath(criticRLPD)}
+              className={cx(styles.rlpdCurve, styles.curveComplete, activeSeries === "sacfd" && styles.curveMuted)}
+            />
+            {!reduced && (
+              <motion.circle
+                r="4"
+                className={styles.traceSignal}
+                animate={{ opacity: [0.2, 1, 0.2], scale: [0.72, 1.35, 0.72] }}
+                transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+              >
+                <animateMotion dur="3.8s" repeatCount="indefinite" path={linePath(criticSACfD)} />
+              </motion.circle>
+            )}
             {visibleCriticPoints(criticSACfD).map((point) => {
               const { x, y } = chartPoint(point);
               const label = `SACfD · ${formatCriticStep(point[0])} · ${Math.round(point[1]).toLocaleString()}`;
@@ -674,11 +757,13 @@ function FigureLauncher({
 }) {
   const [open, setOpen] = useState(false);
   const [zoomed, setZoomed] = useState(false);
+  const launcherRef = useRef<HTMLButtonElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
-  const reduced = useReducedMotion();
+  const reduced = useStableMotionPreference();
 
   useEffect(() => {
     if (!open) return;
+    const launcher = launcherRef.current;
     const previousOverflow = document.body.style.overflow;
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
@@ -692,6 +777,7 @@ function FigureLauncher({
     return () => {
       document.body.style.overflow = previousOverflow;
       window.removeEventListener("keydown", onKeyDown);
+      launcher?.focus();
     };
   }, [open]);
 
@@ -699,6 +785,7 @@ function FigureLauncher({
     <>
       <motion.button
         type="button"
+        ref={launcherRef}
         className={styles.figureLauncher}
         onClick={() => setOpen(true)}
         whileTap={reduced ? undefined : { scale: 0.98 }}
@@ -770,19 +857,38 @@ function HumanoidPanel() {
       />
       <div className={styles.humanoidLayout}>
         <figure className={styles.humanoidMedia}>
-          <Image
-            src="/rlpd/rollout-humanoid.webp"
-            alt="Best individual IQL Humanoid-v5 rollout, seed 2"
-            fill
-            sizes="(max-width: 680px) calc(100vw - 50px), (max-width: 980px) 52vw, 46vw"
+          <video
+            src="/rlpd/rollout-humanoid.mp4"
+            poster="/rlpd/rollout-humanoid.webp"
+            aria-label="Best individual IQL Humanoid-v5 rollout, seed 2"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
           />
-          <span>best individual visualization</span>
+          <span>live policy loop · regenerated at 960 × 600</span>
           <figcaption>IQL · seed 2 · 87.8 last-five normalized</figcaption>
         </figure>
         <div className={styles.humanoidStats}>
-          <article><span>IQL · 3 seeds</span><strong>70.1 <small>± 16.2</small></strong><p>Starts with 1M offline updates already completed.</p></article>
-          <article><span>RLPD · 3 seeds</span><strong>13.0 <small>± 13.8</small></strong><p>Bounded critic; little locomotion emerged.</p></article>
-          <article><span>SACfD</span><strong>2 / 3 <small>NaN</small></strong><p>Divergence recorded, not retried.</p></article>
+          <article>
+            <div className={styles.statHead}><span>IQL · 3 seeds</span><em>best aggregate</em></div>
+            <strong>70.1 <small>± 16.2</small></strong>
+            <p>Highest mean return, but the wide spread shows that behavior still varied substantially across seeds.</p>
+            <footer><span>training context</span><b>1M offline + 1M online</b></footer>
+          </article>
+          <article>
+            <div className={styles.statHead}><span>RLPD · 3 seeds</span><em>bounded critic</em></div>
+            <strong>13.0 <small>± 13.8</small></strong>
+            <p>Numerical stability held, yet the aggregate return shows that a bounded critic did not guarantee locomotion.</p>
+            <footer><span>training context</span><b>no pretrain + 1M online</b></footer>
+          </article>
+          <article>
+            <div className={styles.statHead}><span>SACfD · 3 seeds</span><em>failure retained</em></div>
+            <strong>2 / 3 <small>NaN</small></strong>
+            <p>Two runs diverged and were not retried; the surviving seed cannot stand in for a robust aggregate.</p>
+            <footer><span>reporting rule</span><b>failures remain visible</b></footer>
+          </article>
         </div>
         <div className={styles.figureActions}>
           <FigureLauncher
@@ -793,7 +899,7 @@ function HumanoidPanel() {
             width={1742}
             height={627}
           />
-          <p>The moving policy is a best-seed visualization. The 70.1 ± 16.2 aggregate is the result.</p>
+          <p>The video is one best-seed behavior sample. The three-seed 70.1 ± 16.2 aggregate—not the cleanest rollout—is the result.</p>
         </div>
       </div>
     </div>
@@ -801,10 +907,22 @@ function HumanoidPanel() {
 }
 
 function AblationPanel() {
-  const reduced = useReducedMotion();
+  const reduced = useStableMotionPreference();
   const bars = [
-    { label: "RLPD · 50/50", value: 6.024, display: "6.0 ± 2.0", className: styles.mixBar },
-    { label: "Online-only", value: 27.966, display: "28.0 ± 15.2", className: styles.onlineBar },
+    {
+      label: "RLPD · 50/50",
+      value: 6.024,
+      display: "6.0 ± 2.0",
+      note: "128 offline + 128 online samples in every update",
+      className: styles.mixBar,
+    },
+    {
+      label: "Online-only",
+      value: 27.966,
+      display: "28.0 ± 15.2",
+      note: "same architecture and 500k horizon; sampling ratio = 1.0",
+      className: styles.onlineBar,
+    },
   ];
 
   return (
@@ -828,6 +946,7 @@ function AblationPanel() {
                 transition={{ duration: 0.75, delay: index * 0.1 }}
                 style={{ width: `${(bar.value / 32) * 100}%` }}
               /></div>
+              <p>{bar.note}</p>
             </div>
           ))}
           <div className={styles.calculation}>
@@ -839,6 +958,7 @@ function AblationPanel() {
           <span>Δ matched horizon</span>
           <strong>+21.9</strong>
           <small>normalized points</small>
+          <p>One controlled change removed offline samples from the update batch.</p>
         </div>
         <article className={styles.ablationReading}>
           <h3>The architecture survived. The prior data became the constraint.</h3>
@@ -863,10 +983,22 @@ function AblationPanel() {
 
 function EvidencePanel() {
   const lessons = [
-    "Variance is part of the result.",
-    "Implementation choices become research claims.",
-    "Ablations can change the question.",
-    "Behavior needs numeric context.",
+    {
+      title: "Variance is part of the result.",
+      copy: "Three seeds expose instability that a single polished rollout would conceal.",
+    },
+    {
+      title: "Implementation shapes the claim.",
+      copy: "LayerNorm, ensemble size, update ratio, and pretraining budget change what is being compared.",
+    },
+    {
+      title: "Ablations can change the question.",
+      copy: "Online-only outperforming 50/50 shifts attention from architecture to dataset compatibility.",
+    },
+    {
+      title: "Behavior needs numeric context.",
+      copy: "Every policy replay is paired with aggregate return, seed spread, and critic behavior.",
+    },
   ];
 
   return (
@@ -880,15 +1012,22 @@ function EvidencePanel() {
       />
       <div className={styles.evidenceLayout}>
         <div className={styles.auditTable} role="table" aria-label="Experiment coverage">
-          {auditRows.map(([label, count, note]) => (
+          {auditRows.map(([label, count, note], index) => (
             <div className={styles.auditRow} role="row" key={label}>
+              <i aria-hidden>{String(index + 1).padStart(2, "0")}</i>
               <span role="cell">{label}</span><strong role="cell">{count}</strong><em role="cell">{note}</em>
             </div>
           ))}
         </div>
         <aside className={styles.evidenceAside}>
           <div className={styles.lessonGrid}>
-            {lessons.map((lesson, index) => <div key={lesson}><span>0{index + 1}</span><p>{lesson}</p></div>)}
+            {lessons.map((lesson, index) => (
+              <div key={lesson.title}>
+                <span>0{index + 1}</span>
+                <h3>{lesson.title}</h3>
+                <p>{lesson.copy}</p>
+              </div>
+            ))}
           </div>
           <div className={styles.figureActions}>
             <FigureLauncher
@@ -940,7 +1079,7 @@ export function RlpdExperience() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [direction, setDirection] = useState(1);
   const chapterButtonRefs = useRef<Array<HTMLButtonElement | null>>([]);
-  const reduced = useReducedMotion();
+  const reduced = useStableMotionPreference();
   const activeChapter = chapters[activeIndex];
   const previousChapter = chapters[activeIndex - 1];
   const nextChapter = chapters[activeIndex + 1];
