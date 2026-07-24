@@ -172,7 +172,7 @@
 }
 
 .wordmark strong,
-.topbar > a,
+.topActions a,
 .topStatus {
   font-family: var(--font-geist-mono), monospace;
   font-size: 0.66rem;
@@ -197,9 +197,15 @@
   transition: color 220ms var(--ease-out);
 }
 
-.topbar > a {
-  display: inline-flex;
+.topActions {
+  display: flex;
   justify-self: end;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.topActions > a {
+  display: inline-flex;
   align-items: center;
   gap: 0.45rem;
   color: var(--muted);
@@ -207,8 +213,65 @@
   transition: color 180ms var(--ease-out);
 }
 
-.topbar > a:hover {
+.topActions > a:hover {
   color: var(--accent);
+}
+
+.soundToggle {
+  position: relative;
+  display: inline-flex;
+  min-height: 34px;
+  align-items: center;
+  gap: 0.42rem;
+  padding: 0.34rem 0.55rem;
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--surface-2) 68%, transparent);
+  color: var(--faint);
+  cursor: pointer;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.57rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.soundToggle svg {
+  width: 1rem;
+  height: 1rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.35;
+}
+
+.soundToggle > i {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--faint);
+  transition:
+    background 180ms var(--ease-out),
+    box-shadow 220ms var(--ease-out),
+    transform 160ms var(--ease-out);
+}
+
+.soundToggle[aria-pressed="true"] {
+  border-color: color-mix(in srgb, var(--accent) 34%, transparent);
+  color: var(--muted);
+}
+
+.soundToggle[aria-pressed="true"] > i {
+  background: var(--accent);
+  box-shadow: 0 0 9px color-mix(in srgb, var(--accent) 72%, transparent);
+}
+
+.soundToggle:hover {
+  border-color: color-mix(in srgb, var(--accent) 52%, transparent);
+  color: var(--ink);
+}
+
+.soundToggle:active {
+  transform: scale(0.97);
 }
 
 .arrowIcon {
@@ -2303,8 +2366,15 @@
   }
   .wordmark strong { font-size: 0.6rem; }
   .topStatus { display: none; }
-  .topbar > a { font-size: 0; }
-  .topbar > a .arrowIcon { width: 1rem; height: 1rem; }
+  .topActions { gap: 0.4rem; }
+  .topActions > a { font-size: 0; }
+  .topActions > a .arrowIcon { width: 1rem; height: 1rem; }
+  .soundToggle {
+    min-width: 36px;
+    justify-content: center;
+    padding: 0.34rem 0.45rem;
+  }
+  .soundToggle span { display: none; }
 
   .shell {
     height: calc(100dvh - 56px);

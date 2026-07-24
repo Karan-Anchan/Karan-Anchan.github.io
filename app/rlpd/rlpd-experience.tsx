@@ -15,6 +15,7 @@ import {
   useState,
   useSyncExternalStore,
 } from "react";
+import { sound } from "@/lib/sound";
 import styles from "./rlpd.module.css";
 
 const REPOSITORY =
@@ -34,6 +35,131 @@ function useStableMotionPreference() {
   );
 
   return !hydrated || Boolean(reduced);
+}
+
+const SOUND_CHANGE_EVENT = "rlpd:sound-change";
+
+function subscribeToSoundPreference(onStoreChange: () => void) {
+  window.addEventListener("storage", onStoreChange);
+  window.addEventListener(SOUND_CHANGE_EVENT, onStoreChange);
+  return () => {
+    window.removeEventListener("storage", onStoreChange);
+    window.removeEventListener(SOUND_CHANGE_EVENT, onStoreChange);
+  };
+}
+
+function readSoundPreference() {
+  return sound.isEnabled();
+}
+
+function SoundGlyph({ on }: { on: boolean }) {
+  return (
+    <svg aria-hidden viewBox="0 0 20 20">
+      <path d="M3.5 8h3l3.5-3v10l-3.5-3h-3V8Z" />
+      {on ? (
+        <>
+          <path d="M13 7.1c.9.8 1.3 1.7 1.3 2.9s-.4 2.1-1.3 2.9" />
+          <path d="M15.5 4.8c1.5 1.4 2.2 3.1 2.2 5.2s-.7 3.8-2.2 5.2" />
+        </>
+      ) : (
+        <path d="m13.2 8 4 4m0-4-4 4" />
+      )}
+    </svg>
+  );
+}
+
+function RlpdSoundToggle() {
+  const on = useSyncExternalStore(
+    subscribeToSoundPreference,
+    readSoundPreference,
+    () => true,
+  );
+
+  const toggle = () => {
+    const next = !sound.isEnabled();
+    sound.setEnabled(next);
+    if (next) {
+      sound.unlock();
+      sound.chime(true);
+    }
+    window.dispatchEvent(new Event(SOUND_CHANGE_EVENT));
+  };
+
+  return (
+    <button
+      type="button"
+      className={styles.soundToggle}
+      data-sound="toggle"
+      aria-pressed={on}
+      aria-label={`Interface sounds ${on ? "on" : "off"}. Toggle interface sounds.`}
+      title={`Interface sounds: ${on ? "on" : "off"}`}
+      onClick={toggle}
+    >
+      <SoundGlyph on={on} />
+      <span>Sound {on ? "on" : "off"}</span>
+      <i aria-hidden />
+    </button>
+  );
+}
+
+function RlpdSoundLayer() {
+  useEffect(() => {
+    sound.sync();
+
+    const root = document.querySelector("[data-rlpd-sound-root]");
+    if (!root) return;
+
+    const findInteractive = (target: EventTarget | null) => {
+      if (!(target instanceof Element)) return null;
+      const interactive = target.closest<HTMLElement>("a, button, [role='tab']");
+      return interactive && root.contains(interactive) ? interactive : null;
+    };
+
+    let audioUnlocked = false;
+    let lastHover = 0;
+    const onPointerOver = (event: PointerEvent) => {
+      if (!audioUnlocked || event.pointerType !== "mouse") return;
+      const interactive = findInteractive(event.target);
+      if (!interactive || (interactive instanceof HTMLButtonElement && interactive.disabled)) return;
+      const previous = findInteractive(event.relatedTarget);
+      if (previous === interactive) return;
+      const now = performance.now();
+      if (now - lastHover < 110) return;
+      lastHover = now;
+      sound.tick();
+    };
+
+    const onPointerDown = (event: PointerEvent) => {
+      const interactive = findInteractive(event.target);
+      if (!interactive || (interactive instanceof HTMLButtonElement && interactive.disabled)) return;
+      sound.unlock();
+      audioUnlocked = true;
+      const cue = interactive.dataset.sound;
+      if (cue === "toggle" || cue === "silent") return;
+      if (cue === "chapter") {
+        sound.chapter(Number(interactive.dataset.soundIndex ?? 0));
+        return;
+      }
+      if (cue === "reveal") {
+        sound.reveal();
+        return;
+      }
+      if (cue === "dismiss") {
+        sound.dismiss();
+        return;
+      }
+      sound.tap();
+    };
+
+    root.addEventListener("pointerover", onPointerOver as EventListener, { passive: true });
+    root.addEventListener("pointerdown", onPointerDown as EventListener, { passive: true });
+    return () => {
+      root.removeEventListener("pointerover", onPointerOver as EventListener);
+      root.removeEventListener("pointerdown", onPointerDown as EventListener);
+    };
+  }, []);
+
+  return null;
 }
 
 const chapters = [
@@ -220,6 +346,8 @@ function OverviewPanel({ onExplore }: { onExplore: () => void }) {
           <motion.button
             type="button"
             className={styles.primaryAction}
+            data-sound="chapter"
+            data-sound-index="1"
             onClick={onExplore}
             whileTap={reduced ? undefined : { scale: 0.97 }}
           >
@@ -776,6 +904,7 @@ function FigureLauncher({
         type="button"
         ref={launcherRef}
         className={styles.figureLauncher}
+        data-sound="reveal"
         onClick={() => setOpen(true)}
         onPointerDown={() => setAnimateOpen(true)}
         onKeyDown={(event) => {
@@ -816,6 +945,7 @@ function FigureLauncher({
                 <button
                   type="button"
                   ref={closeRef}
+                  data-sound="dismiss"
                   onClick={() => { setOpen(false); setZoomed(false); }}
                   aria-label="Close figure"
                 >Close ×</button>
@@ -1153,17 +1283,28 @@ export function RlpdExperience() {
   const panelMotion = { direction, instant: instantNavigation };
 
   return (
-    <main className={styles.app} data-tone={activeChapter.tone}>
+    <main className={styles.app} data-tone={activeChapter.tone} data-rlpd-sound-root>
+      <RlpdSoundLayer />
       <Atmosphere />
       <header className={styles.topbar}>
-        <button type="button" className={styles.wordmark} onClick={() => navigate(0)} aria-label="RLPD overview">
+        <button
+          type="button"
+          className={styles.wordmark}
+          data-sound="chapter"
+          data-sound-index="0"
+          onClick={() => navigate(0)}
+          aria-label="RLPD overview"
+        >
           <span>R</span><strong>RLPD / OBSERVATORY</strong>
         </button>
         <div className={styles.topStatus}>
           <span>Select a chapter · arrow keys also work</span>
           <strong>{activeChapter.index} / 07</strong>
         </div>
-        <a href={REPOSITORY} target="_blank" rel="noreferrer">Repository <Arrow /></a>
+        <div className={styles.topActions}>
+          <RlpdSoundToggle />
+          <a href={REPOSITORY} target="_blank" rel="noreferrer">Repository <Arrow /></a>
+        </div>
       </header>
 
       <div className={styles.shell}>
@@ -1177,6 +1318,8 @@ export function RlpdExperience() {
               ref={(element) => { chapterButtonRefs.current[index] = element; }}
               title={`Open chapter ${chapter.index}: ${chapter.label}`}
               key={chapter.id}
+              data-sound="chapter"
+              data-sound-index={index}
               onClick={() => navigate(index)}
             >
               <span>{chapter.index}</span>
@@ -1208,6 +1351,8 @@ export function RlpdExperience() {
           <footer className={styles.deckControls}>
             <button
               type="button"
+              data-sound="chapter"
+              data-sound-index={Math.max(0, activeIndex - 1)}
               onClick={() => navigate(activeIndex - 1)}
               disabled={!previousChapter}
               aria-label={previousChapter ? `Previous chapter: ${previousChapter.label}` : "No previous chapter"}
@@ -1227,6 +1372,8 @@ export function RlpdExperience() {
             </div>
             <button
               type="button"
+              data-sound="chapter"
+              data-sound-index={Math.min(chapters.length - 1, activeIndex + 1)}
               onClick={() => navigate(activeIndex + 1)}
               disabled={!nextChapter}
               aria-label={nextChapter ? `Next chapter: ${nextChapter.label}` : "No next chapter"}

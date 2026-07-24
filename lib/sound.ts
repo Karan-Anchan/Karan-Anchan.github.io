@@ -3,6 +3,7 @@
 
 let ctx: AudioContext | null = null;
 let master: GainNode | null = null;
+let reverb: ConvolverNode | null = null;
 let enabled = true;
 
 function ensure(): AudioContext | null {
@@ -17,6 +18,22 @@ function ensure(): AudioContext | null {
     master = ctx.createGain();
     master.gain.value = 0.6;
     master.connect(ctx.destination);
+
+    const impulseLength = Math.floor(ctx.sampleRate * 1.15);
+    const impulse = ctx.createBuffer(2, impulseLength, ctx.sampleRate);
+    for (let channel = 0; channel < impulse.numberOfChannels; channel += 1) {
+      const data = impulse.getChannelData(channel);
+      for (let index = 0; index < impulseLength; index += 1) {
+        const decay = (1 - index / impulseLength) ** 2.7;
+        data[index] = (Math.random() * 2 - 1) * decay;
+      }
+    }
+    reverb = ctx.createConvolver();
+    reverb.buffer = impulse;
+    const wet = ctx.createGain();
+    wet.gain.value = 0.18;
+    reverb.connect(wet);
+    wet.connect(master);
   }
   if (ctx.state === "suspended") void ctx.resume();
   return ctx;
@@ -31,6 +48,8 @@ function note(
     delay = 0,
     detune = 0,
     lowpass = 3200,
+    attack = 0.02,
+    space = 0,
   } = {},
 ) {
   const c = ensure();
@@ -42,7 +61,7 @@ function note(
   o.detune.value = detune;
   const g = c.createGain();
   g.gain.setValueAtTime(0, t0);
-  g.gain.linearRampToValueAtTime(gain, t0 + 0.02);
+  g.gain.linearRampToValueAtTime(gain, t0 + attack);
   g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
   const f = c.createBiquadFilter();
   f.type = "lowpass";
@@ -50,6 +69,12 @@ function note(
   o.connect(g);
   g.connect(f);
   f.connect(master);
+  if (space > 0 && reverb) {
+    const send = c.createGain();
+    send.gain.value = space;
+    f.connect(send);
+    send.connect(reverb);
+  }
   o.start(t0);
   o.stop(t0 + dur + 0.1);
 }
@@ -79,6 +104,83 @@ export const sound = {
   tick() {
     if (!enabled) return;
     note(1850, { dur: 0.05, gain: 0.011, lowpass: 4200 });
+  },
+
+  /* short physical contact with a faint glass overtone */
+  tap() {
+    if (!enabled) return;
+    note(180, { dur: 0.075, gain: 0.018, attack: 0.004, lowpass: 620 });
+    note(1180, {
+      type: "triangle",
+      dur: 0.16,
+      gain: 0.012,
+      delay: 0.008,
+      attack: 0.006,
+      lowpass: 3400,
+      space: 0.16,
+    });
+  },
+
+  /* each chapter has a related pitch, so moving through the study has shape */
+  chapter(index: number) {
+    if (!enabled) return;
+    const scale = [440, 493.88, 554.37, 659.25, 739.99, 830.61, 987.77];
+    const frequency = scale[Math.max(0, Math.min(scale.length - 1, index))];
+    note(150, { dur: 0.08, gain: 0.017, attack: 0.004, lowpass: 520 });
+    note(frequency, {
+      type: "triangle",
+      dur: 0.3,
+      gain: 0.019,
+      delay: 0.006,
+      attack: 0.008,
+      lowpass: 3600,
+      space: 0.22,
+    });
+    note(frequency * 1.5, {
+      dur: 0.42,
+      gain: 0.008,
+      delay: 0.035,
+      detune: index % 2 ? 4 : -4,
+      lowpass: 4300,
+      space: 0.3,
+    });
+  },
+
+  /* airy upward reveal for the occasional full-resolution figure */
+  reveal() {
+    if (!enabled) return;
+    [392, 587.33, 880].forEach((frequency, index) => {
+      note(frequency, {
+        type: index === 0 ? "sine" : "triangle",
+        dur: 0.48 + index * 0.08,
+        gain: 0.014 - index * 0.002,
+        delay: index * 0.045,
+        attack: 0.012,
+        lowpass: 4400,
+        space: 0.42,
+      });
+    });
+  },
+
+  /* a quiet descending answer when a figure returns to the deck */
+  dismiss() {
+    if (!enabled) return;
+    note(740, {
+      type: "triangle",
+      dur: 0.18,
+      gain: 0.01,
+      attack: 0.006,
+      lowpass: 3000,
+      space: 0.15,
+    });
+    note(370, {
+      dur: 0.22,
+      gain: 0.009,
+      delay: 0.025,
+      attack: 0.006,
+      lowpass: 1800,
+      space: 0.12,
+    });
   },
 
   /* soft bell that climbs a pentatonic scale per checkpoint */
