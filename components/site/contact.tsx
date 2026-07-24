@@ -6,7 +6,7 @@ import ParticleButton from "@/components/kokonutui/particle-button";
 import { Reveal } from "@/components/site/reveal";
 import { Magnetic } from "@/components/site/magnetic";
 
-/* "back to epoch 0" — an eased ride to the top instead of the browser's
+/* "back to epoch 0" uses an eased ride to the top instead of the browser's
    default smooth scroll. On arrival the hero replays its decode entrance
    (see hero.tsx), like a fresh run from initialization. */
 function backToEpochZero(e: React.MouseEvent<HTMLAnchorElement>) {
@@ -36,7 +36,7 @@ export function Contact() {
       className="relative overflow-hidden border-t border-[var(--line)]"
     >
       <div className="glow-mesh pointer-events-none absolute inset-x-0 bottom-0 h-2/3" />
-      {/* dusk pixel panorama, slowly drifting — the cozy horizon */}
+      {/* Slowly drifting dusk panorama */}
       <div
         aria-hidden
         className="panorama-drift pixelated pointer-events-none absolute inset-x-0 bottom-0 h-64 opacity-35 dark:opacity-60"
@@ -50,11 +50,11 @@ export function Contact() {
         }}
       />
 
-      {/* giant marquee CTA — the whole strip is a mailto */}
+      {/* The marquee strip is a mailto link */}
       <a
         href="mailto:kar.anchan02@gmail.com"
         className="brand-marquee group block overflow-hidden border-b border-[var(--line)] py-6"
-        aria-label="Let's talk — email Karan"
+        aria-label="Let's talk. Email Karan"
       >
         <div className="brand-marquee-track flex w-max items-center gap-8">
           {Array.from({ length: 6 }).map((_, i) => (
@@ -75,7 +75,7 @@ export function Contact() {
         <div>
           <Reveal>
             <div className="mb-4 font-mono text-[0.68rem] uppercase tracking-[0.24em] text-[var(--accent-4)]">
-              ckpt 06/06 · training complete — deploy me somewhere interesting
+              ckpt 06/06 · training complete · available for interesting work
             </div>
           </Reveal>
           <Reveal delay={0.05}>
@@ -88,9 +88,9 @@ export function Contact() {
           </Reveal>
           <Reveal delay={0.1}>
             <p className="mt-6 max-w-xl text-sm font-light leading-relaxed text-[var(--dim)]">
-              Research collaborations, working-student roles, and problems that
-              are interesting at 2am. Based in Freiburg — I usually reply
-              before the next training run finishes.
+              I&apos;m open to research collaborations, working-student roles,
+              and difficult engineering problems. I&apos;m based in Freiburg
+              and usually reply before the next training run finishes.
             </p>
           </Reveal>
           <Reveal delay={0.15}>
@@ -139,7 +139,7 @@ export function Contact() {
             © 2026 karan anchan
           </span>
           <span>
-            handcrafted at 2am between training runs — 3d forest by{" "}
+            built between training runs · 3d forest by{" "}
             <a
               href="https://sketchfab.com/3d-models/forest-demo-1269b7e00f9d4ce09931c0c95967bc33"
               target="_blank"

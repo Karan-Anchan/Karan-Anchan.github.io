@@ -71,20 +71,20 @@ export function Hero() {
       <div className="pointer-events-none absolute inset-0 dot-grid opacity-40" />
       <div className="pointer-events-none absolute inset-0 glow-mesh" />
 
-      {/* corner meta — awwwards furniture */}
+      {/* Corner metadata */}
       <div className="absolute inset-x-0 top-16 z-10 mx-auto flex max-w-6xl justify-between px-5 font-mono text-[0.58rem] uppercase tracking-[0.2em] text-[var(--faint)]">
         <span>
           <span className="mr-2 inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-[var(--accent-3)]" />
           open to collaborations
         </span>
-        <span className="hidden sm:block">freiburg · de — {time} cet</span>
+        <span className="hidden sm:block">freiburg · de · {time} cet</span>
         <span className="hidden md:block">portfolio v3 · run 2026</span>
       </div>
 
       <div className="relative z-10 mx-auto flex min-h-svh max-w-6xl flex-col justify-center px-5 pt-14">
         <div className="glass-deep mx-auto w-full rounded-3xl border border-[var(--line)] p-7 sm:p-12">
         <ShimmerText
-          text="M.Sc. Computer Science · AI — Universität Freiburg"
+          text="M.Sc. Computer Science · AI · Universität Freiburg"
           className="font-mono text-[0.7rem] uppercase tracking-[0.24em]"
         />
 
@@ -127,10 +127,10 @@ export function Hero() {
         </div>
 
         <p className="mt-6 max-w-lg text-sm font-light leading-relaxed text-[var(--faint)]">
-          RL on humanoids, detectors running in a browser tab, RAG in
-          production, and agents that watch my training runs while I sleep —
-          research-grade when it needs rigor, product-grade when it needs to
-          ship. The loss curve in the corner is your reading progress.
+          I work on humanoid RL, browser-based detectors, production RAG,
+          and the infrastructure around long training runs. Some projects are
+          research reproductions; others end as deployable tools. The loss
+          curve in the corner tracks your reading progress.
           <span className="text-[var(--dim)]"> yes, it converges.</span>
         </p>
 
@@ -160,7 +160,7 @@ export function Hero() {
         </div>
 
         <div className="mt-12 font-mono text-[0.6rem] lowercase tracking-[0.2em] text-[var(--faint)]">
-          scroll — the good stuff converges below ↓
+          scroll for the projects ↓
         </div>
         </div>
       </div>

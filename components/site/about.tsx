@@ -56,20 +56,19 @@ export function About() {
   return (
     <section id="about" className="mx-auto max-w-6xl px-5 py-24">
       <GiantTitle word="AUTHOR" className="-mt-10 mb-2 opacity-70" />
-      <SectionHead hue="var(--accent-5)" index="§01" title="About the" accent="author" side="ckpt 01 — bio loaded" />
+      <SectionHead hue="var(--accent-5)" index="§01" title="About the" accent="author" side="ckpt 01 · bio loaded" />
       <div className="grid items-start gap-12 lg:grid-cols-[1.55fr_1fr]">
       <div className="max-w-3xl space-y-6 text-xl font-light leading-relaxed text-[var(--dim)] sm:text-2xl">
         <Reveal>
           <p>
-            I&apos;m an AI researcher-engineer doing my{" "}
+            I&apos;m doing an{" "}
             <strong className="font-medium text-[var(--fg)]">
               M.Sc. in Computer Science (AI)
             </strong>{" "}
             at the{" "}
             <strong className="font-medium text-[var(--fg)]">
               University of Freiburg
-            </strong>{" "}
-            — after a B.E. in Computer Science finished at{" "}
+            </strong>. Before that, I completed a B.E. in Computer Science with a{" "}
             <em className="font-serif-accent italic text-[var(--accent-3)]">
               GPA 9.33/10
             </em>
@@ -78,17 +77,14 @@ export function About() {
         </Reveal>
         <Reveal delay={0.1}>
           <p>
-            Hand me a strong paper and I&apos;ll{" "}
+            I like the point where a paper stops and engineering begins. I
+            rebuild results, then take care of the{" "}
             <strong className="font-medium text-[var(--fg)]">
-              rebuild it, then push past it
-            </strong>
-            . Hand me a vague problem and I&apos;ll scope it, build the
-            pipeline, and ship the unglamorous parts too — data, evals,
-            deployment, automation.{" "}
+              data, evaluations, deployment, and automation
+            </strong>.{" "}
             <em className="font-serif-accent italic text-[var(--accent-4)]">
-              The whole stack of making models useful
-            </em>
-            , not just the fun layer.
+              Models are only one part of the work
+            </em>.
           </p>
         </Reveal>
         <Reveal delay={0.15}>
@@ -98,7 +94,7 @@ export function About() {
             plus the 2026 research roadmap below. English C2 · Hindi native ·
             German A2→B1. Off the clock: over-engineering n8n automations for
             my own life and defending masala chai against German filter coffee
-            — a study with n=1 and strong priors.
+            (a study with n=1 and strong priors).
           </p>
         </Reveal>
       </div>
@@ -115,7 +111,7 @@ export function About() {
             className="h-auto w-full rounded-2xl border border-[var(--line)]"
           />
           <figcaption className="mt-3 flex justify-between font-mono text-[0.58rem] lowercase tracking-[0.16em] text-[var(--faint)]">
-            <span>fig. 0 — the author</span>
+            <span>fig. 0 · the author</span>
             <span>chai, not coffee · n=1</span>
           </figcaption>
         </figure>

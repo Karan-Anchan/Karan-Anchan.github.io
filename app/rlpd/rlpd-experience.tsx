@@ -37,12 +37,12 @@ function useStableMotionPreference() {
 }
 
 const chapters = [
-  { id: "overview", index: "01", label: "Overview", hint: "The premise", tone: "amber" },
+  { id: "overview", index: "01", label: "Overview", hint: "Study scope", tone: "amber" },
   { id: "method", index: "02", label: "Method", hint: "Three guardrails", tone: "mint" },
   { id: "benchmarks", index: "03", label: "Benchmarks", hint: "Three tasks", tone: "violet" },
-  { id: "critic", index: "04", label: "Critic", hint: "Failure trace", tone: "coral" },
-  { id: "humanoid", index: "05", label: "Humanoid", hint: "Beyond paper", tone: "mint" },
-  { id: "ablation", index: "06", label: "Ablation", hint: "The twist", tone: "amber" },
+  { id: "critic", index: "04", label: "Critic", hint: "Divergence trace", tone: "coral" },
+  { id: "humanoid", index: "05", label: "Humanoid", hint: "Extension", tone: "mint" },
+  { id: "ablation", index: "06", label: "Ablation", hint: "Online-only", tone: "amber" },
   { id: "evidence", index: "07", label: "Evidence", hint: "Audit & team", tone: "violet" },
 ] as const;
 
@@ -208,13 +208,13 @@ function OverviewPanel({ onExplore }: { onExplore: () => void }) {
       <div className={styles.overviewCopy}>
         <span className={styles.eyebrow}><b>01</b>research reproduction / 2026</span>
         <h1>
-          We rebuilt RLPD.
-          <em>The ablation changed the story.</em>
+          We reproduced RLPD.
+          <em>The ablation changed the conclusion.</em>
         </h1>
         <p>
           A three-person PyTorch reproduction of offline-to-online reinforcement
-          learning—extended to Humanoid-v5, stress-tested across three seeds,
-          and forced to explain a result the paper did not predict.
+          learning, extended to Humanoid-v5 and evaluated across three seeds.
+          The final ablation produced a result the original paper did not test.
         </p>
         <div className={styles.overviewActions}>
           <motion.button
@@ -347,7 +347,7 @@ function MethodPanel() {
       label: "01 / mix",
       value: "50 / 50",
       title: "Symmetric sampling",
-      copy: "Every update draws 128 online and 128 offline transitions. The dataset enters through the sampler—there is no RLPD pretraining phase.",
+      copy: "Every update draws 128 online and 128 offline transitions. The dataset enters through the sampler; RLPD has no separate pretraining phase.",
       labels: ["128 offline", "128 online"],
       outcome: "Neither source can silently dominate an update.",
       glyph: <MixGlyph />,
@@ -392,9 +392,9 @@ function MethodPanel() {
       <PanelHeader
         index="02"
         eyebrow="method / three guardrails"
-        title="A small method."
-        accent="Implementation carries the weight."
-        copy="One motion language connects all three: sample, bound, update. Each value comes directly from the checked configuration."
+        title="Three implementation choices"
+        accent="define the method."
+        copy="The method samples evenly, constrains the critic, and performs more updates per environment step. Each value comes from the checked configuration."
       />
       <div className={styles.methodFlow} aria-label="Offline-to-online learning loop">
         {[
@@ -472,9 +472,9 @@ function BenchmarksPanel() {
       <PanelHeader
         index="03"
         eyebrow="locomotion / medium data"
-        title="The reproduction held."
-        accent="Consistency was stronger."
-          copy="RLPD alone finished between 88 and 90 on all three tasks. Select an environment to pair its score with observed policy behavior."
+        title="The locomotion results reproduced."
+        accent="RLPD was the most consistent."
+          copy="RLPD finished between 88 and 90 on all three tasks. Select an environment to compare its scores and policy behavior."
       />
       <div className={styles.taskTabs} role="tablist" aria-label="Benchmark environment">
         {results.map((task, index) => (
@@ -599,8 +599,8 @@ function CriticPanel() {
       <PanelHeader
         index="04"
         eyebrow="Walker2d / critic redline"
-        title="The failure was not subtle."
-        accent="The trace reached 85,300."
+        title="SACfD’s critic diverged."
+        accent="Mean Q reached 85,300."
         copy="SACfD’s critic climbed two orders of magnitude while RLPD stayed bounded near 545 on the same medium data and three-seed budget."
       />
       <div className={styles.criticLayout}>
@@ -846,8 +846,8 @@ function HumanoidPanel() {
       <PanelHeader
         index="05"
         eyebrow="beyond the paper / Humanoid-v5"
-        title="A harder body exposed"
-        accent="a different advantage."
+        title="Humanoid changed"
+        accent="the comparison."
         copy="Humanoid expands the problem to 348 observations and 17 actuators. Every method ran to one million environment steps; divergent runs stayed in the record."
       />
       <div className={styles.humanoidLayout}>
@@ -925,8 +925,8 @@ function AblationPanel() {
       <PanelHeader
         index="06"
         eyebrow="matched-horizon ablation / 500k"
-        title="We turned off the offline data."
-        accent="The policy got better."
+        title="Removing offline data"
+        accent="improved the policy."
         copy="LayerNorm, the critic ensemble, and high UTD stayed intact. Only the sampling ratio changed from 50/50 to online-only."
       />
       <div className={styles.ablationLayout}>
@@ -956,11 +956,11 @@ function AblationPanel() {
           <p>One controlled change removed offline samples from the update batch.</p>
         </div>
         <article className={styles.ablationReading}>
-          <h3>The architecture survived. The prior data became the constraint.</h3>
+          <h3>The architecture stayed fixed; the data mix was the constraint.</h3>
           <p>
-            The result does not invalidate offline-to-online RL. It makes the premise conditional:
-            data quality, policy coverage, tuning, and the handoff between learning regimes can matter
-            more than the mere presence of a dataset.
+            This result does not invalidate offline-to-online RL. It shows that the benefit depends
+            on data quality, policy coverage, tuning, and the handoff between offline and online
+            learning. Having an offline dataset is not sufficient by itself.
           </p>
           <FigureLauncher
             src="/rlpd/ablation-results.webp"
@@ -1001,7 +1001,7 @@ function EvidencePanel() {
       <PanelHeader
         index="07"
         eyebrow="evidence audit / provenance"
-        title="Every conclusion carries"
+        title="Every result includes"
         accent="its sample count."
         copy="Incomplete runs stay visible. Best seeds never masquerade as aggregates, and every figure remains available at full resolution."
       />

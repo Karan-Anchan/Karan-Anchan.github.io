@@ -1,6 +1,6 @@
 # karan-anchan.github.io
 
-**Karan Anchan — AI researcher & engineer.** Personal portfolio, live at
+**Karan Anchan | AI researcher and engineer.** Personal portfolio, live at
 **[karan-anchan.github.io](https://karan-anchan.github.io/)**.
 
 ![Hero](docs/screens/hero.gif)

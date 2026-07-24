@@ -71,7 +71,7 @@ const bentoItems: BentoItem[] = [
     id: "wm-rl",
     title: "World-model RL on Crafter",
     description:
-      "DreamerV3 reproduction at 1M env steps, then ablate imagination horizon and latent type — with dream-vs-reality rollout videos.",
+      "Reproduce DreamerV3 at one million environment steps, then compare imagination horizons and latent types. The evaluation will include imagined and real rollout videos.",
     href: "#",
     feature: "spotlight",
     spotlightItems: [
@@ -98,7 +98,7 @@ const bentoItems: BentoItem[] = [
     id: "dlm",
     title: "Diffusion LM from scratch",
     description:
-      "Masked-diffusion language model vs a compute-matched autoregressive twin — a controlled AR-vs-diffusion study.",
+      "Compare a masked-diffusion language model with an autoregressive model trained at the same compute budget.",
     href: "#",
     feature: "timeline",
     timeline: [
@@ -113,7 +113,7 @@ const bentoItems: BentoItem[] = [
     id: "eff",
     title: "Efficient LLM inference lab",
     description:
-      "Quantization × speculative decoding × KV-cache compression — a serving-throughput Pareto on one RTX 5070.",
+      "Measure quantization, speculative decoding, and KV-cache compression on one RTX 5070, then compare throughput with retained quality.",
     href: "#",
     feature: "metrics",
     metrics: [

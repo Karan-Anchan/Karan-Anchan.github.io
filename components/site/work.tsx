@@ -191,15 +191,15 @@ const entries: Entry[] = [
       { label: "Reinforcement Learning" },
       { label: "Lab project · team of 3" },
     ],
-    title: "RLPD — offline-to-online RL, extended to humanoids",
+    title: "RLPD: offline-to-online RL on locomotion and Humanoid",
     href: "/rlpd/",
     external: false,
     desc: (
       <>
-        A three-person PyTorch reproduction and critical evaluation of{" "}
-        <strong>RLPD</strong> (Ball et al., ICML 2023). Across the complete
-        locomotion matrix, RLPD finishes at 88–90 normalized on all three tasks.
-        On Humanoid-v5, the registered follow-up becomes the real story:{" "}
+        A three-person PyTorch reproduction of <strong>RLPD</strong> (Ball et
+        al., ICML 2023), followed by a Humanoid-v5 extension. RLPD finishes
+        between 88 and 90 normalized on all three locomotion tasks. On
+        Humanoid-v5,{" "}
         <strong>online-only beats the 50/50 offline mix by +21.9 points</strong>
         at the matched 500k horizon.
       </>
@@ -221,13 +221,13 @@ const entries: Entry[] = [
       <div className="aspect-[16/10] w-full">
         <img
           src="/covers/rlpd-benchmark.webp"
-          alt="RLPD vs IQL and SACfD on medium offline data — normalized return over 245k steps, mean ± std across 3 seeds; RLPD reaches 88–90 on the Minari v5 expert scale on Hopper, Walker2d and HalfCheetah"
+          alt="RLPD vs IQL and SACfD on medium offline data. The chart shows normalized return over 245k steps, with mean and standard deviation across three seeds."
           loading="lazy"
           className="h-full w-full object-cover"
         />
       </div>
     ),
-    caption: "fig. 1 — rlpd vs iql vs sacfd · medium data · 3 seeds ± std",
+    caption: "fig. 1 · rlpd vs iql vs sacfd · medium data · 3 seeds ± std",
   },
   {
     no: "02",
@@ -238,17 +238,17 @@ const entries: Entry[] = [
       { label: "Computer Vision" },
       { label: "Edge deployment" },
     ],
-    title: "One detector, three runtimes — YOLO26 at the edge",
+    title: "YOLO26 at the edge: one detector, three runtimes",
     href: "https://github.com/Karan-Anchan/edge-yolo26-deployment",
     desc: (
       <>
-        Fine-tune an <strong>NMS-free YOLO26</strong>, ship the{" "}
-        <em className="font-serif-accent italic">same network</em> to TensorRT
-        (RTX 5070), ONNX Runtime (Ryzen 7700) and{" "}
-        <strong>WebGPU in the browser</strong>, then measure every path with
-        MLPerf-style rigor + NVML power. On Blackwell, <strong>FP8 hits 560
-        FPS</strong> and FP16 wins latency-per-watt — while INT8, the reflex
-        default, is dominated on accuracy, speed <em>and</em> power.
+        I fine-tuned an <strong>NMS-free YOLO26</strong> and deployed the{" "}
+        <em className="font-serif-accent italic">same network</em> through
+        TensorRT on an RTX 5070, ONNX Runtime on a Ryzen 7700, and{" "}
+        <strong>WebGPU in the browser</strong>. Each path has latency and
+        accuracy measurements; the GPU paths also include NVML power data.
+        FP8 reaches <strong>560 FPS</strong>, while FP16 has the best
+        latency-per-watt result on this Blackwell GPU.
       </>
     ),
     metrics: [
@@ -270,13 +270,13 @@ const entries: Entry[] = [
       <div className="aspect-[16/10] w-full">
         <img
           src="/covers/yolo-benchmark.webp"
-          alt="Accuracy cost of quantization — FP16/FP8 pass the 2% budget, INT8 fails"
+          alt="Accuracy cost of quantization. FP16 and FP8 stay within the 2% budget; INT8 does not."
           loading="lazy"
           className="h-full w-full object-cover"
         />
       </div>
     ),
-    caption: "fig. 2 — accuracy cost of quantization · measured on RTX 5070",
+    caption: "fig. 2 · accuracy cost of quantization · measured on RTX 5070",
   },
   {
     no: "03",
@@ -285,20 +285,18 @@ const entries: Entry[] = [
     tags: [
       { label: "Shipped · 2026" },
       { label: "NLP · from scratch" },
-      { label: "Rebuilt honestly" },
+      { label: "Re-evaluated" },
     ],
-    title: "Attention Is All You Need — from scratch, EN → HI",
+    title: "A PyTorch Transformer for English → Hindi",
     href: "https://github.com/Karan-Anchan/en-hi-nmt-transformer",
     desc: (
       <>
-        A 6-layer Transformer in <strong>raw PyTorch</strong> — no{" "}
-        <code>nn.Transformer</code>, no <code>transformers</code> — trained
-        EN→HI on Samanantar with byte-level BPE, a Noam schedule and beam
-        search. The 2024 original reported a mirage BLEU; the rebuild scores a{" "}
-        <strong>frozen 5k test set</strong> and finds beam&apos;s +0.2 chrF++
-        is really a <strong>two-way rewrite</strong> — 162 sentences better,
-        140 worse — at 9.3× the latency. Hover: the decoder translating live,
-        attention and all.
+        A 6-layer Transformer written directly in <strong>PyTorch</strong>,
+        without <code>nn.Transformer</code> or <code>transformers</code>. It
+        trains on Samanantar with byte-level BPE and a Noam schedule. A new
+        evaluation on a <strong>frozen 5k test set</strong> shows that beam
+        search adds 0.2 chrF++ at 9.3× the latency, improving 162 sentences
+        and worsening 140.
       </>
     ),
     metrics: [
@@ -317,13 +315,13 @@ const entries: Entry[] = [
       <div className="aspect-[16/10] w-full">
         <img
           src="/covers/nmt-beam.webp"
-          alt="Per-sentence chrF++ scatter, greedy vs beam decode — beam's +0.2 corpus gain hides 162 improved and 140 worsened sentences at 9.3 times the latency"
+          alt="Per-sentence chrF++ scatter for greedy and beam decoding. Beam improves 162 sentences and worsens 140 at 9.3 times the latency."
           loading="lazy"
           className="h-full w-full object-cover"
         />
       </div>
     ),
-    caption: "fig. 3 — what beam search actually buys · frozen 500-pair test",
+    caption: "fig. 3 · beam search on a frozen 500-pair test",
   },
   {
     no: "04",
@@ -334,15 +332,15 @@ const entries: Entry[] = [
       { label: "Hybrid architectures" },
       { label: "Language modelling" },
     ],
-    title: "Mamba-2 × attention — a hybrid LM ratio study",
+    title: "Mamba-2 × attention: a hybrid LM ratio study",
     href: "https://github.com/Karan-Anchan/mamba-hybrid-lm",
     desc: (
       <>
         A <strong>~50M-param hybrid LM</strong> interleaving Mamba-2 SSM blocks
         with causal attention (the Jamba pattern), trained on OpenWebText at
-        matched tokens-seen. Sweeping the attention:SSM ratio —{" "}
-        <strong>1:7 leads the reduced-scale preview</strong>; KV-cache and
-        inference columns land next.
+        matched tokens-seen. In the reduced-scale preview,{" "}
+        <strong>1:7 has the lowest validation perplexity</strong>. KV-cache
+        and inference measurements are still pending.
       </>
     ),
     metrics: [
@@ -355,7 +353,7 @@ const entries: Entry[] = [
       { label: "Mamba-2 paper", href: "https://arxiv.org/abs/2405.21060" },
     ],
     fig: <MambaFig />,
-    caption: "fig. 4 — interleave pattern & kv-cache saving",
+    caption: "fig. 4 · interleave pattern and planned kv-cache measurement",
   },
   {
     no: "05",
@@ -366,7 +364,7 @@ const entries: Entry[] = [
       { label: "Interpretability" },
       { label: "Safety" },
     ],
-    title: "Sparse autoencoders — tracing circuits in a small LM",
+    title: "Sparse autoencoders for tracing circuits in a small LM",
     href: "https://github.com/Karan-Anchan",
     desc: (
       <>
@@ -382,11 +380,11 @@ const entries: Entry[] = [
       { v: "L4–L9", l: "layers probed" },
     ],
     links: [
-      { label: "Repo — soon", href: "https://github.com/Karan-Anchan" },
+      { label: "Repo coming soon", href: "https://github.com/Karan-Anchan" },
       { label: "Circuits thread", href: "https://transformer-circuits.pub/" },
     ],
     fig: <SaeFig />,
-    caption: "fig. 5 — feature circuit, induction",
+    caption: "fig. 5 · feature circuit, induction",
   },
 ];
 
@@ -398,7 +396,7 @@ export function Work() {
         index="§02"
         title="Selected"
         accent="work"
-        side="ckpt 02 — three shipped, two brewing"
+        side="ckpt 02 · three shipped, two in progress"
       />
       <div className="space-y-20">
         {entries.map((e, i) => (

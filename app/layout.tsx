@@ -26,15 +26,15 @@ const instrumentSerif = Instrument_Serif({
 });
 
 export const metadata: Metadata = {
-  title: "Karan Anchan — AI Researcher & Engineer",
+  title: "Karan Anchan | AI Researcher & Engineer",
   description:
-    "Karan Anchan — M.Sc. Computer Science (AI), University of Freiburg. Reinforcement learning, efficient deep learning, and systems that ship.",
+    "Karan Anchan is an M.Sc. Computer Science (AI) student at the University of Freiburg, working on reinforcement learning, efficient deep learning, and deployable ML systems.",
   metadataBase: new URL("https://karan-anchan.github.io"),
   alternates: { canonical: "/" },
   authors: [{ name: "Karan Anchan", url: "https://karan-anchan.github.io/" }],
   creator: "Karan Anchan",
   openGraph: {
-    title: "Karan Anchan — AI Researcher & Engineer",
+    title: "Karan Anchan | AI Researcher & Engineer",
     description:
       "Reinforcement learning · efficient deep learning · multimodal systems.",
     url: "https://karan-anchan.github.io/",
@@ -45,13 +45,13 @@ export const metadata: Metadata = {
         url: "/og.jpg",
         width: 1200,
         height: 630,
-        alt: "Karan Anchan — AI Researcher & Engineer",
+        alt: "Karan Anchan, AI Researcher and Engineer",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Karan Anchan — AI Researcher & Engineer",
+    title: "Karan Anchan | AI Researcher & Engineer",
     description:
       "Reinforcement learning · efficient deep learning · multimodal systems.",
     images: ["/og.jpg"],
