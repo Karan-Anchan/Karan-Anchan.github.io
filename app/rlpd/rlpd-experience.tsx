@@ -5,9 +5,10 @@ import {
   motion,
   useReducedMotion,
 } from "motion/react";
+import Image from "next/image";
 import Link from "next/link";
 import { createPortal } from "react-dom";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import styles from "./rlpd.module.css";
 
 const REPOSITORY =
@@ -60,13 +61,35 @@ const results = [
 ] as const;
 
 const criticRLPD: Array<[number, number]> = [
-  [25, 382.3], [50, 452.1], [75, 477.2], [100, 498.4], [125, 516.7],
-  [150, 521.2], [175, 537.9], [200, 543.4], [225, 539.0], [245, 545.4],
+  [5000, 3.955], [10000, 488.588], [15000, 407.693], [20000, 377.341],
+  [25000, 382.275], [30000, 390.081], [35000, 409.505], [40000, 433.985],
+  [45000, 442.057], [50000, 452.137], [55000, 455.703], [60000, 469.826],
+  [65000, 467.76], [70000, 476.291], [75000, 477.207], [80000, 483.933],
+  [85000, 484.362], [90000, 492.654], [95000, 497.464], [100000, 498.353],
+  [105000, 508.027], [110000, 511.258], [115000, 505.269], [120000, 514.607],
+  [125000, 516.739], [130000, 512.839], [135000, 517.299], [140000, 519.888],
+  [145000, 522.137], [150000, 521.183], [155000, 527.762], [160000, 529.273],
+  [165000, 525.931], [170000, 523.108], [175000, 537.949], [180000, 531.47],
+  [185000, 533.566], [190000, 534.335], [195000, 535.677], [200000, 543.408],
+  [205000, 541.577], [210000, 537.8], [215000, 540.638], [220000, 541.96],
+  [225000, 539.044], [230000, 541.761], [235000, 543.517], [240000, 550.552],
+  [245000, 545.352],
 ];
 
 const criticSACfD: Array<[number, number]> = [
-  [25, 688.2], [50, 2241.6], [75, 5995.6], [100, 11129.7], [125, 20473.9],
-  [150, 35123.8], [175, 53155.0], [200, 71850.4], [225, 81460.8], [245, 85300.2],
+  [5000, 0.1], [10000, 187.206], [15000, 361.775], [20000, 516.609],
+  [25000, 688.225], [30000, 889.962], [35000, 1130.521], [40000, 1421.03],
+  [45000, 1773.719], [50000, 2241.607], [55000, 2891.569], [60000, 3619.731],
+  [65000, 4241.652], [70000, 5108.083], [75000, 5995.565], [80000, 6841.607],
+  [85000, 7752.195], [90000, 8899.011], [95000, 9900.35], [100000, 11129.675],
+  [105000, 12625.935], [110000, 14433.163], [115000, 16431.955], [120000, 18772.285],
+  [125000, 20473.886], [130000, 22761.16], [135000, 25717.467], [140000, 28889.486],
+  [145000, 31927.663], [150000, 35123.775], [155000, 37857.192], [160000, 42043.068],
+  [165000, 44952.309], [170000, 49545.659], [175000, 53154.97], [180000, 57612.642],
+  [185000, 60300.689], [190000, 64113.395], [195000, 66675.384], [200000, 71850.415],
+  [205000, 76049.427], [210000, 75151.358], [215000, 77635.658], [220000, 78442.116],
+  [225000, 81460.81], [230000, 83725.026], [235000, 84531.951], [240000, 85041.897],
+  [245000, 85300.175],
 ];
 
 const auditRows = [
@@ -187,12 +210,12 @@ function OverviewPanel({ onExplore }: { onExplore: () => void }) {
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
       >
-        <img
-          src="/rlpd/hero-robot-v2.jpg"
+        <Image
+          src="/rlpd/hero-robot-v3.webp"
           alt="Humanoid training agent walking through a dark observation field"
-          width={1024}
-          height={1536}
-          fetchPriority="high"
+          fill
+          sizes="(max-width: 680px) calc(100vw - 50px), (max-width: 980px) 42vw, 34vw"
+          priority
         />
         <div className={styles.stageWash} aria-hidden />
         <div className={styles.stageReadout}>
@@ -264,6 +287,9 @@ function EnsembleGlyph() {
 }
 
 function MethodPanel() {
+  const [activeGuardrail, setActiveGuardrail] = useState(0);
+  const guardrailGridRef = useRef<HTMLDivElement>(null);
+  const reduced = useReducedMotion();
   const guardrails = [
     {
       code: "ratio = 0.5 · batch = 256",
@@ -271,6 +297,8 @@ function MethodPanel() {
       value: "50 / 50",
       title: "Symmetric sampling",
       copy: "Every update draws 128 online and 128 offline transitions. The dataset enters through the sampler—there is no RLPD pretraining phase.",
+      labels: ["128 offline", "128 online"],
+      outcome: "Neither source can silently dominate an update.",
       glyph: <MixGlyph />,
     },
     {
@@ -279,6 +307,8 @@ function MethodPanel() {
       value: "LN",
       title: "LayerNorm critic",
       copy: "Normalization limits extrapolation on actions the offline data never covered. Removing it on Humanoid sent mean Q to 8.9×10¹⁰.",
+      labels: ["action estimate", "normalized critic path"],
+      outcome: "Unseen-action values stay numerically controlled.",
       glyph: <BoundGlyph />,
     },
     {
@@ -287,12 +317,27 @@ function MethodPanel() {
       value: "10 × 20",
       title: "Ensemble + high UTD",
       copy: "Ten critics and twenty gradient updates per environment step trade compute for sample efficiency and reduce single-critic overestimation.",
+      labels: ["10 critic heads", "20 updates / step"],
+      outcome: "More compute is exchanged for faster online adaptation.",
       glyph: <EnsembleGlyph />,
     },
   ];
 
-  return (
-    <div className={styles.panelStack}>
+  const revealGuardrail = (nextIndex: number) => {
+    const bounded = Math.max(0, Math.min(guardrails.length - 1, nextIndex));
+    const grid = guardrailGridRef.current;
+    const card = grid?.children[bounded] as HTMLElement | undefined;
+    if (grid && card) {
+      grid.scrollTo({
+        left: card.offsetLeft - grid.offsetLeft,
+        behavior: reduced ? "auto" : "smooth",
+      });
+    }
+    setActiveGuardrail(bounded);
+  };
+
+    return (
+      <div className={styles.panelStack}>
       <PanelHeader
         index="02"
         eyebrow="method / three guardrails"
@@ -310,7 +355,33 @@ function MethodPanel() {
           <div key={index}><span>{index}</span><strong>{title}</strong><small>{detail}</small></div>
         ))}
       </div>
-      <div className={styles.guardrailGrid}>
+      <div className={styles.methodMobileControls} aria-label="Method guardrail controls">
+        <span aria-live="polite">{activeGuardrail + 1} of {guardrails.length} guardrails</span>
+        <div>
+          <button
+            type="button"
+            onClick={() => revealGuardrail(activeGuardrail - 1)}
+            disabled={activeGuardrail === 0}
+            aria-label="Previous guardrail"
+          ><Arrow direction="left" /> Previous</button>
+          <button
+            type="button"
+            onClick={() => revealGuardrail(activeGuardrail + 1)}
+            disabled={activeGuardrail === guardrails.length - 1}
+            aria-label="Next guardrail"
+          >Next <Arrow direction="right" /></button>
+        </div>
+      </div>
+      <div
+        className={styles.guardrailGrid}
+        ref={guardrailGridRef}
+        onScroll={(event) => {
+          const grid = event.currentTarget;
+          const cardWidth = grid.firstElementChild?.getBoundingClientRect().width ?? grid.clientWidth;
+          const gap = 8;
+          setActiveGuardrail(Math.max(0, Math.min(guardrails.length - 1, Math.round(grid.scrollLeft / (cardWidth + gap)))));
+        }}
+      >
         {guardrails.map((guardrail, index) => (
           <motion.article
             className={styles.guardrail}
@@ -321,9 +392,17 @@ function MethodPanel() {
           >
             <div className={styles.guardrailMeta}><span>{guardrail.label}</span><strong>{guardrail.value}</strong></div>
             {guardrail.glyph}
+            <div className={styles.glyphCaption}>
+              <span>{guardrail.labels[0]}</span>
+              <span>{guardrail.labels[1]}</span>
+            </div>
             <h3>{guardrail.title}</h3>
             <p>{guardrail.copy}</p>
             <code>{guardrail.code}</code>
+            <footer className={styles.guardrailOutcome}>
+              <span>Design role</span>
+              <strong>{guardrail.outcome}</strong>
+            </footer>
           </motion.article>
         ))}
       </div>
@@ -335,15 +414,16 @@ function BenchmarksPanel() {
   const [selectedTask, setSelectedTask] = useState(0);
   const reduced = useReducedMotion();
   const result = results[selectedTask];
+  const lead = result.values[0].value - result.values[1].value;
 
   return (
-    <div className={styles.panelStack}>
+    <div className={cx(styles.panelStack, styles.benchmarkPanel)}>
       <PanelHeader
         index="03"
         eyebrow="locomotion / medium data"
         title="The reproduction held."
         accent="Consistency was stronger."
-        copy="RLPD was the only method to finish between 88 and 90 on every task. Select an environment to connect the aggregate score to observed policy behavior."
+          copy="RLPD alone finished between 88 and 90 on all three tasks. Select an environment to pair its score with observed policy behavior."
       />
       <div className={styles.taskTabs} role="tablist" aria-label="Benchmark environment">
         {results.map((task, index) => (
@@ -388,7 +468,12 @@ function BenchmarksPanel() {
               ))}
             </motion.div>
           </AnimatePresence>
-          <p>Three complete seeds at 245k environment steps · Minari v5 normalization.</p>
+          <div className={styles.resultInsight}>
+            <div><span>RLPD lead</span><strong>+{lead.toFixed(1)}</strong></div>
+            <div><span>seed spread</span><strong>±{result.values[0].spread.toFixed(1)}</strong></div>
+            <div><span>coverage</span><strong>3 / 3 runs</strong></div>
+          </div>
+          <p>245k environment steps · Minari v5 normalization · expert score = 100.</p>
         </div>
 
         <AnimatePresence mode="wait">
@@ -399,7 +484,12 @@ function BenchmarksPanel() {
             animate={{ opacity: 1, scale: 1 }}
             exit={reduced ? undefined : { opacity: 0, scale: 0.98 }}
           >
-            <img src={result.rollout} alt={`${result.task} RLPD policy rollout`} width={720} height={560} />
+            <Image
+              src={result.rollout}
+              alt={`${result.task} RLPD policy rollout`}
+              fill
+              sizes="(max-width: 680px) calc(100vw - 50px), (max-width: 980px) 40vw, 30vw"
+            />
             <span>policy replay · expert-data seed 0</span>
             <figcaption>
               <div><strong>{result.task}</strong><small>RLPD · observed behavior</small></div>
@@ -413,9 +503,9 @@ function BenchmarksPanel() {
 }
 
 function chartPoint([step, q]: [number, number]) {
-  const x = 52 + (step / 245) * 596;
-  const normalized = (Math.log10(q) - 2) / 3;
-  const y = 246 - normalized * 192;
+  const x = 58 + (step / 245000) * 538;
+  const normalized = (Math.log10(Math.max(q, 0.1)) + 1) / 6;
+  const y = 236 - normalized * 190;
   return { x, y };
 }
 
@@ -426,11 +516,22 @@ function linePath(values: Array<[number, number]>) {
   }).join(" ");
 }
 
+function visibleCriticPoints(values: Array<[number, number]>) {
+  return values.filter((_, index) =>
+    index === 0 || (index + 1) % 5 === 0 || index === values.length - 1,
+  );
+}
+
+function formatCriticStep(step: number) {
+  return `${step / 1000}k`;
+}
+
 function CriticPanel() {
   const [activeSeries, setActiveSeries] = useState<"both" | "rlpd" | "sacfd">("both");
   const reduced = useReducedMotion();
   const sacEnd = chartPoint(criticSACfD[criticSACfD.length - 1]);
   const rlpdEnd = chartPoint(criticRLPD[criticRLPD.length - 1]);
+  const firstLogX = chartPoint(criticSACfD[0]).x;
 
   return (
     <div className={styles.panelStack}>
@@ -444,7 +545,10 @@ function CriticPanel() {
       <div className={styles.criticLayout}>
         <div className={styles.criticChart}>
           <div className={styles.chartToolbar}>
-            <span>mean Q · log scale</span>
+            <div className={styles.chartContext}>
+              <strong>mean Q · log scale</strong>
+              <span>three-seed mean · every 5k steps</span>
+            </div>
             <div>
               {(["both", "rlpd", "sacfd"] as const).map((series) => (
                 <button
@@ -453,6 +557,7 @@ function CriticPanel() {
                   aria-pressed={activeSeries === series}
                   onClick={() => setActiveSeries(series)}
                 >
+                  {series !== "both" && <i className={series === "sacfd" ? styles.sacSwatch : styles.rlpdSwatch} />}
                   {series === "both" ? "Both" : series === "sacfd" ? "SACfD" : "RLPD"}
                 </button>
               ))}
@@ -460,15 +565,27 @@ function CriticPanel() {
           </div>
           <svg viewBox="0 0 700 282" role="img" aria-labelledby="critic-title critic-desc">
             <title id="critic-title">Walker2d critic values</title>
-            <desc id="critic-desc">SACfD rises to 85,300 while RLPD remains bounded near 545.</desc>
-            {[2, 3, 4, 5].map((tick) => {
-              const y = 246 - ((tick - 2) / 3) * 192;
-              return <g key={tick}><line x1="52" x2="648" y1={y} y2={y} /><text x="8" y={y + 4}>10^{tick}</text></g>;
+            <desc id="critic-desc">
+              The first recorded critic statistic is at 5,000 environment steps.
+              SACfD rises from 0.1 to 85,300 while RLPD ends near 545.
+            </desc>
+            <rect
+              x="58"
+              y="46"
+              width={firstLogX - 58}
+              height="190"
+              className={styles.unloggedBand}
+            />
+            <text x="62" y="35" className={styles.firstLogNote}>first critic log → 5k</text>
+            {[-1, 1, 3, 5].map((tick) => {
+              const y = 236 - ((tick + 1) / 6) * 190;
+              return <g key={tick}><line x1="58" x2="596" y1={y} y2={y} /><text x="10" y={y + 4}>10^{tick}</text></g>;
             })}
-            {[0, 50, 100, 150, 200, 245].map((tick) => {
-              const x = 52 + (tick / 245) * 596;
-              return <text key={tick} x={x} y="274" textAnchor="middle">{tick}k</text>;
+            {[0, 50000, 100000, 150000, 200000, 245000].map((tick) => {
+              const x = 58 + (tick / 245000) * 538;
+              return <text key={tick} x={x} y="260" textAnchor="middle">{formatCriticStep(tick)}</text>;
             })}
+            <text x="327" y="279" textAnchor="middle" className={styles.axisTitle}>environment steps</text>
             <path d={linePath(criticSACfD)} className={cx(styles.sacCurve, styles.curveUnderlay)} />
             <path d={linePath(criticRLPD)} className={cx(styles.rlpdCurve, styles.curveUnderlay)} />
             <motion.path
@@ -485,27 +602,55 @@ function CriticPanel() {
               animate={{ pathLength: 1 }}
               transition={{ duration: 0.75, delay: 0.08 }}
             />
-            {criticSACfD.slice(0, -1).map((point) => {
+            {visibleCriticPoints(criticSACfD).map((point) => {
               const { x, y } = chartPoint(point);
-              return <circle key={`s-${point[0]}`} cx={x} cy={y} r="2.7" className={cx(styles.sacPoint, activeSeries === "rlpd" && styles.curveMuted)}><title>{`SACfD · ${point[0]}k · ${Math.round(point[1]).toLocaleString()}`}</title></circle>;
+              const label = `SACfD · ${formatCriticStep(point[0])} · ${Math.round(point[1]).toLocaleString()}`;
+              return (
+                <g key={`s-${point[0]}`} tabIndex={0} role="img" aria-label={label}>
+                  <circle cx={x} cy={y} r="10" className={styles.pointHit} />
+                  <circle cx={x} cy={y} r={point[0] === 245000 ? "5" : "3.1"} className={cx(styles.sacPoint, activeSeries === "rlpd" && styles.curveMuted)} />
+                  <title>{label}</title>
+                </g>
+              );
             })}
-            {criticRLPD.slice(0, -1).map((point) => {
+            {visibleCriticPoints(criticRLPD).map((point) => {
               const { x, y } = chartPoint(point);
-              return <circle key={`r-${point[0]}`} cx={x} cy={y} r="2.7" className={cx(styles.rlpdPoint, activeSeries === "sacfd" && styles.curveMuted)}><title>{`RLPD · ${point[0]}k · ${Math.round(point[1]).toLocaleString()}`}</title></circle>;
+              const label = `RLPD · ${formatCriticStep(point[0])} · ${Math.round(point[1]).toLocaleString()}`;
+              return (
+                <g key={`r-${point[0]}`} tabIndex={0} role="img" aria-label={label}>
+                  <circle cx={x} cy={y} r="10" className={styles.pointHit} />
+                  <circle cx={x} cy={y} r={point[0] === 245000 ? "5" : "3.1"} className={cx(styles.rlpdPoint, activeSeries === "sacfd" && styles.curveMuted)} />
+                  <title>{label}</title>
+                </g>
+              );
             })}
-            <circle cx={sacEnd.x} cy={sacEnd.y} r="5" className={styles.sacPoint} />
-            <circle cx={rlpdEnd.x} cy={rlpdEnd.y} r="5" className={styles.rlpdPoint} />
+            <line x1={sacEnd.x + 6} x2="621" y1={sacEnd.y} y2={sacEnd.y} className={styles.sacLabelLine} />
+            <text x="688" y={sacEnd.y + 4} textAnchor="end" className={styles.sacDirectLabel}>SACfD 85.3k</text>
+            <line x1={rlpdEnd.x + 6} x2="621" y1={rlpdEnd.y} y2={rlpdEnd.y} className={styles.rlpdLabelLine} />
+            <text x="688" y={rlpdEnd.y + 4} textAnchor="end" className={styles.rlpdDirectLabel}>RLPD 545</text>
           </svg>
+          <div className={styles.srOnly}>
+            <table>
+              <caption>Walker2d three-seed mean critic values at every 5,000 environment steps</caption>
+              <thead><tr><th>Environment steps</th><th>RLPD mean Q</th><th>SACfD mean Q</th></tr></thead>
+              <tbody>
+                {criticRLPD.map(([step, q], index) => (
+                  <tr key={step}><td>{step}</td><td>{q.toFixed(3)}</td><td>{criticSACfD[index][1].toFixed(3)}</td></tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
         <aside className={styles.failureReadout}>
-          <span>245k endpoint</span>
+          <span>5k first log → 245k endpoint</span>
           <div><strong>85,300</strong><small>SACfD mean Q</small></div>
           <div><strong>545</strong><small>RLPD mean Q</small></div>
           <p>
             The unbounded critic coincides with a final return of 8.1 ± 2.1.
-            A later no-LayerNorm ablation reproduced the same explosion inside RLPD.
+            Mean Q is not recorded at step 0; the log trace begins at the first
+            valid positive three-seed mean at 5k.
           </p>
-          <em>Hover any plotted point for its recorded three-seed mean.</em>
+          <em>Solid coral = SACfD · dashed blue = RLPD · focus or hover a marker for its exact mean.</em>
         </aside>
       </div>
     </div>
@@ -517,11 +662,15 @@ function FigureLauncher({
   alt,
   caption,
   label,
+  width,
+  height,
 }: {
   src: string;
   alt: string;
   caption: string;
   label: string;
+  width: number;
+  height: number;
 }) {
   const [open, setOpen] = useState(false);
   const [zoomed, setZoomed] = useState(false);
@@ -594,7 +743,7 @@ function FigureLauncher({
                     onClick={() => setZoomed((current) => !current)}
                     aria-label={zoomed ? "Fit figure to window" : "Inspect figure at full resolution"}
                   >
-                    <img src={src} alt={alt} />
+                    <Image src={src} alt={alt} width={width} height={height} sizes="95vw" />
                   </button>
                   <span>{zoomed ? "Fit to window −" : "Inspect 1:1 +"}</span>
                 </div>
@@ -621,7 +770,12 @@ function HumanoidPanel() {
       />
       <div className={styles.humanoidLayout}>
         <figure className={styles.humanoidMedia}>
-          <img src="/rlpd/rollout-humanoid.webp" alt="Best individual IQL Humanoid-v5 rollout, seed 2" width={900} height={700} />
+          <Image
+            src="/rlpd/rollout-humanoid.webp"
+            alt="Best individual IQL Humanoid-v5 rollout, seed 2"
+            fill
+            sizes="(max-width: 680px) calc(100vw - 50px), (max-width: 980px) 52vw, 46vw"
+          />
           <span>best individual visualization</span>
           <figcaption>IQL · seed 2 · 87.8 last-five normalized</figcaption>
         </figure>
@@ -636,6 +790,8 @@ function HumanoidPanel() {
             alt="Humanoid normalized return and critic mean Q"
             label="Open full result figure"
             caption="Humanoid-v5 · three seeds · return and mean Q · IQL includes 1M offline updates before step 0"
+            width={1742}
+            height={627}
           />
           <p>The moving policy is a best-seed visualization. The 70.1 ± 16.2 aggregate is the result.</p>
         </div>
@@ -696,6 +852,8 @@ function AblationPanel() {
             alt="Humanoid ablation curves"
             label="Inspect ablation curves"
             caption="Humanoid ablations · 500k horizon · online-only is the only three-seed ablation"
+            width={1736}
+            height={627}
           />
         </article>
       </div>
@@ -738,12 +896,16 @@ function EvidencePanel() {
               alt="RLPD return across simple, medium, and expert datasets"
               label="Data-quality figure"
               caption="Locomotion data quality · expert curves become single-seed after 57.5k"
+              width={2060}
+              height={594}
             />
             <FigureLauncher
               src="/rlpd/humanoid-results.webp"
               alt="Humanoid return and critic mean Q"
               label="Humanoid figure"
               caption="Humanoid-v5 · three-seed return and mean Q"
+              width={1742}
+              height={627}
             />
           </div>
         </aside>
@@ -777,15 +939,43 @@ const panelVariants = {
 export function RlpdExperience() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [direction, setDirection] = useState(1);
+  const chapterButtonRefs = useRef<Array<HTMLButtonElement | null>>([]);
   const reduced = useReducedMotion();
   const activeChapter = chapters[activeIndex];
+  const previousChapter = chapters[activeIndex - 1];
+  const nextChapter = chapters[activeIndex + 1];
 
-  const navigate = (nextIndex: number) => {
+  const navigate = useCallback((nextIndex: number, updateHistory = true) => {
     const bounded = Math.max(0, Math.min(chapters.length - 1, nextIndex));
     if (bounded === activeIndex) return;
     setDirection(bounded > activeIndex ? 1 : -1);
     setActiveIndex(bounded);
-  };
+    if (updateHistory) {
+      window.history.pushState(null, "", `#${chapters[bounded].id}`);
+    }
+  }, [activeIndex]);
+
+  useEffect(() => {
+    const syncFromHash = () => {
+      const chapterIndex = chapters.findIndex((chapter) => chapter.id === window.location.hash.slice(1));
+      if (chapterIndex < 0) return;
+      setActiveIndex((current) => {
+        setDirection(chapterIndex >= current ? 1 : -1);
+        return chapterIndex;
+      });
+    };
+    syncFromHash();
+    window.addEventListener("popstate", syncFromHash);
+    return () => window.removeEventListener("popstate", syncFromHash);
+  }, []);
+
+  useEffect(() => {
+    chapterButtonRefs.current[activeIndex]?.scrollIntoView({
+      behavior: reduced ? "auto" : "smooth",
+      block: "nearest",
+      inline: "center",
+    });
+  }, [activeIndex, reduced]);
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -793,23 +983,20 @@ export function RlpdExperience() {
       if (target.closest("button, a")) return;
       if (event.key === "ArrowRight" || event.key === "ArrowDown") {
         event.preventDefault();
-        setDirection(1);
-        setActiveIndex((current) => Math.min(chapters.length - 1, current + 1));
+        navigate(activeIndex + 1);
       }
       if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
         event.preventDefault();
-        setDirection(-1);
-        setActiveIndex((current) => Math.max(0, current - 1));
+        navigate(activeIndex - 1);
       }
       const numeric = Number(event.key);
       if (numeric >= 1 && numeric <= chapters.length) {
-        setDirection(numeric - 1 > activeIndex ? 1 : -1);
-        setActiveIndex(numeric - 1);
+        navigate(numeric - 1);
       }
     };
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [activeIndex]);
+  }, [activeIndex, navigate]);
 
   const panels = [
     <OverviewPanel key="overview" onExplore={() => navigate(1)} />,
@@ -829,7 +1016,7 @@ export function RlpdExperience() {
           <span>R</span><strong>RLPD / OBSERVATORY</strong>
         </button>
         <div className={styles.topStatus}>
-          <span>Interactive research record</span>
+          <span>Select a chapter · arrow keys also work</span>
           <strong>{activeChapter.index} / 07</strong>
         </div>
         <a href={REPOSITORY} target="_blank" rel="noreferrer">Repository <Arrow /></a>
@@ -843,6 +1030,8 @@ export function RlpdExperience() {
               role="tab"
               aria-selected={activeIndex === index}
               aria-controls="rlpd-active-panel"
+              ref={(element) => { chapterButtonRefs.current[index] = element; }}
+              title={`Open chapter ${chapter.index}: ${chapter.label}`}
               key={chapter.id}
               onClick={() => navigate(index)}
             >
@@ -873,15 +1062,36 @@ export function RlpdExperience() {
           </AnimatePresence>
 
           <footer className={styles.deckControls}>
-            <button type="button" onClick={() => navigate(activeIndex - 1)} disabled={activeIndex === 0}>
-              <Arrow direction="left" /> Previous
+            <button
+              type="button"
+              onClick={() => navigate(activeIndex - 1)}
+              disabled={!previousChapter}
+              aria-label={previousChapter ? `Previous chapter: ${previousChapter.label}` : "No previous chapter"}
+            >
+              <Arrow direction="left" />
+              <span className={styles.controlCopy}>
+                <small>Previous</small>
+                <strong>{previousChapter?.label ?? "Start"}</strong>
+              </span>
             </button>
             <div className={styles.deckProgress} aria-hidden>
               {chapters.map((chapter, index) => <i key={chapter.id} className={index <= activeIndex ? styles.progressActive : undefined} />)}
             </div>
-            <span>Arrow keys or chapter tabs</span>
-            <button type="button" onClick={() => navigate(activeIndex + 1)} disabled={activeIndex === chapters.length - 1}>
-              Next <Arrow direction="right" />
+            <div className={styles.deckInstruction}>
+              <span>Chapter {activeChapter.index} of 07</span>
+              <strong>{nextChapter ? `Continue to ${nextChapter.label}` : "Research record complete"}</strong>
+            </div>
+            <button
+              type="button"
+              onClick={() => navigate(activeIndex + 1)}
+              disabled={!nextChapter}
+              aria-label={nextChapter ? `Next chapter: ${nextChapter.label}` : "No next chapter"}
+            >
+              <span className={styles.controlCopy}>
+                <small>Next</small>
+                <strong>{nextChapter?.label ?? "Complete"}</strong>
+              </span>
+              <Arrow direction="right" />
             </button>
           </footer>
         </section>
