@@ -167,7 +167,7 @@ const chapters = [
   { id: "critic", index: "04", label: "Critic", hint: "Divergence trace", tone: "coral" },
   { id: "humanoid", index: "05", label: "Humanoid", hint: "Extension", tone: "mint" },
   { id: "ablation", index: "06", label: "Ablation", hint: "Online-only", tone: "amber" },
-  { id: "evidence", index: "07", label: "Evidence", hint: "Audit & team", tone: "violet" },
+  { id: "evidence", index: "07", label: "Evidence", hint: "Coverage & audit", tone: "violet" },
 ] as const;
 
 const results = [
@@ -251,6 +251,7 @@ const auditRows = [
   ["Humanoid · SACfD", "2 of 3 NaN", "divergent runs remain inside the aggregate record"],
   ["Online-only", "3 seeds · 500k", "the only ablation with matched three-seed coverage"],
   ["RLPD · expert Humanoid", "n = 1 · 1M", "single-seed result; excluded from aggregate claims"],
+  ["State coverage", "3 seeds per task", "offline coverage: 56–72% locomotion vs 6.6% Humanoid"],
 ] as const;
 
 const sparkles = [
@@ -359,8 +360,8 @@ function OverviewPanel({ onExplore }: { onExplore: () => void }) {
         <div className={styles.teamLine}>
           <span>Research team</span>
           <strong>Karan Anchan</strong>
-          <strong>Pranav Menon</strong>
-          <strong>Sridhar Kandi</strong>
+          <strong>Pranav Prakash Menon</strong>
+          <strong>Kandi Sridhar</strong>
         </div>
       </div>
 
@@ -1015,12 +1016,12 @@ function HumanoidPanel() {
         </div>
         <div className={styles.figureActions}>
           <FigureLauncher
-            src="/rlpd/humanoid-results.webp"
+            src="/rlpd/fig-humanoid.png"
             alt="Humanoid normalized return and critic mean Q"
             label="Open full result figure"
             caption="Humanoid-v5 · three seeds · return and mean Q · IQL includes 1M offline updates before step 0"
-            width={1742}
-            height={627}
+            width={2656}
+            height={939}
           />
           <p>The video is one best-seed behavior sample. The three-seed 70.1 ± 16.2 aggregate—not the cleanest rollout—is the result.</p>
         </div>
@@ -1055,7 +1056,7 @@ function AblationPanel() {
         eyebrow="matched-horizon ablation / 500k"
         title="Removing offline data"
         accent="improved the policy."
-        copy="LayerNorm, the critic ensemble, and high UTD stayed intact. Only the sampling ratio changed from 50/50 to online-only."
+        copy="LayerNorm, the critic ensemble, and high UTD stayed intact. The completed ratio sweep maps replay composition while retaining the seed qualification."
       />
       <div className={styles.ablationLayout}>
         <div className={styles.ablationBars}>
@@ -1086,18 +1087,28 @@ function AblationPanel() {
         <article className={styles.ablationReading}>
           <h3>The architecture stayed fixed; the data mix was the constraint.</h3>
           <p>
-            This result does not invalidate offline-to-online RL. It shows that the benefit depends
-            on data quality, policy coverage, tuning, and the handoff between offline and online
-            learning. Having an offline dataset is not sufficient by itself.
+            Online-only is independently replicated across three seeds. The intermediate ratios are
+            single-seed diagnostics: the solid line uses seed 1 at 90% online, while the dotted line
+            preserves seed 0, so the connected sweep is descriptive rather than a uniform dose response.
           </p>
-          <FigureLauncher
-            src="/rlpd/ablation-results.webp"
-            alt="Humanoid ablation curves"
-            label="Inspect ablation curves"
-            caption="Humanoid ablations · 500k horizon · online-only is the only three-seed ablation"
-            width={1736}
-            height={627}
-          />
+          <div className={styles.figureActions}>
+            <FigureLauncher
+              src="/rlpd/fig-ablations.png"
+              alt="Humanoid component, replay-ratio, critic, and clipped double-Q ablations"
+              label="Inspect all ablations"
+              caption="Humanoid ablations · 500k horizon · online-only is the only three-seed ablation"
+              width={4374}
+              height={1004}
+            />
+            <FigureLauncher
+              src="/rlpd/fig-ratio-curve.png"
+              alt="Humanoid return across offline-to-online replay ratios, with seed 1 solid and seed 0 dotted at 90 percent online"
+              label="Inspect replay-ratio evidence"
+              caption="Solid: seed 1 at 90% online · dotted: seed 0 alternative · all other ratio points use seed 0"
+              width={2147}
+              height={1218}
+            />
+          </div>
         </article>
       </div>
     </div>
@@ -1119,8 +1130,8 @@ function EvidencePanel() {
       copy: "Online-only outperforming 50/50 shifts attention from architecture to dataset compatibility.",
     },
     {
-      title: "Behavior needs numeric context.",
-      copy: "Every policy replay is paired with aggregate return, seed spread, and critic behavior.",
+      title: "Coverage qualifies transfer.",
+      copy: "Locomotion coverage is 56–72%; Humanoid is 6.6%. Evidence, not proof.",
     },
   ];
 
@@ -1154,25 +1165,41 @@ function EvidencePanel() {
           </div>
           <div className={styles.figureActions}>
             <FigureLauncher
-              src="/rlpd/data-quality.webp"
+              src="/rlpd/fig-returns.png"
+              alt="Normalized return training curves for RLPD, IQL, and SACfD across three locomotion tasks"
+              label="Training curves"
+              caption="Locomotion · medium data · three-seed mean ± standard deviation"
+              width={2937}
+              height={886}
+            />
+            <FigureLauncher
+              src="/rlpd/fig-quality.png"
               alt="RLPD return across simple, medium, and expert datasets"
               label="Data-quality figure"
               caption="Locomotion data quality · expert curves become single-seed after 57.5k"
-              width={2060}
-              height={594}
+              width={2937}
+              height={886}
             />
             <FigureLauncher
-              src="/rlpd/humanoid-results.webp"
-              alt="Humanoid return and critic mean Q"
-              label="Humanoid figure"
-              caption="Humanoid-v5 · three-seed return and mean Q"
-              width={1742}
-              height={627}
+              src="/rlpd/fig-mean_q.png"
+              alt="Mean critic Q-value training curves for RLPD, IQL, and SACfD across three locomotion tasks"
+              label="Critic diagnostics"
+              caption="Locomotion · mean critic Q · divergent baselines remain visible"
+              width={2939}
+              height={886}
+            />
+            <FigureLauncher
+              src="/rlpd/fig-offline-coverage.png"
+              alt="Offline-state coverage and normalized nearest-neighbor distance for locomotion and Humanoid"
+              label="State-coverage diagnostic"
+              caption="Offline coverage · locomotion 56–72% · Humanoid 6.6% · observational evidence"
+              width={3021}
+              height={1482}
             />
           </div>
         </aside>
         <footer className={styles.evidenceFooter}>
-          <div><span>Research team</span><strong>Karan Anchan · Pranav Menon · Sridhar Kandi</strong></div>
+          <div><span>Research team</span><strong>Karan Anchan · Pranav Prakash Menon · Kandi Sridhar</strong></div>
           <div>
             <a href={REPOSITORY} target="_blank" rel="noreferrer">Repository <Arrow /></a>
             <a href="https://arxiv.org/abs/2302.02948" target="_blank" rel="noreferrer">Original paper <Arrow /></a>

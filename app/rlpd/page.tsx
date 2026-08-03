@@ -8,10 +8,10 @@ export const metadata: Metadata = {
   alternates: { canonical: "/rlpd/" },
   authors: [
     { name: "Karan Anchan" },
-    { name: "Pranav Menon" },
-    { name: "Sridhar Kandi" },
+    { name: "Pranav Prakash Menon" },
+    { name: "Kandi Sridhar" },
   ],
-  creator: "Karan Anchan, Pranav Menon, and Sridhar Kandi",
+  creator: "Karan Anchan, Pranav Prakash Menon, and Kandi Sridhar",
   openGraph: {
     title: "RLPD | Offline-to-online RL reproduction",
     description:
@@ -47,8 +47,8 @@ const projectJsonLd = {
   image: "https://karan-anchan.github.io/rlpd/rlpd-social-cover.webp",
   author: [
     { "@type": "Person", name: "Karan Anchan" },
-    { "@type": "Person", name: "Pranav Menon" },
-    { "@type": "Person", name: "Sridhar Kandi" },
+    { "@type": "Person", name: "Pranav Prakash Menon" },
+    { "@type": "Person", name: "Kandi Sridhar" },
   ],
   about: [
     "Reinforcement learning",
