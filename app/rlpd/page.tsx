@@ -4,7 +4,7 @@ import { RlpdExperience } from "./rlpd-experience";
 export const metadata: Metadata = {
   title: "RLPD | An offline-to-online RL reproduction",
   description:
-    "A three-person PyTorch reproduction and critical evaluation of RLPD across MuJoCo locomotion and Humanoid-v5.",
+    "A three-person PyTorch reproduction of RLPD, extended with Humanoid-v5 ablations and a cross-task state-coverage audit.",
   alternates: { canonical: "/rlpd/" },
   authors: [
     { name: "Karan Anchan" },
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "RLPD | Offline-to-online RL reproduction",
     description:
-      "We reproduced offline-to-online reinforcement learning, extended it to Humanoid-v5, and found a +21.9 point online-only result at the matched 500k horizon.",
+      "Online-only gained 21.9 normalized points on Humanoid-v5, where the offline dataset covered just 6.6% of visited online states.",
     url: "https://karan-anchan.github.io/rlpd/",
     type: "article",
     siteName: "RLPD reproduction study",
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "RLPD | Offline-to-online RL reproduction",
     description:
-      "A team reproduction of RLPD, from three-seed locomotion to a surprising Humanoid-v5 ablation.",
+      "A three-seed RLPD reproduction, Humanoid-v5 ablation study, and state-distribution audit.",
     images: ["/rlpd/rlpd-social-cover.webp"],
   },
 };
@@ -42,7 +42,7 @@ const projectJsonLd = {
   "@type": "ScholarlyArticle",
   headline: "RLPD: an offline-to-online reinforcement learning reproduction",
   description:
-    "A PyTorch reproduction and critical evaluation of RLPD on MuJoCo locomotion and Humanoid-v5.",
+    "A PyTorch reproduction of RLPD with Humanoid-v5 ablations and a cross-task offline-state coverage audit.",
   url: "https://karan-anchan.github.io/rlpd/",
   image: "https://karan-anchan.github.io/rlpd/rlpd-social-cover.webp",
   author: [

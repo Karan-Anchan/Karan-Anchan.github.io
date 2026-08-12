@@ -77,41 +77,57 @@ function RlpdCardMedia({ figure }: { figure: React.ReactNode }) {
   );
 }
 
-function MambaFig() {
+function RlpdCoverageFig() {
+  const coverage = [
+    { task: "Hopper", value: 56.2, distance: "1.79×" },
+    { task: "Walker2d", value: 69.2, distance: "1.89×" },
+    { task: "HalfCheetah", value: 71.6, distance: "1.45×" },
+    { task: "Humanoid", value: 6.6, distance: "6.64×", alert: true },
+  ];
+
   return (
-    <div className="flex h-full flex-col justify-center gap-6 p-6">
-      <div className="flex items-end justify-center gap-2">
-        {["ssm", "ssm", "ssm", "attn", "ssm", "ssm", "ssm", "attn"].map(
-          (b, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 14 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.07, duration: 0.5 }}
-              className="flex flex-col items-center gap-1.5"
-            >
-              <span
-                className={`font-mono text-[0.55rem] uppercase tracking-wider ${
-                  b === "attn" ? "text-[var(--accent-2)]" : "text-[var(--faint)]"
-                }`}
-              >
-                {b}
-              </span>
-              <div
-                className={`h-14 w-8 rounded-sm border sm:w-10 ${
-                  b === "attn"
-                    ? "border-[var(--accent-2)] bg-[var(--accent-2)]/80"
-                    : "border-[var(--faint)] bg-[var(--card)]"
-                }`}
+    <div
+      className="flex h-full min-h-[220px] flex-col justify-center gap-4 bg-[radial-gradient(circle_at_88%_8%,color-mix(in_srgb,var(--lime)_13%,transparent),transparent_38%),linear-gradient(145deg,color-mix(in_srgb,var(--card)_96%,black),var(--bg))] p-5 sm:p-7"
+      aria-label="Offline-state coverage: Hopper 56.2 percent, Walker2d 69.2 percent, HalfCheetah 71.6 percent, and Humanoid 6.6 percent"
+    >
+      <div className="flex items-end justify-between gap-3 border-b border-[var(--line)] pb-3">
+        <div>
+          <span className="font-mono text-[0.52rem] uppercase tracking-[0.18em] text-[var(--lime)]">
+            Latest diagnostic · 3 seeds
+          </span>
+          <h4 className="mt-1 text-sm font-medium tracking-[-0.02em] text-[var(--fg)] sm:text-base">
+            Online states covered by offline data
+          </h4>
+        </div>
+        <span className="font-mono text-[0.48rem] uppercase tracking-[0.12em] text-[var(--faint)]">
+          95th-pct NN radius
+        </span>
+      </div>
+      <div className="grid gap-2.5">
+        {coverage.map((row, index) => (
+          <div key={row.task} className="grid grid-cols-[78px_1fr_82px] items-center gap-2 sm:grid-cols-[92px_1fr_96px]">
+            <span className={`font-mono text-[0.58rem] ${row.alert ? "text-[var(--accent-4)]" : "text-[var(--dim)]"}`}>
+              {row.task}
+            </span>
+            <div className="h-4 overflow-hidden bg-[color-mix(in_srgb,var(--faint)_12%,transparent)]">
+              <motion.div
+                className={`h-full origin-left ${row.alert ? "bg-[var(--accent-4)]" : "bg-[var(--lime)]"}`}
+                initial={{ scaleX: 0 }}
+                whileInView={{ scaleX: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.55, delay: index * 0.07 }}
+                style={{ width: `${row.value}%` }}
               />
-            </motion.div>
-          ),
-        )}
+            </div>
+            <span className="text-right font-mono text-[0.55rem] text-[var(--fg2)]">
+              <strong className="font-medium">{row.value}%</strong> · R {row.distance}
+            </span>
+          </div>
+        ))}
       </div>
-      <div className="text-center font-mono text-[0.6rem] uppercase tracking-[0.16em] text-[var(--faint)]">
-        1 attention layer per 7 Mamba-2 blocks — the Jamba interleave
-      </div>
+      <p className="m-0 font-mono text-[0.5rem] uppercase tracking-[0.12em] text-[var(--faint)]">
+        Humanoid is the outlier: sparse coverage, 6.64× normalized distance.
+      </p>
     </div>
   );
 }
@@ -196,18 +212,18 @@ const entries: Entry[] = [
     external: false,
     desc: (
       <>
-        A three-person PyTorch reproduction of <strong>RLPD</strong> (Ball et
-        al., ICML 2023), followed by a Humanoid-v5 extension. RLPD finishes
-        between 88 and 90 normalized on all three locomotion tasks. On
-        Humanoid-v5,{" "}
-        <strong>online-only beats the 50/50 offline mix by +21.9 points</strong>
-        at the matched 500k horizon.
+        A three-person PyTorch reproduction and critical evaluation of{" "}
+        <strong>RLPD</strong> (Ball et al., ICML 2023). Across the complete
+        locomotion matrix, RLPD finishes at 88–90 normalized on all three tasks.
+        On Humanoid-v5, only <strong>6.6% of online states are covered by the
+        offline dataset</strong>—and online-only beats the 50/50 mix by +21.9
+        points at the matched 500k horizon.
       </>
     ),
     metrics: [
       { v: "88–90", l: "minari-normalized · 3 tasks" },
       { v: "+21.9", l: "online-only · matched 500k" },
-      { v: "3×3", l: "seeds × methods · 245k steps" },
+      { v: "6.6%", l: "humanoid offline-state coverage" },
     ],
     links: [
       { label: "Read the deep dive", href: "/rlpd/", external: false },
@@ -217,17 +233,8 @@ const entries: Entry[] = [
       },
       { label: "Paper", href: "https://arxiv.org/abs/2302.02948" },
     ],
-    fig: (
-      <div className="aspect-[16/10] w-full">
-        <img
-          src="/covers/rlpd-benchmark.webp"
-          alt="RLPD vs IQL and SACfD on medium offline data. The chart shows normalized return over 245k steps, with mean and standard deviation across three seeds."
-          loading="lazy"
-          className="h-full w-full object-cover"
-        />
-      </div>
-    ),
-    caption: "fig. 1 · rlpd vs iql vs sacfd · medium data · 3 seeds ± std",
+    fig: <RlpdCoverageFig />,
+    caption: "fig. 1 — offline-state coverage · 3 seeds · humanoid is the 6.6% outlier",
   },
   {
     no: "02",
@@ -325,7 +332,7 @@ const entries: Entry[] = [
   },
   {
     no: "04",
-    cover: "/covers/mamba.webp",
+    cover: "/covers/mamba-stream.webp",
     hue: "var(--accent-2)",
     tags: [
       { label: "In progress" },
@@ -352,8 +359,17 @@ const entries: Entry[] = [
       { label: "Repo", href: "https://github.com/Karan-Anchan/mamba-hybrid-lm" },
       { label: "Mamba-2 paper", href: "https://arxiv.org/abs/2405.21060" },
     ],
-    fig: <MambaFig />,
-    caption: "fig. 4 · interleave pattern and planned kv-cache measurement",
+    fig: (
+      <div className="aspect-[16/10] w-full">
+        <img
+          src="/covers/mamba-sweep.webp"
+          alt="The attention-to-SSM ratio sweep — 1:7 wins validation perplexity (102.3 vs 105.4 and 106.9) at matched 16.4M tokens; throughput and VRAM shown alongside"
+          loading="lazy"
+          className="h-full w-full object-cover"
+        />
+      </div>
+    ),
+    caption: "fig. 4 — the ratio sweep · matched 16.4M tokens · preview",
   },
   {
     no: "05",

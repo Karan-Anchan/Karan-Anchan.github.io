@@ -164,10 +164,11 @@ const chapters = [
   { id: "overview", index: "01", label: "Overview", hint: "Study scope", tone: "amber" },
   { id: "method", index: "02", label: "Method", hint: "Three guardrails", tone: "mint" },
   { id: "benchmarks", index: "03", label: "Benchmarks", hint: "Three tasks", tone: "violet" },
-  { id: "critic", index: "04", label: "Critic", hint: "Divergence trace", tone: "coral" },
-  { id: "humanoid", index: "05", label: "Humanoid", hint: "Extension", tone: "mint" },
-  { id: "ablation", index: "06", label: "Ablation", hint: "Online-only", tone: "amber" },
-  { id: "evidence", index: "07", label: "Evidence", hint: "Coverage & audit", tone: "violet" },
+  { id: "critic", index: "04", label: "Critic", hint: "Failure trace", tone: "coral" },
+  { id: "humanoid", index: "05", label: "Humanoid", hint: "Beyond paper", tone: "mint" },
+  { id: "ablation", index: "06", label: "Ablation", hint: "The twist", tone: "amber" },
+  { id: "coverage", index: "07", label: "Coverage", hint: "Mismatch signal", tone: "coral" },
+  { id: "evidence", index: "08", label: "Evidence", hint: "Audit & team", tone: "violet" },
 ] as const;
 
 const results = [
@@ -251,7 +252,14 @@ const auditRows = [
   ["Humanoid · SACfD", "2 of 3 NaN", "divergent runs remain inside the aggregate record"],
   ["Online-only", "3 seeds · 500k", "the only ablation with matched three-seed coverage"],
   ["RLPD · expert Humanoid", "n = 1 · 1M", "single-seed result; excluded from aggregate claims"],
-  ["State coverage", "3 seeds per task", "offline coverage: 56–72% locomotion vs 6.6% Humanoid"],
+  ["State coverage", "4 tasks · 3 seeds", "nearest-neighbor audit; evidence, not a sole-cause proof"],
+] as const;
+
+const coverageResults = [
+  { task: "Hopper", coverage: 56.2, ratio: 1.79, dimensions: 11, outlier: false },
+  { task: "Walker2d", coverage: 69.2, ratio: 1.89, dimensions: 17, outlier: false },
+  { task: "HalfCheetah", coverage: 71.6, ratio: 1.45, dimensions: 17, outlier: false },
+  { task: "Humanoid", coverage: 6.6, ratio: 6.64, dimensions: 348, outlier: true },
 ] as const;
 
 const sparkles = [
@@ -338,8 +346,8 @@ function OverviewPanel({ onExplore }: { onExplore: () => void }) {
         </h1>
         <p>
           A three-person PyTorch reproduction of offline-to-online reinforcement
-          learning, extended to Humanoid-v5 and evaluated across three seeds.
-          The final ablation produced a result the original paper did not test.
+          learning—extended to Humanoid-v5, stress-tested across three seeds,
+          then audited for the distribution mismatch behind an unexpected result.
         </p>
         <div className={styles.overviewActions}>
           <motion.button
@@ -393,7 +401,7 @@ function OverviewPanel({ onExplore }: { onExplore: () => void }) {
       <div className={styles.overviewMetrics}>
         <div><span>Primary study</span><strong>27 complete runs</strong></div>
         <div><span>Budget</span><strong>245k → 1M steps</strong></div>
-        <div><span>Compute</span><strong>RTX 5070 · 12 GB</strong></div>
+        <div><span>State overlap</span><strong>Humanoid · 6.6% covered</strong></div>
       </div>
     </div>
   );
@@ -975,9 +983,9 @@ function HumanoidPanel() {
       <PanelHeader
         index="05"
         eyebrow="beyond the paper / Humanoid-v5"
-        title="Humanoid changed"
-        accent="the comparison."
-        copy="Humanoid expands the problem to 348 observations and 17 actuators. Every method ran to one million environment steps; divergent runs stayed in the record."
+        title="A harder body exposed"
+        accent="a different advantage."
+        copy="Humanoid expands the problem to 348 observations and 17 actuators. The runs used a one-million-step budget, with the final evaluation logged at 995k; SACfD’s two divergent runs stayed in the record."
       />
       <div className={styles.humanoidLayout}>
         <figure className={styles.humanoidMedia}>
@@ -1115,6 +1123,85 @@ function AblationPanel() {
   );
 }
 
+function CoveragePanel() {
+  const reduced = useStableMotionPreference();
+
+  return (
+    <div className={styles.panelStack}>
+      <PanelHeader
+        index="07"
+        eyebrow="state-distribution audit / nearest neighbors"
+        title="The offline data missed"
+        accent="the states that mattered."
+        copy="Across three seeds, the locomotion policies stayed close to their offline datasets. Humanoid did not: only 6.6% of its online states fell inside the offline data’s own coverage radius."
+      />
+      <div className={styles.coverageLayout}>
+        <section
+          className={styles.coverageChart}
+          aria-label="Offline-state coverage by task"
+        >
+          <header>
+            <div>
+              <span>online states within offline 95th-percentile NN radius</span>
+              <strong>coverage · higher means closer support</strong>
+            </div>
+            <div className={styles.coverageScale} aria-hidden>
+              <span>0</span><span>40</span><span>80%</span>
+            </div>
+          </header>
+          <div className={styles.coverageRows}>
+            {coverageResults.map((row, index) => (
+              <div
+                className={cx(styles.coverageRow, row.outlier && styles.coverageOutlier)}
+                key={row.task}
+              >
+                <div className={styles.coverageMeta}>
+                  <span>{row.task}<small>{row.dimensions}D state</small></span>
+                  <strong>{row.coverage.toFixed(1)}%</strong>
+                </div>
+                <div className={styles.coverageTrack}>
+                  <motion.i
+                    initial={reduced ? false : { scaleX: 0 }}
+                    animate={{ scaleX: 1 }}
+                    transition={{ duration: 0.56, delay: index * 0.06, ease: EASE_OUT }}
+                    style={{ width: `${(row.coverage / 80) * 100}%` }}
+                  />
+                </div>
+                <footer><span>distance ratio R</span><strong>{row.ratio.toFixed(2)}×</strong></footer>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <aside className={styles.coverageAside}>
+          <article className={styles.coverageCallout}>
+            <span>Humanoid / cross-task outlier</span>
+            <strong>6.6%</strong>
+            <small>covered · R = 6.64×</small>
+            <p>
+              The online policy visits a region far outside the medium dataset’s
+              typical neighborhood, consistent with the online-only advantage.
+            </p>
+          </article>
+          <article className={styles.coverageDefinition}>
+            <span>How to read R</span>
+            <code>median d(online, offline) / median d(offline, offline)</code>
+            <p>R near 1 means similar neighborhoods. This audit supports mismatch; it does not prove it is the only cause.</p>
+          </article>
+          <FigureLauncher
+            src="/rlpd/offline-coverage.png"
+            alt="Offline-state coverage on Hopper, Walker2d, HalfCheetah, and Humanoid"
+            label="Open coverage figure"
+            caption="Medium-data RLPD · three seeds per task · offline-standardized nearest-neighbor coverage"
+            width={3021}
+            height={1482}
+          />
+        </aside>
+      </div>
+    </div>
+  );
+}
+
 function EvidencePanel() {
   const lessons = [
     {
@@ -1138,7 +1225,7 @@ function EvidencePanel() {
   return (
     <div className={styles.panelStack}>
       <PanelHeader
-        index="07"
+        index="08"
         eyebrow="evidence audit / provenance"
         title="Every result includes"
         accent="its sample count."
@@ -1187,6 +1274,14 @@ function EvidencePanel() {
               caption="Locomotion · mean critic Q · divergent baselines remain visible"
               width={2939}
               height={886}
+            />
+            <FigureLauncher
+              src="/rlpd/fig-humanoid.png"
+              alt="Humanoid return and critic mean Q"
+              label="Humanoid figure"
+              caption="Humanoid-v5 · three-seed return and mean Q"
+              width={2656}
+              height={939}
             />
             <FigureLauncher
               src="/rlpd/fig-offline-coverage.png"
@@ -1303,6 +1398,7 @@ export function RlpdExperience() {
     <CriticPanel key="critic" />,
     <HumanoidPanel key="humanoid" />,
     <AblationPanel key="ablation" />,
+    <CoveragePanel key="coverage" />,
     <EvidencePanel key="evidence" />,
   ];
   const panelMotion = { direction, instant: instantNavigation };
@@ -1324,11 +1420,16 @@ export function RlpdExperience() {
         </button>
         <div className={styles.topStatus}>
           <span>Select a chapter · arrow keys also work</span>
-          <strong>{activeChapter.index} / 07</strong>
+          <strong>{activeChapter.index} / 08</strong>
         </div>
-        <div className={styles.topActions}>
+        <div className={styles.topbarActions}>
+          <Link className={styles.portfolioReturn} href="/" aria-label="Back to Karan Anchan’s main portfolio">
+            <Arrow direction="left" /><span>Portfolio</span>
+          </Link>
           <RlpdSoundToggle />
-          <a href={REPOSITORY} target="_blank" rel="noreferrer">Repository <Arrow /></a>
+          <a className={styles.repositoryLink} href={REPOSITORY} target="_blank" rel="noreferrer">
+            <span>Repository</span><Arrow />
+          </a>
         </div>
       </header>
 
@@ -1392,7 +1493,7 @@ export function RlpdExperience() {
               {chapters.map((chapter, index) => <i key={chapter.id} className={index <= activeIndex ? styles.progressActive : undefined} />)}
             </div>
             <div className={styles.deckInstruction}>
-              <span>Chapter {activeChapter.index} of 07</span>
+              <span>Chapter {activeChapter.index} of 08</span>
               <strong>{nextChapter ? `Continue to ${nextChapter.label}` : "Research record complete"}</strong>
             </div>
             <button
