@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { RlpdExperience } from "./rlpd-experience";
 
 export const metadata: Metadata = {
-  title: "RLPD | An offline-to-online RL reproduction",
+  title: "RLPD | Empirical reproduction and ablation study",
   description:
-    "A three-person PyTorch reproduction of RLPD, extended with Humanoid-v5 ablations and a cross-task state-coverage audit.",
+    "An empirical PyTorch reproduction of RLPD with controlled Humanoid-v5 replay-composition ablations and a cross-task state-coverage analysis.",
   alternates: { canonical: "/rlpd/" },
   authors: [
     { name: "Karan Anchan" },
@@ -13,12 +13,12 @@ export const metadata: Metadata = {
   ],
   creator: "Karan Anchan, Pranav Prakash Menon, and Kandi Sridhar",
   openGraph: {
-    title: "RLPD | Offline-to-online RL reproduction",
+    title: "RLPD | Reproduction and ablation study",
     description:
-      "Online-only gained 21.9 normalized points on Humanoid-v5, where the offline dataset covered just 6.6% of visited online states.",
+      "A controlled Humanoid-v5 ablation measured a 21.9-point mean-return difference between online-only and 50/50 replay at a matched 500k-step horizon.",
     url: "https://karan-anchan.github.io/rlpd/",
     type: "article",
-    siteName: "RLPD reproduction study",
+    siteName: "RLPD empirical study",
     images: [
       {
         url: "/rlpd/rlpd-social-cover.webp",
@@ -30,9 +30,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "RLPD | Offline-to-online RL reproduction",
+    title: "RLPD | Reproduction and ablation study",
     description:
-      "A three-seed RLPD reproduction, Humanoid-v5 ablation study, and state-distribution audit.",
+      "A three-seed RLPD reproduction with controlled Humanoid-v5 ablations and a state-distribution analysis.",
     images: ["/rlpd/rlpd-social-cover.webp"],
   },
 };
@@ -40,9 +40,9 @@ export const metadata: Metadata = {
 const projectJsonLd = {
   "@context": "https://schema.org",
   "@type": "ScholarlyArticle",
-  headline: "RLPD: an offline-to-online reinforcement learning reproduction",
+  headline: "RLPD: an empirical reproduction and ablation study",
   description:
-    "A PyTorch reproduction of RLPD with Humanoid-v5 ablations and a cross-task offline-state coverage audit.",
+    "A PyTorch reproduction of RLPD with controlled Humanoid-v5 replay-composition ablations and a cross-task offline-state coverage analysis.",
   url: "https://karan-anchan.github.io/rlpd/",
   image: "https://karan-anchan.github.io/rlpd/rlpd-social-cover.webp",
   author: [
