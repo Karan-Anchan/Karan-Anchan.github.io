@@ -110,7 +110,7 @@ const auditRows = [
   ["Humanoid · SACfD", "2 of 3 divergent", "non-finite runs are retained in the experimental record"],
   ["Online-only ablation", "n = 3 · 500k steps", "matched-horizon comparison against 50/50 replay"],
   ["Expert Humanoid RLPD", "n = 1 · 1M steps", "single-seed result; excluded from aggregate conclusions"],
-  ["State-coverage analysis", "4 tasks · n = 3", "nearest-neighbor association; not an identification of causality"],
+  ["State-distribution analyses", "4 tasks · n = 3", "PCA is descriptive; full-space nearest-neighbor metrics are primary"],
 ] as const;
 
 type FigureData = {
@@ -170,6 +170,14 @@ const figures = {
     caption: "Offline-standardized nearest-neighbor coverage · three seeds per task",
     width: 3021,
     height: 1482,
+  },
+  pca: {
+    src: "/rlpd/pca-state-overlap.png",
+    alt: "Four PCA scatter plots comparing offline medium-dataset states in indigo with online RLPD replay states in red for Hopper, Walker2d, HalfCheetah, and Humanoid; the locomotion distributions overlap substantially while the Humanoid distributions separate",
+    title: "Offline and online states in a shared PCA basis",
+    caption: "Offline-standardized · PCA fitted on 20k offline states per task · seed 0 · 4k points per distribution displayed · qualitative projection",
+    width: 2384,
+    height: 650,
   },
   quality: {
     src: "/rlpd/fig-quality.png",
@@ -264,7 +272,15 @@ function SectionHeader({
   );
 }
 
-function EvidenceFigure({ figure, compact = false }: { figure: FigureData; compact?: boolean }) {
+function EvidenceFigure({
+  figure,
+  compact = false,
+  panoramic = false,
+}: {
+  figure: FigureData;
+  compact?: boolean;
+  panoramic?: boolean;
+}) {
   const [open, setOpen] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
@@ -292,7 +308,7 @@ function EvidenceFigure({ figure, compact = false }: { figure: FigureData; compa
       <button
         type="button"
         ref={triggerRef}
-        className={cx(styles.figureCard, compact && styles.figureCompact)}
+        className={cx(styles.figureCard, compact && styles.figureCompact, panoramic && styles.figurePanoramic)}
         onClick={() => setOpen(true)}
         aria-label={`Open full-resolution figure: ${figure.title}`}
       >
@@ -318,7 +334,7 @@ function EvidenceFigure({ figure, compact = false }: { figure: FigureData; compa
               }}
             >
               <motion.div
-                className={styles.lightboxDialog}
+                className={cx(styles.lightboxDialog, panoramic && styles.lightboxPanoramic)}
                 role="dialog"
                 aria-modal="true"
                 aria-label={figure.title}
@@ -656,11 +672,35 @@ export function RlpdExperience() {
         <Reveal>
           <SectionHeader
             index="06"
-            eyebrow="state-distribution analysis / nearest neighbors"
+            eyebrow="state-distribution analysis / PCA + nearest neighbors"
             title="Humanoid-v5 exhibited limited offline coverage"
             accent="under the specified distance criterion."
-            copy="States were standardized using offline-dataset statistics. We defined the coverage radius as the 95th percentile of offline-to-offline nearest-neighbor distances and then estimated the proportion of online states within that radius."
+            copy="We first visualize offline and online state distributions in a common PCA basis, then quantify their overlap in the complete standardized state space using nearest-neighbor coverage and normalized distance."
           />
+          <div id="pca-projection" className={styles.pcaAnalysis}>
+            <div className={styles.pcaIntroduction}>
+              <div>
+                <span>Qualitative projection / seed 0</span>
+                <h3>The locomotion distributions overlap; Humanoid separates in the offline-fitted projection.</h3>
+              </div>
+              <p>For each task, PCA is fitted only on standardized offline states. Offline and online states are then transformed through that same basis, so their relative position is directly comparable within a task.</p>
+            </div>
+            <EvidenceFigure figure={figures.pca} panoramic />
+            <div className={styles.pcaProtocol}>
+              {[
+                ["Projection basis", "Offline fit", "PCA is fitted on 20,000 standardized offline states for each environment; online states do not influence the axes."],
+                ["Displayed sample", "4k + 4k", "Four thousand offline and four thousand online states are displayed for the seed-0 RLPD run in each task."],
+                ["Projected pattern", "Humanoid separates", "Locomotion clouds retain substantial overlap, whereas the Humanoid online trajectory is displaced from the main offline cloud."],
+                ["Inference boundary", "2D is descriptive", "The projection can hide variance in omitted components. Three-seed nearest-neighbor metrics in the full state space provide the primary evidence."],
+              ].map(([label, value, copy]) => (
+                <article key={label}><span>{label}</span><strong>{value}</strong><p>{copy}</p></article>
+              ))}
+            </div>
+          </div>
+          <div className={styles.quantitativeLead}>
+            <span>Full-space verification / three seeds</span>
+            <p>The quantitative analysis uses all standardized state dimensions rather than the two displayed principal components. The offline/offline control remains close to one (1.04–1.16), indicating that the normalized distance ratio is not explained solely by dimensionality.</p>
+          </div>
           <div className={styles.coverageGrid}>
             <div className={styles.coverageChart} role="img" aria-label="Offline-state coverage by task">
               <header><span>online states within the offline 95th-percentile NN radius</span><strong>coverage estimate · higher indicates greater overlap</strong></header>
@@ -704,7 +744,7 @@ export function RlpdExperience() {
               ["01", "Between-seed variance is reported explicitly.", "Three-seed aggregates characterize variability that cannot be inferred from a selected rollout."],
               ["02", "Implementation details define the comparison.", "Layer normalization, ensemble size, update-to-data ratio, and pretraining budget are treated as part of each experimental condition."],
               ["03", "The ablation isolates replay composition.", "The matched 50/50 and online-only comparison shifts the analysis from method-level performance to the contribution of offline samples."],
-              ["04", "Coverage provides a post-hoc diagnostic.", "Estimated coverage is 56.2–71.6% for locomotion and 6.6% for Humanoid; these values support association, not causation."],
+              ["04", "Distribution analysis combines complementary evidence.", "PCA visualizes projected geometry, while three-seed full-space metrics estimate coverage: 56.2–71.6% for locomotion and 6.6% for Humanoid."],
             ].map(([index, title, copy]) => <article key={index}><span>{index}</span><h3>{title}</h3><p>{copy}</p></article>)}
           </div>
           <div className={styles.additionalEvidence}>

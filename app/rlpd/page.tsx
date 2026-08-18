@@ -4,7 +4,7 @@ import { RlpdExperience } from "./rlpd-experience";
 export const metadata: Metadata = {
   title: "RLPD | Empirical reproduction and ablation study",
   description:
-    "An empirical PyTorch reproduction of RLPD with controlled Humanoid-v5 replay-composition ablations and a cross-task state-coverage analysis.",
+    "An empirical PyTorch reproduction of RLPD with controlled Humanoid-v5 replay-composition ablations, PCA visualization, and full-space state-coverage analysis.",
   alternates: { canonical: "/rlpd/" },
   authors: [
     { name: "Karan Anchan" },
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "RLPD | Reproduction and ablation study",
     description:
-      "A three-seed RLPD reproduction with controlled Humanoid-v5 ablations and a state-distribution analysis.",
+      "A three-seed RLPD reproduction with controlled Humanoid-v5 ablations, PCA visualization, and full-space state-distribution analysis.",
     images: ["/rlpd/rlpd-social-cover.webp"],
   },
 };
@@ -42,7 +42,7 @@ const projectJsonLd = {
   "@type": "ScholarlyArticle",
   headline: "RLPD: an empirical reproduction and ablation study",
   description:
-    "A PyTorch reproduction of RLPD with controlled Humanoid-v5 replay-composition ablations and a cross-task offline-state coverage analysis.",
+    "A PyTorch reproduction of RLPD with controlled Humanoid-v5 replay-composition ablations, PCA visualization, and a cross-task offline-state coverage analysis.",
   url: "https://karan-anchan.github.io/rlpd/",
   image: "https://karan-anchan.github.io/rlpd/rlpd-social-cover.webp",
   author: [

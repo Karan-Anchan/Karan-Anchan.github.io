@@ -218,6 +218,8 @@
 .interpretationBand > span,
 .coverageReading > span,
 .caveatBox > span,
+.pcaIntroduction span,
+.quantitativeLead > span,
 .additionalEvidence > div:first-child > span {
   display: flex;
   align-items: center;
@@ -711,6 +713,26 @@
 .caveatBox { display: grid; margin-top: 16px; grid-template-columns: 190px 1fr; gap: 24px; padding: 22px 26px; border: 1px solid color-mix(in srgb, var(--amber) 34%, var(--line)); background: rgba(255,173,105,0.045); }
 .caveatBox p { margin: 0; color: var(--muted); font-size: 0.84rem; line-height: 1.6; }
 
+.pcaAnalysis { margin-bottom: clamp(62px, 7vw, 96px); scroll-margin-top: 120px; }
+.pcaIntroduction {
+  display: grid;
+  margin-bottom: 22px;
+  grid-template-columns: minmax(0, 1.08fr) minmax(300px, 0.72fr);
+  align-items: end;
+  gap: clamp(30px, 7vw, 96px);
+}
+.pcaIntroduction h3 { max-width: 820px; margin: 24px 0 0; font-size: clamp(2.25rem, 4.5vw, 4.8rem); font-weight: 400; letter-spacing: -0.055em; line-height: 0.98; }
+.pcaIntroduction p { margin: 0; padding-left: 22px; border-left: 1px solid var(--line-strong); color: var(--muted); font-size: 0.94rem; line-height: 1.7; }
+.pcaProtocol { display: grid; margin-top: 16px; grid-template-columns: repeat(4, 1fr); border: 1px solid var(--line); background: rgba(16,14,22,0.78); }
+.pcaProtocol article { min-height: 190px; padding: 22px; border-right: 1px solid var(--line); }
+.pcaProtocol article:last-child { border-right: 0; }
+.pcaProtocol span { color: var(--faint); font-family: var(--font-geist-mono), monospace; font-size: 0.57rem; letter-spacing: 0.07em; text-transform: uppercase; }
+.pcaProtocol strong { display: block; margin-top: 32px; color: var(--amber-soft); font-size: 1.35rem; font-weight: 480; letter-spacing: -0.035em; }
+.pcaProtocol p { margin: 10px 0 0; color: var(--muted); font-size: 0.76rem; line-height: 1.55; }
+.quantitativeLead { display: grid; margin-bottom: 16px; grid-template-columns: 260px 1fr; align-items: center; gap: 30px; padding: 24px 28px; border: 1px solid color-mix(in srgb, var(--blue) 34%, var(--line)); background: rgba(125,166,255,0.045); }
+.quantitativeLead > span { color: var(--blue); }
+.quantitativeLead p { margin: 0; color: var(--muted); font-size: 0.86rem; line-height: 1.62; }
+
 .coverageGrid { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(300px, 0.7fr); gap: 16px; margin-bottom: 16px; }
 .coverageChart { padding: clamp(22px, 3vw, 38px); }
 .coverageChart > header { display: flex; align-items: center; justify-content: space-between; gap: 20px; color: var(--faint); font-family: var(--font-geist-mono), monospace; font-size: 0.58rem; text-transform: uppercase; }
@@ -806,6 +828,11 @@
   .ablationFindings article:nth-child(2) { border-right: 0; }
   .ablationFindings article:nth-child(-n + 2) { border-bottom: 1px solid var(--line); }
   .figurePair { grid-template-columns: 1fr; }
+  .pcaIntroduction { grid-template-columns: 1fr; gap: 24px; }
+  .pcaIntroduction p { max-width: 720px; }
+  .pcaProtocol { grid-template-columns: 1fr 1fr; }
+  .pcaProtocol article:nth-child(2) { border-right: 0; }
+  .pcaProtocol article:nth-child(-n + 2) { border-bottom: 1px solid var(--line); }
   .lessonGrid { grid-template-columns: 1fr 1fr; }
   .lessonGrid article:nth-child(n + 3) { border-top: 0; }
   .lessonGrid article:nth-child(2n) { border-left: 0; }
@@ -874,6 +901,12 @@
   .ablationFindings article { border-right: 0; border-bottom: 1px solid var(--line); }
   .ablationFindings article:last-child { border-bottom: 0; }
   .caveatBox { grid-template-columns: 1fr; gap: 12px; }
+  .pcaIntroduction h3 { font-size: clamp(2.5rem, 12vw, 3.7rem); }
+  .pcaIntroduction p { padding-left: 16px; font-size: 0.88rem; }
+  .pcaProtocol { grid-template-columns: 1fr; }
+  .pcaProtocol article { min-height: 170px; border-right: 0; border-bottom: 1px solid var(--line); }
+  .pcaProtocol article:last-child { border-bottom: 0; }
+  .quantitativeLead { grid-template-columns: 1fr; gap: 12px; padding: 22px; }
   .coverageChart { padding: 20px 16px; }
   .coverageChart > header { align-items: flex-start; flex-direction: column; gap: 5px; }
   .coverageScale { margin-left: 0; }
@@ -892,6 +925,7 @@
   .projectFooter > div:last-child { justify-content: flex-start; }
   .lightbox { padding: 8px; }
   .lightboxDialog { width: 100%; max-height: 96vh; }
+  .lightboxPanoramic .lightboxMedia img { width: auto; min-width: 1120px; max-width: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
