@@ -9,7 +9,7 @@ const xp = [
     where: "Mangalore, IN",
     points: [
       "Built a production RAG search system with LangChain + ChromaDB over 5,000+ educational documents.",
-      "Cut ingestion time 40% via recursive text splitting; cosine-similarity feedback loop reached 90% answer accuracy.",
+      "Evaluated 100 query batches: 71.7% Recall@5, 93.4% groundedness, 89.1% refusal accuracy, and 2.72 s p95 latency.",
     ],
   },
 ];

@@ -15,11 +15,11 @@ const cols: { head: string; items: [string, string][] }[] = [
   {
     head: "Research",
     items: [
-      ["Transformers / PEFT", "daily"],
-      ["MuJoCo · Gymnasium", "daily"],
+      ["Transformers / PEFT", "solid"],
+      ["Mamba-2 / SSMs", "active"],
+      ["MuJoCo · Gymnasium", "solid"],
       ["MONAI", "solid"],
-      ["W&B / MLflow", "daily"],
-      ["TensorFlow", "working"],
+      ["W&B", "solid"],
     ],
   },
   {
@@ -27,8 +27,8 @@ const cols: { head: string; items: [string, string][] }[] = [
     items: [
       ["ONNX / TensorRT", "active"],
       ["Docker", "solid"],
-      ["CUDA basics", "learning"],
-      ["AWS", "working"],
+      ["FastAPI / SSE", "solid"],
+      ["CUDA", "learning"],
       ["Git / CI-CD", "daily"],
     ],
   },

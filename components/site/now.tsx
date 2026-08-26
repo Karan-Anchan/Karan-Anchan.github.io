@@ -6,7 +6,7 @@ import { AnimatePresence, motion } from "motion/react";
 const NOW = [
   "still chewing on why RLPD did better with the offline data thrown out",
   "re-reading the Dreamer 4 paper. it holds up",
-  "sweeping attention:ssm ratios — 1:7 still leads",
+  "writing the Mamba report — 3/15 needles is the result",
   "teaching n8n to triage my inbox so I don't have to",
   "somewhere between masala chai and filter coffee no. 3",
   "waiting for a W&B run — you're reading this because of it",

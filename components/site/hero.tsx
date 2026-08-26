@@ -127,8 +127,8 @@ export function Hero() {
         </div>
 
         <p className="mt-6 max-w-lg text-sm font-light leading-relaxed text-[var(--faint)]">
-          I work on humanoid RL, browser-based detectors, production RAG,
-          and the infrastructure around long training runs. Some projects are
+          I work on humanoid RL, browser-based detectors, language-model
+          systems, production RAG, and the infrastructure around long training runs. Some projects are
           research reproductions; others end as deployable tools. The loss
           curve in the corner tracks your reading progress.
           <span className="text-[var(--dim)]"> yes, it converges.</span>

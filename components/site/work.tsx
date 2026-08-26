@@ -197,6 +197,59 @@ function SaeFig() {
   );
 }
 
+function MambaStateFig() {
+  const variants = [
+    { ratio: "1:3", state: 61.33, ppl: "26.301", color: "var(--accent-4)" },
+    { ratio: "1:7", state: 34.22, ppl: "26.466", color: "var(--accent-2)" },
+    { ratio: "1:15", state: 20.66, ppl: "26.513", color: "var(--lime)" },
+  ];
+
+  return (
+    <div
+      className="flex h-full min-h-[220px] flex-col justify-center gap-4 bg-[radial-gradient(circle_at_88%_8%,color-mix(in_srgb,var(--accent-2)_14%,transparent),transparent_38%),linear-gradient(145deg,color-mix(in_srgb,var(--card)_96%,black),var(--bg))] p-5 sm:p-7"
+      aria-label="At 8K context, logical inference state is 61.33 MiB for ratio 1 to 3, 34.22 MiB for 1 to 7, and 20.66 MiB for 1 to 15"
+    >
+      <div className="flex items-end justify-between gap-3 border-b border-[var(--line)] pb-3">
+        <div>
+          <span className="font-mono text-[0.52rem] uppercase tracking-[0.18em] text-[var(--accent-2)]">
+            Matched 700M-token sweep
+          </span>
+          <h4 className="mt-1 text-sm font-medium tracking-[-0.02em] text-[var(--fg)] sm:text-base">
+            Logical inference state at 8K
+          </h4>
+        </div>
+        <span className="font-mono text-[0.48rem] uppercase tracking-[0.12em] text-[var(--faint)]">
+          lower is better
+        </span>
+      </div>
+      <div className="grid gap-3">
+        {variants.map((variant, index) => (
+          <div key={variant.ratio} className="grid grid-cols-[48px_1fr_112px] items-center gap-2 sm:grid-cols-[56px_1fr_126px]">
+            <span className="font-mono text-[0.6rem] text-[var(--fg2)]">{variant.ratio}</span>
+            <div className="h-4 overflow-hidden bg-[color-mix(in_srgb,var(--faint)_12%,transparent)]">
+              <motion.div
+                className="h-full origin-left"
+                initial={{ scaleX: 0 }}
+                whileInView={{ scaleX: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.55, delay: index * 0.08 }}
+                style={{ width: `${(variant.state / 61.33) * 100}%`, backgroundColor: variant.color }}
+              />
+            </div>
+            <span className="text-right font-mono text-[0.52rem] text-[var(--dim)]">
+              <strong className="font-medium text-[var(--fg2)]">{variant.state} MiB</strong>
+              <br />PPL {variant.ppl}
+            </span>
+          </div>
+        ))}
+      </div>
+      <p className="m-0 font-mono text-[0.5rem] uppercase tracking-[0.11em] text-[var(--faint)]">
+        1:15 saves 66.3% vs 1:3 · +0.212 validation perplexity
+      </p>
+    </div>
+  );
+}
+
 const entries: Entry[] = [
   {
     no: "01",
@@ -241,7 +294,7 @@ const entries: Entry[] = [
     cover: "/covers/yolo-demo.webp",
     hue: "var(--accent-4)",
     tags: [
-      { label: "Active · 2026", hot: true },
+      { label: "Shipped · 2026", hot: true },
       { label: "Computer Vision" },
       { label: "Edge deployment" },
     ],
@@ -335,41 +388,32 @@ const entries: Entry[] = [
     cover: "/covers/mamba-stream.webp",
     hue: "var(--accent-2)",
     tags: [
-      { label: "In progress" },
+      { label: "Study complete · 2026", hot: true },
       { label: "Hybrid architectures" },
-      { label: "Language modelling" },
+      { label: "Language-model systems" },
     ],
     title: "Mamba-2 × attention: a hybrid LM ratio study",
-    href: "https://github.com/Karan-Anchan/mamba-hybrid-lm",
+    href: "https://karan-anchan.github.io/mamba-hybrid-lm-showcase/",
     desc: (
       <>
-        A <strong>~50M-param hybrid LM</strong> interleaving Mamba-2 SSM blocks
-        with causal attention (the Jamba pattern), trained on OpenWebText at
-        matched tokens-seen. In the reduced-scale preview,{" "}
-        <strong>1:7 has the lowest validation perplexity</strong>. KV-cache
-        and inference measurements are still pending.
+        Three <strong>52–54M-parameter hybrid LMs</strong> interleaving Mamba-2
+        SSM blocks with causal attention, each trained on 700M matched
+        OpenWebText token positions. <strong>1:3 leads on perplexity and sampled
+        generation</strong>; 1:15 cuts logical state by 66.3% at 8K for a
+        0.212 perplexity increase.
       </>
     ),
     metrics: [
-      { v: "~50M", l: "parameters" },
-      { v: "1:7", l: "attn : ssm front-runner" },
-      { v: "102.4", l: "val ppl · preview" },
+      { v: "26.30", l: "val ppl · ratio 1:3" },
+      { v: "66.3%", l: "less state · 1:15 at 8K" },
+      { v: "52.3", l: "tok/s · sampled generation" },
     ],
     links: [
-      { label: "Repo", href: "https://github.com/Karan-Anchan/mamba-hybrid-lm" },
-      { label: "Mamba-2 paper", href: "https://arxiv.org/abs/2405.21060" },
+      { label: "Showcase", href: "https://karan-anchan.github.io/mamba-hybrid-lm-showcase/" },
+      { label: "Repository", href: "https://github.com/Karan-Anchan/mamba-hybrid-lm" },
     ],
-    fig: (
-      <div className="aspect-[16/10] w-full">
-        <img
-          src="/covers/mamba-sweep.webp"
-          alt="The attention-to-SSM ratio sweep — 1:7 wins validation perplexity (102.3 vs 105.4 and 106.9) at matched 16.4M tokens; throughput and VRAM shown alongside"
-          loading="lazy"
-          className="h-full w-full object-cover"
-        />
-      </div>
-    ),
-    caption: "fig. 4 — the ratio sweep · matched 16.4M tokens · preview",
+    fig: <MambaStateFig />,
+    caption: "fig. 4 — 8K logical state · matched 700M-token variants",
   },
   {
     no: "05",
@@ -412,7 +456,7 @@ export function Work() {
         index="§02"
         title="Selected"
         accent="work"
-        side="ckpt 02 · three shipped, two in progress"
+        side="ckpt 02 · four shipped, one in progress"
       />
       <div className="space-y-20">
         {entries.map((e, i) => (
@@ -465,7 +509,7 @@ export function Work() {
                     </div>
                   ))}
                 </div>
-                <div className="mt-6 flex gap-5">
+                <div className="mt-6 flex flex-wrap gap-x-5 gap-y-3">
                   {e.links.map((l) => (
                     <a
                       key={l.label}
