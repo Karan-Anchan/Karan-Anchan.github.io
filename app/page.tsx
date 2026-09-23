@@ -255,7 +255,7 @@ export default function Home() {
                 <p className={styles.certificateMeta}>{certificate.date} · {certificate.courses}</p>
                 <h3>{certificate.title}</h3>
                 <p className={styles.certificateIssuer}>{certificate.issuer}</p>
-                <a className={styles.certificateLink} href={certificate.href} aria-label={`Verify ${certificate.title} on Coursera`}>Verify on Coursera ↗</a>
+                <a className={styles.certificateLink} href={certificate.href} aria-label={`Verify ${certificate.title}`}>Verify ↗</a>
               </article>
             ))}
           </div>
