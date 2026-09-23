@@ -1,20 +1,5 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Mono, IBM_Plex_Serif } from "next/font/google";
 import { RlpdExperience } from "./rlpd-experience";
-
-const plexSerif = IBM_Plex_Serif({
-  variable: "--font-ibm-plex-serif",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  display: "swap",
-});
-
-const plexMono = IBM_Plex_Mono({
-  variable: "--font-ibm-plex-mono",
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   title: "RLPD | Offline-to-online reinforcement learning",
@@ -82,7 +67,7 @@ export default function RlpdPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(projectJsonLd) }}
       />
-      <div className={`${plexSerif.variable} ${plexMono.variable}`}>
+      <div>
         <RlpdExperience />
       </div>
     </>

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#f8f7f2"/>
+  <path d="M64 58H1136" stroke="#254d36" stroke-width="5"/>
+  <text x="65" y="108" fill="#254d36" font-family="Consolas,monospace" font-size="22" font-weight="700" letter-spacing="2">MACHINE LEARNING RESEARCH AND ENGINEERING</text>
+  <text x="64" y="273" fill="#202820" font-family="Georgia,serif" font-size="104" font-weight="400">Karan Anchan</text>
+  <path d="M64 316H1136" stroke="#d2d9d1" stroke-width="2"/>
+  <text x="65" y="374" fill="#202820" font-family="Georgia,serif" font-size="31">Methods, measured results, and limitations.</text>
+  <text x="65" y="427" fill="#59645b" font-family="Georgia,serif" font-size="26">Reinforcement learning · efficient language models</text>
+  <text x="65" y="467" fill="#59645b" font-family="Georgia,serif" font-size="26">medical segmentation · edge computer vision</text>
+  <path d="M64 531H1136" stroke="#d2d9d1" stroke-width="2"/>
+  <text x="65" y="573" fill="#254d36" font-family="Consolas,monospace" font-size="19" letter-spacing="1">KARAN-ANCHAN.GITHUB.IO</text>
+  <text x="1135" y="573" fill="#59645b" font-family="Consolas,monospace" text-anchor="end" font-size="19">FREIBURG · DE</text>
+</svg>

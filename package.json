@@ -6,9 +6,12 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint app lib types",
+    "lint:all": "eslint ."
   },
   "dependencies": {
+    "@fontsource/ibm-plex-mono": "5.3.0",
+    "@fontsource/ibm-plex-serif": "5.3.0",
     "@base-ui/react": "^1.6.0",
     "@google/model-viewer": "^4.3.1",
     "@number-flow/react": "^0.6.1",
