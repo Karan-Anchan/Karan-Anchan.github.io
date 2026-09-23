@@ -6,6 +6,8 @@ A compact portfolio for machine-learning research and engineering work. The home
 
 The homepage is a static Next.js export. IBM Plex Serif and IBM Plex Mono are self-hosted through Fontsource; the main favicon is `app/icon.svg`, and `public/og-card.svg` is the editable source for `public/og.jpg`.
 
+Project previews are self-hosted and load lazily. RLPD uses recorded locomotion rollout GIFs; YOLO26 uses the browser sample-video detection capture; the NMT visualization comes from its project repository. The Mamba animation reveals the fixed, calculated 8K logical-state values in [`ratio_tradeoffs.svg`](https://github.com/Karan-Anchan/mamba-hybrid-lm/blob/main/results/week5-analysis-v1/plots/ratio_tradeoffs.svg), while the UNETR animation steps through the three panels of its [documented validation slice](https://github.com/Karan-Anchan/Unetr_3D_Abdomen_Segmentation/blob/main/viz.png). Those two animations do not represent live model execution. Static frames are served for visitors who request reduced motion.
+
 ## Run locally
 
 ```bash
