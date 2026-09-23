@@ -12,13 +12,12 @@ const PAPER = "https://arxiv.org/abs/2302.02948";
 const EASE_OUT = [0.23, 1, 0.32, 1] as const;
 
 const sections = [
-  { id: "study", label: "Study" },
-  { id: "method", label: "Method" },
+  { id: "method", label: "Setup" },
   { id: "results", label: "Results" },
   { id: "humanoid", label: "Humanoid" },
-  { id: "ablations", label: "Ablations" },
+  { id: "ablations", label: "Replay ablation" },
   { id: "coverage", label: "Coverage" },
-  { id: "evidence", label: "Evidence" },
+  { id: "evidence", label: "Limitations" },
 ] as const;
 
 const benchmarkResults = [
@@ -27,7 +26,6 @@ const benchmarkResults = [
     short: "Hopper",
     rollout: "/rlpd/rollout-hopper.mp4",
     poster: "/rlpd/rollout-hopper.webp",
-    rolloutScore: "97.1",
     note: "At 245k steps, the RLPD mean exceeds the IQL mean by 22.4 normalized-return points (n = 3 seeds per method).",
     values: [
       { method: "RLPD", value: 88.0, spread: 6.8, tone: "blue" },
@@ -40,7 +38,6 @@ const benchmarkResults = [
     short: "Walker2d",
     rollout: "/rlpd/rollout-walker.mp4",
     poster: "/rlpd/rollout-walker.webp",
-    rolloutScore: "96.8",
     note: "RLPD attains 89.6 ± 0.7 across three seeds, the lowest observed between-seed dispersion in the locomotion evaluation.",
     values: [
       { method: "RLPD", value: 89.6, spread: 0.7, tone: "blue" },
@@ -53,7 +50,6 @@ const benchmarkResults = [
     short: "HalfCheetah",
     rollout: "/rlpd/rollout-halfcheetah.mp4",
     poster: "/rlpd/rollout-halfcheetah.webp",
-    rolloutScore: "103.1",
     note: "The RLPD mean exceeds the IQL mean by 2.6 points; the corresponding standard deviations are 1.6 and 7.8 (n = 3).",
     values: [
       { method: "RLPD", value: 88.6, spread: 1.6, tone: "blue" },
@@ -107,10 +103,10 @@ const auditRows = [
   ["Locomotion · medium", "27 completed runs", "3 algorithms × 3 tasks × 3 random seeds"],
   ["Locomotion · expert", "seed 0 completed", "seeds 1–2 terminate at 57.5k and are reported as incomplete"],
   ["Humanoid · IQL / RLPD", "n = 3 · 1M steps", "IQL additionally receives one million offline updates before online training"],
-  ["Humanoid · SACfD", "2 of 3 divergent", "non-finite runs are retained in the experimental record"],
-  ["Online-only ablation", "n = 3 · 500k steps", "matched-horizon comparison against 50/50 replay"],
+  ["Humanoid · SACfD", "2 of 3 divergent", "non-finite seeds stop at 430k and 550k; later curve values reflect the surviving seed"],
+  ["Replay ablation", "n = 3 per condition", "online-only and 50/50 replay compared at the same 495k evaluation"],
   ["Expert Humanoid RLPD", "n = 1 · 1M steps", "single-seed result; excluded from aggregate conclusions"],
-  ["State-distribution analyses", "4 tasks · n = 3", "PCA is descriptive; full-space nearest-neighbor metrics are primary"],
+  ["State-distribution analysis", "4 tasks · n = 3", "PCA is descriptive; full-space nearest-neighbor metrics are primary"],
 ] as const;
 
 type FigureData = {
@@ -143,7 +139,7 @@ const figures = {
     src: "/rlpd/fig-humanoid.png",
     alt: "Humanoid normalized return and critic mean Q for RLPD, IQL, and SACfD",
     title: "Humanoid-v5 extension",
-    caption: "Three seeds · final evaluation at 995k · IQL includes 1M offline updates before online step 0",
+    caption: "Final scheduled evaluation at 995k · IQL includes 1M offline updates before online step 0 · two SACfD seeds diverged early",
     width: 2656,
     height: 939,
   },
@@ -158,8 +154,8 @@ const figures = {
   ratio: {
     src: "/rlpd/fig-ratio-curve.png",
     alt: "Humanoid return across offline-to-online replay ratios",
-    title: "Exploratory replay-composition sweep",
-    caption: "Single-seed diagnostic except at 90% online, where seed 1 is shown with the seed 0 observation as a dotted reference",
+    title: "Exploratory replay-ratio plot",
+    caption: "Mixed-seed display, not a dose-response estimate: solid 90% online is seed 1; other solid points are seed 0. The dotted point retains seed 0 at 90%.",
     width: 2147,
     height: 1218,
   },
@@ -211,7 +207,7 @@ function Arrow({ direction = "up-right" }: { direction?: "up-right" | "left" | "
 }
 
 function useActiveSection() {
-  const [active, setActive] = useState<string>(sections[0].id);
+  const [active, setActive] = useState<string>("");
 
   useEffect(() => {
     const nodes = sections
@@ -234,18 +230,7 @@ function useActiveSection() {
 }
 
 function Reveal({ children, className }: { children: React.ReactNode; className?: string }) {
-  const reduced = useReducedMotion();
-  return (
-    <motion.div
-      className={className}
-      initial={reduced ? false : { opacity: 0, y: 28 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.55, ease: EASE_OUT }}
-    >
-      {children}
-    </motion.div>
-  );
+  return <div className={className}>{children}</div>;
 }
 
 function SectionHeader({
@@ -407,14 +392,14 @@ function BenchmarkExplorer() {
           src={result.rollout}
           poster={result.poster}
           aria-label={`${result.task} RLPD policy rollout`}
-          autoPlay
+          controls
           muted
           loop
           playsInline
           preload="metadata"
         />
-        <span>policy replay · {result.task.toLowerCase()}</span>
-        <figcaption><strong>{result.rolloutScore}</strong><small>best-seed last-five normalized return</small></figcaption>
+        <span>Recorded RLPD rollout · {result.task.toLowerCase()}</span>
+        <figcaption><small>Qualitative example; the table reports three-seed aggregates.</small></figcaption>
       </figure>
     </div>
   );
@@ -435,7 +420,7 @@ export function RlpdExperience() {
     <main className={styles.app}>
       <header className={styles.topbar}>
         <Link className={styles.brand} href="/" aria-label="Back to Karan Anchan’s portfolio">
-          <span>R</span><strong>RLPD / EMPIRICAL STUDY</strong>
+          <span>R</span><strong>RLPD</strong>
         </Link>
         <nav className={styles.sectionNav} aria-label="Project sections">
           {sections.map((section) => (
@@ -452,107 +437,46 @@ export function RlpdExperience() {
 
       <section className={styles.hero} aria-labelledby="hero-title">
         <div className={styles.heroGrid}>
-          <motion.div
-            className={styles.heroCopy}
-            initial={reduced ? false : { opacity: 0, y: 28 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.65, ease: EASE_OUT }}
-          >
-            <span className={styles.kicker}><b>2026</b> reproduction and ablation study · offline-to-online RL</span>
-            <h1 id="hero-title">An empirical evaluation of RLPD.<em>Reproduction, controlled ablations, and distribution analysis.</em></h1>
+          <div className={styles.heroCopy}>
+            <span className={styles.kicker}>PyTorch reproduction · MuJoCo / Minari-v5 · 2026</span>
+            <h1 id="hero-title">RLPD: offline-to-online reinforcement learning</h1>
             <p>
-              We independently implemented RLPD in PyTorch, evaluated it on Minari-v5 locomotion and Humanoid-v5, and conducted replay-composition ablations to isolate the contribution of offline data during online training.
+              We implemented RLPD in PyTorch, evaluated it against IQL and SACfD on three locomotion tasks, and extended the comparison to Humanoid-v5. Matched replay ablations test whether a fixed offline-data mixture helps online adaptation in that setting.
             </p>
             <div className={styles.heroActions}>
-              <a href="#results" className={styles.primaryAction}><span><small>Empirical findings</small>Review the results</span><Arrow direction="down" /></a>
-              <a href={REPOSITORY} target="_blank" rel="noreferrer">View implementation <Arrow /></a>
+              <a href="#results" className={styles.primaryAction}><span>Results</span><Arrow direction="down" /></a>
+              <a href={REPOSITORY} target="_blank" rel="noreferrer">Source code <Arrow /></a>
             </div>
             <div className={styles.teamLine}><span>Research team</span><strong>Karan Anchan</strong><strong>Pranav Prakash Menon</strong><strong>Kandi Sridhar</strong></div>
-          </motion.div>
-
-          <motion.figure
-            className={styles.heroVisual}
-            initial={reduced ? false : { opacity: 0, scale: 0.975 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.7, delay: 0.08, ease: EASE_OUT }}
-          >
-            <Image src="/rlpd/hero-robot-v3.webp" alt="Humanoid research agent in a field of policy trajectories" fill priority sizes="(max-width: 800px) 94vw, 48vw" />
-            <span className={styles.visualLabel}>Humanoid-v5 · final eval 995k</span>
-            <figcaption><span>Matched ablation difference</span><strong>+21.9</strong><small>mean return · online-only minus 50/50 · 500k</small></figcaption>
-          </motion.figure>
+          </div>
         </div>
         <div className={styles.heroMetrics}>
-          <div><span>Primary experiment matrix</span><strong>27 completed runs</strong></div>
-          <div><span>Primary replication count</span><strong>n = 3 seeds</strong></div>
-          <div><span>Interaction horizons</span><strong>245k → 1M steps</strong></div>
-          <div><span>Evaluated environments</span><strong>4 tasks</strong></div>
+          <div><span>RLPD locomotion · n = 3</span><strong>88.0–89.6</strong><small>normalized return at 245k steps</small></div>
+          <div><span>Matched Humanoid ablation · n = 3</span><strong>+22.0</strong><small>online-only minus 50/50 at 495k</small></div>
+          <div><span>Humanoid offline-state coverage</span><strong>6.6%</strong><small>post-hoc nearest-neighbor estimate</small></div>
+          <div><span>Core locomotion matrix</span><strong>27 runs</strong><small>3 methods × 3 tasks × 3 seeds</small></div>
         </div>
-      </section>
-
-      <section id="study" data-section className={styles.section}>
-        <Reveal>
-          <SectionHeader
-            index="01"
-            eyebrow="study / research objectives"
-            title="Evaluating offline data as"
-            accent="a benefit and a potential constraint."
-            copy="The study first assesses whether the reported locomotion behavior is reproducible under an independent PyTorch implementation. It then tests whether the same training protocol transfers to the 348-dimensional Humanoid-v5 observation space."
-          />
-          <div className={styles.studyGrid}>
-            <article className={styles.questionCard}>
-              <span>Research question</span>
-              <h3>How does replay composition affect online adaptation on Humanoid-v5?</h3>
-              <p>RLPD combines a fixed offline dataset with transitions collected by the current policy. We evaluate whether this mixture improves sample efficiency and whether its effect changes when the online state distribution is poorly represented by the offline dataset.</p>
-              <div><span>Reproduced proposition</span><strong>Sample-efficient online adaptation</strong></div>
-              <div><span>Study contribution</span><strong>Humanoid-v5 ablations + support analysis</strong></div>
-            </article>
-            <div className={styles.protocolGrid}>
-              {[
-                ["01", "Reproduce", "Evaluate RLPD, IQL, and SACfD on three Minari-v5 medium datasets using three seeds."],
-                ["02", "Extend", "Apply the comparison to Humanoid-v5, increasing the observation dimension from 11–17 to 348."],
-                ["03", "Ablate", "Hold architecture, update schedule, and training horizon fixed while varying replay composition."],
-                ["04", "Analyze", "Quantify overlap between online states and the offline dataset using a nearest-neighbor criterion."],
-              ].map(([index, title, copy]) => (
-                <article key={index}><span>{index}</span><h3>{title}</h3><p>{copy}</p></article>
-              ))}
-            </div>
-          </div>
-          <div className={styles.studyStrip}>
-            <span>PyTorch 2.11</span><i />
-            <span>Gymnasium MuJoCo v5</span><i />
-            <span>Minari datasets</span><i />
-            <span>Weights & Biases</span><i />
-            <span>RTX 5070 · 12 GB</span>
-          </div>
-        </Reveal>
       </section>
 
       <section id="method" data-section className={cx(styles.section, styles.sectionTint)}>
         <Reveal>
           <SectionHeader
-            index="02"
-            eyebrow="method / experimental implementation"
-            title="The evaluated protocol is defined by"
-            accent="replay, normalization, and update intensity."
-            copy="These implementation choices specify how offline transitions enter optimization, how critic activations are normalized, and how many gradient updates are performed per environment interaction."
+            index="01"
+            eyebrow="Experimental setup"
+            title="Data, replay, and optimization"
+            copy="The locomotion reproduction uses Minari-v5 medium datasets. RLPD combines each fixed dataset with online transitions; the critic ensemble, LayerNorm, and high update-to-data ratio follow the original method. The Humanoid-v5 extension tests the same design on a larger state space."
           />
           <div className={styles.methodFlow} aria-label="Offline-to-online training loop">
             {[
-              ["01", "Offline dataset", "fixed transition set"],
-              ["02", "Replay sampling", "128 offline + 128 online"],
-              ["03", "Environment interaction", "policy-generated transition"],
-              ["04", "Online-buffer update", "append observed transition"],
+              ["01", "Minari medium data", "fixed offline transitions"],
+              ["02", "Replay batch", "128 offline + 128 online"],
+              ["03", "Environment step", "collect one new transition"],
+              ["04", "Optimization", "20 critic updates + 1 actor update"],
             ].map(([index, title, detail]) => <div key={index}><span>{index}</span><strong>{title}</strong><small>{detail}</small></div>)}
           </div>
           <div className={styles.methodCards}>
-            {methodCards.map((card, index) => (
-              <motion.article
-                key={card.index}
-                initial={reduced ? false : { opacity: 0, y: 18 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-70px" }}
-                transition={{ duration: 0.45, delay: index * 0.07, ease: EASE_OUT }}
-              >
+            {methodCards.map((card) => (
+              <article key={card.index}>
                 <header><span>{card.index} / {card.label}</span><strong>{card.value}</strong></header>
                 <div className={cx(styles.methodVisual, styles[card.visual])} aria-hidden>
                   {card.visual === "mix" && <><i /><i /></>}
@@ -561,32 +485,37 @@ export function RlpdExperience() {
                 </div>
                 <h3>{card.title}</h3><p>{card.copy}</p><code>{card.code}</code>
                 <footer><span>Experimental role</span><strong>{card.outcome}</strong></footer>
-              </motion.article>
+              </article>
             ))}
           </div>
+          <div className={styles.studyStrip}>
+            <span>PyTorch 2.11</span><i />
+            <span>Gymnasium MuJoCo v5</span><i />
+            <span>Minari-v5 medium datasets</span><i />
+            <span>Weights &amp; Biases</span><i />
+            <span>RTX 5070 · 12 GB</span>
+          </div>
+          <p className={styles.caveat}>Normalized returns use this project&apos;s measured random-policy and Minari-v5 expert anchors (0 and 100), not the original paper&apos;s D4RL scale. Each evaluation averages ten deterministic episodes; locomotion results use the final 245k evaluation of a 250k-step budget. IQL receives one million offline updates before online step 0, so equal interaction counts do not mean equal optimization compute.</p>
+          <p className={styles.caveat}>Implementation: <a href={`${REPOSITORY}/blob/main/train.py`} target="_blank" rel="noreferrer">training loop</a> · <a href={`${REPOSITORY}/blob/main/rlpd/replay_buffer.py`} target="_blank" rel="noreferrer">replay sampling</a> · <a href={`${REPOSITORY}/blob/main/analysis/overlap.py`} target="_blank" rel="noreferrer">state-coverage analysis</a>.</p>
         </Reveal>
       </section>
 
       <section id="results" data-section className={styles.section}>
         <Reveal>
           <SectionHeader
-            index="03"
-            eyebrow="locomotion / reproduction results"
-            title="RLPD reproduced strong final performance"
-            accent="across all three locomotion tasks."
-            copy="At 245k environment steps, the RLPD mean normalized return ranged from 88.0 to 89.6 across Hopper, Walker2d, and HalfCheetah. It exceeded the SACfD mean in every evaluated task; all summary statistics use three independent seeds."
+            index="02"
+            eyebrow="Locomotion results"
+            title="RLPD on three MuJoCo tasks"
+            copy="At 245k online steps, mean normalized return was 88.0 on Hopper, 89.6 on Walker2d, and 88.6 on HalfCheetah. Each value is the mean across three seeds; RLPD exceeded the SACfD mean on all three tasks."
           />
           <EvidenceFigure figure={figures.returns} />
           <BenchmarkExplorer />
-          <div className={styles.interpretationBand}>
-            <span>Across-task summary</span>
-            <p><strong>RLPD produced similar task-level means.</strong> Its final means span 1.6 normalized-return points across the three environments. This is a descriptive reproducibility result; uncertainty is reported as the standard deviation across three seeds.</p>
-          </div>
+          <p className={styles.caveat}>The figure shows five-evaluation rolling means with seed-level uncertainty; the displayed endpoint scores come from unsmoothed evaluation CSVs. Recorded rollouts are qualitative examples, not estimates of average performance.</p>
           <div className={styles.failureGrid}>
             <div>
-              <span className={styles.kicker}><b>04</b> stability analysis / critic scale</span>
-              <h3>Policy return alone is insufficient to characterize numerical stability.</h3>
-              <p>On Walker2d, the recorded SACfD mean Q increases from 0.1 at the first valid log to 85,300 at 245k steps, whereas RLPD ends at 545. The resulting 156× endpoint ratio is reported as evidence of critic-scale instability.</p>
+              <span className={styles.kicker}>Critic-scale diagnostic</span>
+              <h3>SACfD critic values grew sharply on Walker2d</h3>
+              <p>At 245k steps, the recorded SACfD mean Q was approximately 85,300 versus 545 for RLPD. This 156× endpoint gap indicates value-scale instability in the tested SACfD path; it does not by itself explain the return difference.</p>
               <dl>
                 <div><dt>SACfD endpoint</dt><dd>85,300</dd></div>
                 <div><dt>RLPD endpoint</dt><dd>545</dd></div>
@@ -601,17 +530,16 @@ export function RlpdExperience() {
       <section id="humanoid" data-section className={cx(styles.section, styles.sectionTint)}>
         <Reveal>
           <SectionHeader
-            index="04"
-            eyebrow="out-of-domain extension / Humanoid-v5"
-            title="Humanoid-v5 changed the relative"
-            accent="performance of the evaluated methods."
-            copy="Humanoid-v5 increases the observation dimension to 348 and uses 17 actuators. Under the evaluated training budgets, IQL attained the highest three-seed mean return, RLPD retained finite critic estimates but achieved a lower mean return, and two of three SACfD runs diverged."
+            index="03"
+            eyebrow="Humanoid-v5 extension"
+            title="Humanoid results"
+            copy="State-based Humanoid-v5 has 348 observation dimensions and 17 actions. At the 995k evaluation, IQL had the highest three-seed mean return. RLPD remained numerically stable but achieved a lower return; two of three SACfD seeds diverged before the full horizon."
           />
           <div className={styles.humanoidGrid}>
             <figure className={styles.humanoidVideo}>
-              <video src="/rlpd/rollout-humanoid.mp4" poster="/rlpd/rollout-humanoid.webp" aria-label="Selected high-performing IQL Humanoid-v5 rollout" autoPlay muted loop playsInline preload="metadata" />
-              <span>representative high-performing run · IQL seed 2</span>
-              <figcaption><strong>87.8</strong><small>last-five normalized return · three-seed mean 70.1 ± 16.2</small></figcaption>
+              <video src="/rlpd/rollout-humanoid.mp4" poster="/rlpd/rollout-humanoid.webp" aria-label="Selected high-performing IQL Humanoid-v5 rollout" controls muted loop playsInline preload="metadata" />
+              <span>Recorded rollout · selected IQL seed 2</span>
+              <figcaption><strong>87.8</strong><small>selected-seed last-five return; IQL three-seed mean: 70.1 ± 16.2</small></figcaption>
             </figure>
             <div className={styles.humanoidStats}>
               {[
@@ -624,23 +552,22 @@ export function RlpdExperience() {
             </div>
           </div>
           <EvidenceFigure figure={figures.humanoid} />
-          <p className={styles.caveat}>The rollout is a qualitative example from a selected high-performing seed and is not an estimator of expected performance. Quantitative conclusions are based on the reported three-seed aggregates.</p>
+          <p className={styles.caveat}>IQL received one million offline gradient updates before online step 0; the methods share an online interaction budget, not a compute budget. The rollout is a selected high-performing seed, not an estimate of expected performance. SACfD diverged in two seeds at 430k and 550k, so its reported endpoint summary combines unequal horizons.</p>
         </Reveal>
       </section>
 
       <section id="ablations" data-section className={styles.section}>
         <Reveal>
           <SectionHeader
-            index="05"
-            eyebrow="controlled replay ablation / 500k steps"
-            title="Replay composition produced distinct"
-            accent="Humanoid-v5 outcomes."
-            copy="We held the critic architecture, ensemble size, layer normalization, update-to-data ratio, batch size, and 500k-step horizon fixed while changing the source composition of each replay batch. The primary 50/50 and online-only conditions each include three seeds; intermediate ratios are exploratory single-seed diagnostics."
+            index="04"
+            eyebrow="Matched replay ablation"
+            title="Online-only versus 50/50 replay"
+            copy="At the 495k evaluation of a 500k-step Humanoid-v5 budget, we changed replay composition while keeping the critic architecture, ensemble, LayerNorm, update ratio, and batch size fixed. Each primary condition has three seeds."
           />
           <div className={styles.ablationHero}>
             <div className={styles.ablationCompare}>
               {[
-                ["RLPD · 50/50", 6.0, "± 2.0", "128 offline + 128 online per update", "mix"],
+                ["RLPD · 50/50", 5.9, "± 1.9", "128 offline + 128 online per update", "mix"],
                 ["Online-only", 28.0, "± 15.2", "256 online samples per update", "online"],
               ].map(([label, value, spread, note, tone]) => (
                 <div key={label as string}>
@@ -650,38 +577,37 @@ export function RlpdExperience() {
                 </div>
               ))}
             </div>
-            <aside><span>Observed mean difference</span><strong>+21.9</strong><small>normalized-return points</small><p>Online-only minus 50/50 replay at the matched 500k-step horizon.</p></aside>
+            <aside><span>Observed mean difference</span><strong>+22.0</strong><small>normalized-return points</small><p>Online-only minus 50/50 replay at the matched 495k evaluation. This is descriptive, not a significance claim.</p></aside>
           </div>
           <div className={styles.ablationFindings}>
             {[
-              ["No LayerNorm", "8.9×10¹⁰", "Mean Q reached this value by 15k steps, indicating numerical divergence."],
-              ["Offline-only", "−0.6", "The evaluated run showed no positive Humanoid return at 500k steps."],
-              ["50% online", "7.2", "Seed-0 return in the exploratory replay-composition sweep."],
-              ["Online-only", "23.1", "Seed-1 return in the exploratory replay-composition sweep."],
+              ["No LayerNorm", "diverged", "Seed 0 produced non-finite values by about 15k steps."],
+              ["Offline-only replay", "−0.65", "Seed-0 last-five return at the 495k evaluation."],
+              ["UTD 1 instead of 20", "3.26", "Seed-0 last-five return versus 7.24 for the 50/50 reference."],
+              ["2 critics instead of 10", "4.61", "Seed-0 last-five return versus 7.24 for the 50/50 reference."],
             ].map(([label, value, copy]) => <article key={label}><span>{label}</span><strong>{value}</strong><p>{copy}</p></article>)}
           </div>
           <div className={styles.figurePair}>
             <EvidenceFigure figure={figures.ablations} compact />
             <EvidenceFigure figure={figures.ratio} compact />
           </div>
-          <div className={styles.caveatBox}><span>Scope of inference</span><p>The online-only condition comprises three independent seeds: 23.1, 45.0, and 15.8, yielding 28.0 ± 15.2. Given this variance and sample size, the +21.9-point difference is reported descriptively rather than as a formal significance claim. The replay-ratio curve is not a uniform dose-response estimate because most ratios contain one seed and the 90% condition contains observations from two seeds.</p></div>
+          <div className={styles.caveatBox}><span>Scope of inference</span><p>Online-only seed means were 23.11, 44.97, and 15.81; the matched 50/50 seed means were 7.24, 3.79, and 6.74. The resulting +22.0-point mean difference is descriptive given n = 3 and substantial variance. The replay-ratio figure is exploratory: most ratios have one seed, and its solid 90%-online point uses seed 1 while other solid points use seed 0. It is not a seed-uniform dose-response curve.</p></div>
         </Reveal>
       </section>
 
       <section id="coverage" data-section className={cx(styles.section, styles.sectionTint)}>
         <Reveal>
           <SectionHeader
-            index="06"
-            eyebrow="state-distribution analysis / PCA + nearest neighbors"
-            title="Humanoid-v5 exhibited limited offline coverage"
-            accent="under the specified distance criterion."
-            copy="We first visualize offline and online state distributions in a common PCA basis, then quantify their overlap in the complete standardized state space using nearest-neighbor coverage and normalized distance."
+            index="05"
+            eyebrow="State-distribution analysis"
+            title="Offline-state coverage"
+            copy="We compared states collected in online replay buffers with each task&apos;s fixed offline dataset. PCA provides a two-dimensional view; the reported coverage metric uses all standardized state dimensions and a nearest-neighbor threshold derived from offline states."
           />
           <div id="pca-projection" className={styles.pcaAnalysis}>
             <div className={styles.pcaIntroduction}>
               <div>
                 <span>Qualitative projection / seed 0</span>
-                <h3>The locomotion distributions overlap; Humanoid separates in the offline-fitted projection.</h3>
+                <h3>Humanoid online replay states separate in the offline-fitted PCA view</h3>
               </div>
               <p>For each task, PCA is fitted only on standardized offline states. Offline and online states are then transformed through that same basis, so their relative position is directly comparable within a task.</p>
             </div>
@@ -690,7 +616,7 @@ export function RlpdExperience() {
               {[
                 ["Projection basis", "Offline fit", "PCA is fitted on 20,000 standardized offline states for each environment; online states do not influence the axes."],
                 ["Displayed sample", "4k + 4k", "Four thousand offline and four thousand online states are displayed for the seed-0 RLPD run in each task."],
-                ["Projected pattern", "Humanoid separates", "Locomotion clouds retain substantial overlap, whereas the Humanoid online trajectory is displaced from the main offline cloud."],
+                ["Projected pattern", "Humanoid separates", "Locomotion clouds retain substantial overlap, whereas Humanoid online replay states are displaced from the main offline cloud."],
                 ["Inference boundary", "2D is descriptive", "The projection can hide variance in omitted components. Three-seed nearest-neighbor metrics in the full state space provide the primary evidence."],
               ].map(([label, value, copy]) => (
                 <article key={label}><span>{label}</span><strong>{value}</strong><p>{copy}</p></article>
@@ -699,7 +625,7 @@ export function RlpdExperience() {
           </div>
           <div className={styles.quantitativeLead}>
             <span>Full-space verification / three seeds</span>
-            <p>The quantitative analysis uses all standardized state dimensions rather than the two displayed principal components. The offline/offline control remains close to one (1.04–1.16), indicating that the normalized distance ratio is not explained solely by dimensionality.</p>
+            <p>Across three seeds per task, the full-space metric counts online replay states inside the offline 95th-percentile nearest-neighbor radius. It samples states accumulated during training, not final-policy rollouts. The offline/offline distance control is 1.04–1.16.</p>
           </div>
           <div className={styles.coverageGrid}>
             <div className={styles.coverageChart} role="img" aria-label="Offline-state coverage by task">
@@ -715,9 +641,9 @@ export function RlpdExperience() {
             </div>
             <aside className={styles.coverageReading}>
               <span>Lowest observed overlap</span><strong>6.6%</strong><small>Humanoid coverage · R = 6.64×</small>
-              <p>Humanoid-v5 has the lowest coverage estimate and the largest normalized distance ratio among the four evaluated tasks. This association is consistent with the higher online-only mean observed in the replay ablation.</p>
+              <p>Humanoid-v5 has the lowest estimated coverage and largest normalized distance ratio among the four evaluated tasks. This is consistent with the higher online-only mean in the matched replay ablation.</p>
               <code>R = median d(online, offline) / median d(offline, offline)</code>
-              <p><b>Inference boundary:</b> this post-hoc analysis identifies an association between limited offline support and the ablation result; it does not establish distribution mismatch as a causal mechanism.</p>
+              <p><b>Inference boundary:</b> the analysis is post-hoc and compares tasks with different state dimensions and dynamics. It does not establish that distribution mismatch caused the ablation result.</p>
             </aside>
           </div>
           <EvidenceFigure figure={figures.coverage} />
@@ -727,11 +653,10 @@ export function RlpdExperience() {
       <section id="evidence" data-section className={styles.section}>
         <Reveal>
           <SectionHeader
-            index="07"
-            eyebrow="reporting / provenance and limitations"
-            title="Results are reported with"
-            accent="replication counts and scope."
-            copy="Completed and incomplete runs are distinguished explicitly, qualitative rollouts are separated from aggregate estimates, and all supporting figures remain available at full resolution."
+            index="06"
+            eyebrow="Reporting and reproducibility"
+            title="Limitations"
+            copy="The results depend on the stated datasets, environment versions, compute budgets, and normalization anchors. Completed and interrupted runs are separated below; figure viewers retain the source plots at full resolution."
           />
           <div className={styles.auditTable} role="table" aria-label="Experiment coverage and reporting status">
             <div className={styles.auditHead} role="row"><span>#</span><span>Experiment group</span><span>Coverage</span><span>Reporting note</span></div>
@@ -739,21 +664,14 @@ export function RlpdExperience() {
               <div className={styles.auditRow} role="row" key={label}><i>{String(index + 1).padStart(2, "0")}</i><span>{label}</span><strong>{count}</strong><em>{note}</em></div>
             ))}
           </div>
-          <div className={styles.lessonGrid}>
-            {[
-              ["01", "Between-seed variance is reported explicitly.", "Three-seed aggregates characterize variability that cannot be inferred from a selected rollout."],
-              ["02", "Implementation details define the comparison.", "Layer normalization, ensemble size, update-to-data ratio, and pretraining budget are treated as part of each experimental condition."],
-              ["03", "The ablation isolates replay composition.", "The matched 50/50 and online-only comparison shifts the analysis from method-level performance to the contribution of offline samples."],
-              ["04", "Distribution analysis combines complementary evidence.", "PCA visualizes projected geometry, while three-seed full-space metrics estimate coverage: 56.2–71.6% for locomotion and 6.6% for Humanoid."],
-            ].map(([index, title, copy]) => <article key={index}><span>{index}</span><h3>{title}</h3><p>{copy}</p></article>)}
-          </div>
+          <p className={styles.caveat}>The research repository includes configuration, evaluation CSVs, code, and generated figures. It does not include trained checkpoints or raw replay buffers, so the full training and state-coverage results cannot be regenerated from that checkout alone. The project-specific Minari-v5 normalization also prevents direct numerical comparison with D4RL-normalized scores in the original paper.</p>
           <div className={styles.additionalEvidence}>
-            <div><span>Supplementary analyses</span><h3>Dataset-quality and state-support diagnostics.</h3></div>
+            <div><span>Supplementary figures</span><h3>Dataset quality and state coverage</h3></div>
             <EvidenceFigure figure={figures.quality} compact />
             <EvidenceFigure figure={figures.coverageDiagnostic} compact />
           </div>
           <footer className={styles.projectFooter}>
-            <div><span>Research team</span><strong>Karan Anchan · Pranav Prakash Menon · Kandi Sridhar</strong><small>Empirical reproduction and ablation study · 2026</small></div>
+            <div><span>Research team</span><strong>Karan Anchan · Pranav Prakash Menon · Kandi Sridhar</strong><small>PyTorch reproduction and Humanoid-v5 extension · 2026</small></div>
             <div><a href={REPOSITORY} target="_blank" rel="noreferrer">Repository <Arrow /></a><a href={PAPER} target="_blank" rel="noreferrer">Original paper <Arrow /></a><Link href="/">Main portfolio <Arrow /></Link></div>
           </footer>
         </Reveal>
