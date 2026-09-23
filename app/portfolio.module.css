@@ -95,6 +95,16 @@
 .recordItem p:not(.recordDate) { max-width: 79ch; font-size: 14px; line-height: 1.6; }
 .recordItem .recordNote { margin-top: 8px; color: var(--muted); font-size: 12px !important; }
 
+.certificateGrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
+.certificate { min-width: 0; padding: 20px 22px 22px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); background: var(--surface); }
+.certificateMarks { display: flex; align-items: center; gap: 8px; margin-bottom: 17px; }
+.certificateMarks img { display: block; width: 60px; height: 60px; border: 1px solid var(--line); background: #fff; object-fit: contain; }
+.certificateMeta { color: var(--muted); font: 500 11px/1.5 var(--font-portfolio-mono), monospace; }
+.certificate h3 { margin: 8px 0 5px; font-size: 18px; font-weight: 600; line-height: 1.25; }
+.certificateIssuer { min-height: 2.8em; color: var(--muted); font-size: 13px; line-height: 1.4; }
+.certificateLink { display: inline-block; margin-top: 17px; color: var(--accent) !important; font: 600 12px/1.5 var(--font-portfolio-mono), monospace; text-decoration: underline !important; text-decoration-color: var(--line) !important; text-underline-offset: 5px; }
+.certificateLink:hover { text-decoration-color: currentColor !important; }
+
 .contact { padding-bottom: 70px; }
 .contact h2 { margin-bottom: 14px; }
 .contact > p:not(.eyebrow) { max-width: 640px; color: var(--muted); font-size: 15px; line-height: 1.55; }
@@ -130,7 +140,8 @@
   .recordItem { grid-template-columns: 1fr; gap: 7px; }
 }
 @media (max-width: 560px) {
-  .toolGrid { grid-template-columns: 1fr; }
+  .toolGrid,
+  .certificateGrid { grid-template-columns: 1fr; }
   .toolGroup { min-height: 0; }
   .hero h1 { font-size: clamp(2.65rem, 12vw, 3.6rem); }
   .lead { font-size: 1.11rem; }

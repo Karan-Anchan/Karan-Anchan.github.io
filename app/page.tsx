@@ -1,3 +1,4 @@
+import Image from "next/image";
 import styles from "./portfolio.module.css";
 
 type Project = {
@@ -118,6 +119,41 @@ const toolGroups = [
   { title: "Retrieval and interfaces", tools: "LangChain, ChromaDB, React, TypeScript, Next.js", evidence: "WiZdom Ed internship · project showcases · this site" },
 ];
 
+const certificates = [
+  {
+    title: "Reinforcement Learning",
+    issuer: "University of Alberta · Alberta Machine Intelligence Institute",
+    date: "May 30, 2024",
+    courses: "4 courses",
+    href: "https://coursera.org/verify/specialization/3X9AYAXHBZVW",
+    marks: ["/certificate-marks/alberta.png", "/certificate-marks/amii.png"],
+  },
+  {
+    title: "MLOps | Machine Learning Operations",
+    issuer: "Duke University",
+    date: "May 30, 2024",
+    courses: "4 courses",
+    href: "https://coursera.org/verify/specialization/BC9VRBWCQRU5",
+    marks: ["/certificate-marks/duke.png"],
+  },
+  {
+    title: "Generative AI Automation",
+    issuer: "Vanderbilt University",
+    date: "May 27, 2024",
+    courses: "4 courses",
+    href: "https://coursera.org/verify/specialization/HBRDP2H4RLK7",
+    marks: ["/certificate-marks/vanderbilt.png"],
+  },
+  {
+    title: "Machine Learning",
+    issuer: "DeepLearning.AI · Stanford Online",
+    date: "Apr 7, 2023",
+    courses: "3 courses",
+    href: "https://coursera.org/verify/specialization/JDYYP28JPJNZ",
+    marks: ["/certificate-marks/deeplearning-ai.png", "/certificate-marks/stanford.png"],
+  },
+];
+
 export default function Home() {
   return (
     <main id="top" className={styles.page}>
@@ -126,7 +162,7 @@ export default function Home() {
         <div className={styles.headerInner}>
           <a className={styles.brand} href="#top" aria-label="Karan Anchan, back to top">Karan Anchan</a>
           <nav className={styles.nav} aria-label="Main navigation">
-            <a href="#work">Work</a><a href="#stack">Tools</a><a href="#record">Background</a><a href="#contact">Contact</a>
+            <a href="#work">Work</a><a href="#stack">Tools</a><a href="#record">Background</a><a href="#certificates">Certificates</a><a href="#contact">Contact</a>
           </nav>
           <a className={styles.headerCv} href="/CVKaranAnchan.pdf">CV <span aria-hidden="true">↗</span></a>
         </div>
@@ -205,8 +241,28 @@ export default function Home() {
           </div>
         </section>
 
+        <section id="certificates" className={styles.section} aria-labelledby="certificates-title">
+          <div className={styles.sectionHeading}>
+            <div><p className={styles.eyebrow}>04 / Verified learning</p><h2 id="certificates-title">Certificates</h2></div>
+            <p>Four online, non-credit specializations. Each link opens its public Coursera verification record.</p>
+          </div>
+          <div className={styles.certificateGrid}>
+            {certificates.map((certificate) => (
+              <article key={certificate.href} className={styles.certificate}>
+                <div className={styles.certificateMarks} aria-hidden="true">
+                  {certificate.marks.map((mark) => <Image key={mark} src={mark} alt="" width={60} height={60} unoptimized />)}
+                </div>
+                <p className={styles.certificateMeta}>{certificate.date} · {certificate.courses}</p>
+                <h3>{certificate.title}</h3>
+                <p className={styles.certificateIssuer}>{certificate.issuer}</p>
+                <a className={styles.certificateLink} href={certificate.href} aria-label={`Verify ${certificate.title} on Coursera`}>Verify on Coursera ↗</a>
+              </article>
+            ))}
+          </div>
+        </section>
+
         <section id="contact" className={`${styles.section} ${styles.contact}`} aria-labelledby="contact-title">
-          <p className={styles.eyebrow}>04 / Contact</p><h2 id="contact-title">Contact</h2>
+          <p className={styles.eyebrow}>05 / Contact</p><h2 id="contact-title">Contact</h2>
           <p>For research collaborations and machine-learning engineering roles, email me with the project or problem you have in mind.</p>
           <a className={styles.email} href="mailto:kar.anchan02@gmail.com">kar.anchan02@gmail.com</a>
           <div className={styles.contactLinks}><a href="https://github.com/Karan-Anchan">GitHub ↗</a><a href="https://linkedin.com/in/karan-anchan">LinkedIn ↗</a><a href="/CVKaranAnchan.pdf">CV · PDF ↗</a></div>
