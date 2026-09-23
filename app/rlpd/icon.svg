@@ -1,33 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <defs>
-    <linearGradient id="ring" x1="10" y1="8" x2="54" y2="56" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#ffc06a"/>
-      <stop offset=".36" stop-color="#ff7589"/>
-      <stop offset=".7" stop-color="#b89cff"/>
-      <stop offset="1" stop-color="#72dec4"/>
-    </linearGradient>
-    <radialGradient id="field" cx="0" cy="0" r="1" gradientTransform="translate(24 18) rotate(50) scale(52)">
-      <stop stop-color="#1b1826"/>
-      <stop offset="1" stop-color="#07070c"/>
-    </radialGradient>
-  </defs>
-  <rect width="64" height="64" rx="14" fill="url(#field)"/>
-  <circle cx="32" cy="32" r="23" fill="none" stroke="#d0c5de" stroke-opacity=".12" stroke-width="2"/>
-  <circle
-    cx="32"
-    cy="32"
-    r="23"
-    fill="none"
-    stroke="url(#ring)"
-    stroke-width="3"
-    stroke-linecap="round"
-    stroke-dasharray="106 39"
-    transform="rotate(-38 32 32)"
-  />
-  <circle cx="15.1" cy="47.6" r="2.6" fill="#72dec4"/>
-  <circle cx="50.2" cy="18.6" r="2.6" fill="#ff7589"/>
+  <rect width="64" height="64" rx="10" fill="#254d36"/>
   <path
     d="M21 47V17h13.2c7.6 0 12.3 4.1 12.3 10.6 0 4.5-2.4 7.9-6.6 9.5L48 47h-9.1l-6.6-8.5h-3.6V47H21Zm7.7-15h4.8c3.5 0 5.3-1.4 5.3-4.2 0-2.7-1.8-4.1-5.3-4.1h-4.8V32Z"
-    fill="#f7f4f0"
+    fill="#f7f8f4"
+    transform="translate(-11 -11) scale(1.35)"
   />
 </svg>
